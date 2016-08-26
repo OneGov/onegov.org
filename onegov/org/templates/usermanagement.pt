@@ -8,13 +8,13 @@
             <tal:block repeat="role ('admin', 'editor', 'member')">
                 <tbody tal:condition="users.get(role)">
                     <tr class="subheader">
-                        <td colspan="3">${request.app.translate_role(role, plural=True)} (${len(users[role])})</td>
+                        <td colspan="3">${request.translate(role.capitalize() + 's')} (${len(users.get(role))})</td>
                     </tr>
                     <tr tal:repeat="user users[role]" class="${user.active and 'user-active' or 'user-inactive'}">
                         <td>${user.username}</td>
                         <td i18n:translate tal:condition="user.active">Active</td>
                         <td i18n:translate tal:condition="not:user.active">Inactive</td>
-                        <td><a href="#" i18n:translate>Edit</a></td>
+                        <td><a href="${request.link(user)}" i18n:translate>Edit</a></td>
                     </tr>
                 </tbody>
             </tal:block>

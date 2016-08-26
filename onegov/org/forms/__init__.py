@@ -23,6 +23,7 @@ from onegov.org.forms.resource import (
 from onegov.org.forms.settings import SettingsForm
 from onegov.org.forms.signup import SignupForm
 from onegov.org.forms.userprofile import UserProfileForm
+from onegov.org.forms.user import ManageUserForm
 
 
 __all__ = [
@@ -32,6 +33,7 @@ __all__ = [
     'EventForm',
     'ImageSetForm',
     'LinkForm',
+    'ManageUserForm',
     'NewsletterForm',
     'NewsletterSendForm',
     'PageForm',

@@ -2977,3 +2977,22 @@ ul.search-results {
         }
     }
 }
+
+/*
+    Usermanagement
+*/
+
+.user-inactive td {
+    color: $base;
+}
+
+.usermanagement {
+    .subheader td {
+        border-color: $oil;
+        font-weight: bold;
+    }
+
+    tbody + tbody tr:first-child td {
+        padding-top: 1.5rem;
+    }
+}

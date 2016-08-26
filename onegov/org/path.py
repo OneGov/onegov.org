@@ -50,7 +50,7 @@ from onegov.org.models import (
 from onegov.page import PageCollection
 from onegov.people import Person, PersonCollection
 from onegov.ticket import Ticket, TicketCollection
-from onegov.user import Auth
+from onegov.user import Auth, UserCollection
 from webob import exc
 
 
@@ -62,6 +62,11 @@ def get_org(app):
 @OrgApp.path(model=Auth, path='/auth')
 def get_auth(app, to='/'):
     return Auth.from_app(app, to)
+
+
+@OrgApp.path(model=UserCollection, path='/benutzer')
+def get_users(app):
+    return UserCollection(app.session())
 
 
 @OrgApp.path(model=Topic, path='/themen', absorb=True)

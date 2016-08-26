@@ -6,6 +6,7 @@ from onegov.core import Framework, utils
 from onegov.file import DepotApp
 from onegov.gis import MapboxApp
 from onegov.libres import LibresIntegration
+from onegov.org import _
 from onegov.org.models import Organisation
 from onegov.org.models import Topic
 from onegov.org.request import OrgRequest
@@ -165,6 +166,16 @@ class OrgApp(Framework, LibresIntegration, ElasticsearchApp, MapboxApp,
 
     def update_homepage_pages(self):
         return self.cache.delete('homepage_pages')
+
+    def translate_role(self, role, plural):
+        if role == 'admin':
+            return plural and _("Administrators") or _("Administrator")
+
+        if role == 'editor':
+            return plural and _("Editors") or _("Editor")
+
+        if role == 'member':
+            return plural and _("Members") or _("Member")
 
 
 @OrgApp.webasset_path()

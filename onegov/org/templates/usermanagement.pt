@@ -8,7 +8,10 @@
             <tal:block repeat="role ('admin', 'editor', 'member')">
                 <tbody tal:condition="users.get(role)">
                     <tr class="subheader">
-                        <td colspan="3">${request.translate(role.capitalize() + 's')} (${len(users.get(role))})</td>
+                        <td colspan="3">
+                            <tal:block metal:use-macro="layout.macros['role-plural']" />
+                            (${len(users.get(role))})
+                        </td>
                     </tr>
                     <tr tal:repeat="user users[role]" class="${user.active and 'user-active' or 'user-inactive'}">
                         <td>${user.username}</td>

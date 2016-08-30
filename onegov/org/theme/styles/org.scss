@@ -3013,12 +3013,18 @@ ul.search-results {
 }
 
 .yubikey {
+    background-color: $smoke;
+    border-radius: 3px;
+    border: 1px solid $iron;
     color: $tuatara;
+    display: inline-block;
     font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
     font-size: .8em;
     padding: 2px 4px;
-    border: 1px solid $iron;
-    border-radius: 3px;
-    display: inline-block;
-    background-color: $smoke;
+}
+
+.user-inactive .yubikey {
+    background-color: $snow;
+    border-color: $smoke;
+    color: $base;
 }

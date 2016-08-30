@@ -30,6 +30,9 @@ class ManageUserForm(Form):
     )
 
     def validate_yubikey(self, field):
+        if not self.active.data:
+            return
+
         if not field.data:
             if not self.request.app.settings.org.enable_yubikey:
                 return
@@ -43,6 +46,16 @@ class ManageUserForm(Form):
 
         if not is_valid_yubikey_format(field.data):
             raise validators.ValidationError(_("Invalid Yubikey"))
+
+        users = UserCollection(self.request.app.session())
+        user = users.by_yubikey(field.data)
+
+        if user:
+            raise validators.ValidationError(
+                _("This Yubikey is already used by ${username}", mapping={
+                    'username': user.username
+                })
+            )
 
 
 class PartialNewUserForm(Form):

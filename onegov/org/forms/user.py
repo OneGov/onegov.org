@@ -1,7 +1,7 @@
 from onegov.form import Form, merge_forms
 from onegov.org import _
-from onegov.user import UserCollection
-from wtforms import BooleanField, RadioField, validators
+from onegov.user import UserCollection, is_valid_yubikey_format
+from wtforms import BooleanField, RadioField, TextField, validators
 from wtforms.fields.html5 import EmailField
 
 
@@ -22,6 +22,27 @@ class ManageUserForm(Form):
     )
 
     active = BooleanField(_("Active"), default=True)
+
+    yubikey = TextField(
+        label=_("Yubikey"),
+        description=_("Plug your YubiKey into a USB slot and press it."),
+        render_kw={'autocomplete': 'off'}
+    )
+
+    def validate_yubikey(self, field):
+        if not field.data:
+            if not self.request.app.settings.org.enable_yubikey:
+                return
+
+            if self.role.data in ('admin', 'editor'):
+                raise validators.ValidationError(_(
+                    "Administrators and editors must use a Yubikey"
+                ))
+            else:
+                return
+
+        if not is_valid_yubikey_format(field.data):
+            raise validators.ValidationError(_("Invalid Yubikey"))
 
 
 class PartialNewUserForm(Form):

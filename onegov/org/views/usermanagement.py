@@ -34,6 +34,9 @@ def view_usermanagement(self, request):
              permission=Secret)
 def handle_manage_user(self, request, form):
 
+    if not request.app.settings.org.enable_yubikey:
+        form.delete_field('yubikey')
+
     if form.submitted(request):
         form.populate_obj(self)
         request.success(_("Your changes were saved"))
@@ -55,6 +58,9 @@ def handle_manage_user(self, request, form):
 @OrgApp.form(model=UserCollection, template='newuser.pt', form=NewUserForm,
              name='neu', permission=Secret)
 def handle_new_user(self, request, form):
+
+    if not request.app.settings.org.enable_yubikey:
+        form.delete_field('yubikey')
 
     layout = UserManagementLayout(self, request)
     layout.breadcrumbs.append(Link(_("New User"), '#'))

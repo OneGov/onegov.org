@@ -1119,7 +1119,7 @@ class UserManagementLayout(DefaultLayout):
                         Link(
                             text=_("User"),
                             url=self.request.class_link(
-                                UserCollection, name='new'
+                                UserCollection, name='neu'
                             ),
                             classes=('new-user', )
                         ),

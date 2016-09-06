@@ -1,14 +1,16 @@
 """ Contains the base application used by other applications. """
 
+from cached_property import cached_property
+from chameleon import PageTemplate
 from collections import defaultdict
 from contextlib import contextmanager
 from onegov.core import Framework, utils
 from onegov.file import DepotApp
 from onegov.gis import MapboxApp
 from onegov.libres import LibresIntegration
+from onegov.org.homepage_widgets import transform_homepage_content
 from onegov.org.initial_content import create_new_organisation
-from onegov.org.models import Organisation
-from onegov.org.models import Topic
+from onegov.org.models import Topic, Organisation
 from onegov.org.request import OrgRequest
 from onegov.org.theme import OrgTheme
 from onegov.page import PageCollection
@@ -108,6 +110,25 @@ class OrgApp(Framework, LibresIntegration, ElasticsearchApp, MapboxApp,
         session.flush()
 
         self.cache.delete('org')
+
+        if 'homepage_template' in self.__dict__:
+            del self.__dict__['homepage_template']
+
+    @cached_property
+    def homepage_template(self):
+        """ Returns the homepage template built from the homepage content
+        setting which contains a simplified and limited xml to define the
+        homepage.
+
+        We cache this on the application itself, because we want this cache
+        to live as long as the application itself.
+
+        """
+        if 'homepage_content' in self.org.meta:
+            return PageTemplate(
+                transform_homepage_content(self.org.meta['homepage_content']))
+        else:
+            return PageTemplate()
 
     @property
     def ticket_count(self):

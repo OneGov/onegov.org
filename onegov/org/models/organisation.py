@@ -45,6 +45,7 @@ class Organisation(Base, TimestampMixin):
     reservations_label = meta_property('reservations_label')
     daypass_label = meta_property('daypass_label')
     default_map_view = meta_property('default_map_view')
+    homepage_content = meta_property('homepage_content')
 
     @contact.setter
     def contact(self, value):

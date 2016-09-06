@@ -1,10 +1,22 @@
+import re
+
+from lxml import etree
 from onegov.form import Form
+from onegov.form.core import with_options
 from onegov.gis import CoordinatesField
 from onegov.org import _
+from onegov.org.homepage_widgets import (
+    transform_homepage_content,
+    XML_LINE_OFFSET
+)
 from onegov.org.theme import user_options
 from wtforms import HiddenField, StringField, TextAreaField, validators
 from wtforms.fields.html5 import EmailField, URLField
 from wtforms_components import ColorField
+from wtforms import ValidationError
+
+
+ERROR_LINE_RE = re.compile(r'line ([0-9]+)')
 
 
 class SettingsForm(Form):
@@ -122,10 +134,33 @@ class SettingsForm(Form):
         render_kw={'rows': 10},
         fieldset=_("Advanced")
     )
+    homepage_content = TextAreaField(
+        label=_("Homepage Content"),
+        description=_("The content shown on the homepage"),
+        render_kw={'rows': 32, 'data-editor': 'form'},
+        fieldset=_("Advanced")
+    )
 
     # the footer height is determined by javascript, see org.scss and
     # common.js for more information (search for footer)
     footer_height = HiddenField()
+
+    def validate_homepage_content(self, field):
+        if field.data:
+            # raises a validation error if there's anything awry
+            try:
+                transform_homepage_content(field.data)
+            except etree.XMLSyntaxError as e:
+                correct_line = e.position[0] - XML_LINE_OFFSET
+
+                correct_msg = 'line {}'.format(correct_line)
+                correct_msg = ERROR_LINE_RE.sub(correct_msg, e.msg)
+
+                field.widget = with_options(
+                    field.widget, **{'data-highlight-line': correct_line}
+                )
+
+                raise ValidationError(correct_msg)
 
     @property
     def theme_options(self):

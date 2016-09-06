@@ -128,7 +128,7 @@ class OrgApp(Framework, LibresIntegration, ElasticsearchApp, MapboxApp,
             return PageTemplate(
                 transform_homepage_content(self.org.meta['homepage_content']))
         else:
-            return PageTemplate()
+            return PageTemplate('')
 
     @property
     def ticket_count(self):

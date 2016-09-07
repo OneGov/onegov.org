@@ -56,17 +56,6 @@ def transform_homepage_structure(structure):
     return etree.tostring(template, encoding='unicode', method='xml')
 
 
-class HeadingWidget(object):
-
-    template = """
-        <xsl:template match="heading">
-            <h2>
-                <xsl:apply-templates select="node()|@*"/>
-            </h2>
-        </xsl:template>
-    """
-
-
 class ColumnWidget(object):
 
     template = """
@@ -136,7 +125,6 @@ class ContentWidget(object):
 
 
 WIDGETS = [
-    HeadingWidget(),
     ColumnWidget(),
     PanelWidget(),
     NewsWidget(),

@@ -1,5 +1,7 @@
+from collections import namedtuple
 from lxml import etree
 from onegov.event import OccurrenceCollection
+from onegov.newsletter import NewsletterCollection
 from onegov.org import _
 from onegov.org.elements import Link, LinkGroup
 
@@ -209,10 +211,85 @@ class EventsWidget(Widget):
         }
 
 
+Tile = namedtuple('Tile', ['page', 'links', 'number'])
+
+
+class TilesWidget(Widget):
+
+    id = 'homepage-tiles'
+
+    template = """
+        <xsl:template match="homepage-tiles">
+            <xsl:choose>
+                <xsl:when test="@show-title">
+                    <metal:block use-macro="layout.macros['homepage-tiles']"
+                       tal:define="show_title True" />
+                </xsl:when>
+                <xsl:otherwise>
+                    <metal:block use-macro="layout.macros['homepage-tiles']"
+                      tal:define="show_title False" />
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:template>
+    """
+
+    def get_variables(self, layout):
+        return {'tiles': tuple(self.get_tiles(layout))}
+
+    def get_tiles(self, layout):
+        homepage_pages = layout.request.app.homepage_pages
+        request = layout.request
+        link = request.link
+        session = layout.app.session()
+        classes = ('tile-sub-link', )
+
+        for ix, page in enumerate(layout.root_pages):
+            if page.type == 'topic':
+
+                children = homepage_pages.get(page.id, tuple())
+                children = (session.merge(c, load=False) for c in children)
+
+                if not request.is_manager:
+                    children = (
+                        c for c in children if not c.is_hidden_from_public
+                    )
+
+                yield Tile(
+                    page=Link(page.title, link(page)),
+                    number=ix + 1,
+                    links=tuple(
+                        Link(c.title, link(c), classes=classes, model=c)
+                        for c in children
+                    )
+                )
+            elif page.type == 'news':
+                news_url = link(page)
+                years = (str(year) for year in page.years)
+
+                links = [
+                    Link(year, news_url + '?year=' + year, classes=classes)
+                    for year in years
+                ]
+
+                links.append(Link(
+                    _("Newsletter"), link(NewsletterCollection(session)),
+                    classes=classes
+                ))
+
+                yield Tile(
+                    page=Link(page.title, news_url),
+                    number=ix + 1,
+                    links=links
+                )
+            else:
+                raise NotImplementedError
+
+
 WIDGETS = [
     ColumnWidget(),
     PanelWidget(),
     NewsWidget(),
     ContentWidget(),
-    EventsWidget()
+    EventsWidget(),
+    TilesWidget()
 ]

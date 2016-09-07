@@ -48,35 +48,35 @@ class SettingsForm(Form):
         label=_("Contact"),
         description=_("The address and phone number of the municipality"),
         render_kw={'rows': 8},
-        fieldset=_("General")
+        fieldset=_("Information")
     )
     contact_url = URLField(
-        label=_("Contact Page"),
+        label=_("Contact Link"),
         description=_("URL pointing to a contact page"),
-        fieldset=_("General"),
+        fieldset=_("Information"),
         render_kw={'class_': 'internal-url'}
     )
     opening_hours = TextAreaField(
         label=_("Opening Hours"),
         description=_("The opening hours of the municipality"),
         render_kw={'rows': 8},
-        fieldset=_("General")
+        fieldset=_("Information")
     )
     opening_hours_url = URLField(
-        label=_("Opening Hours Page"),
+        label=_("Opening Hours Link"),
         description=_("URL pointing to an opening hours page"),
-        fieldset=_("General"),
+        fieldset=_("Information"),
         render_kw={'class_': 'internal-url'}
     )
     facebook_url = URLField(
         label=_("Facebook"),
         description=_("URL pointing to the facebook site"),
-        fieldset=_("General")
+        fieldset=_("Social Media")
     )
     twitter_url = URLField(
         label=_("Twitter"),
         description=_("URL pointing to the twitter site"),
-        fieldset=_("General")
+        fieldset=_("Social Media")
     )
     homepage_image_1 = StringField(
         label=_("Homepage Image #1"),

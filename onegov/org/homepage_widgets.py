@@ -78,6 +78,19 @@ class Widget(object):
         return '<{}'.format(self.id) in structure
 
 
+class RowWidget(Widget):
+
+    id = 'row'
+
+    template = """
+        <xsl:template match="row">
+            <div class="row">
+                <xsl:apply-templates select="node()"/>
+            </div>
+        </xsl:template>
+    """
+
+
 class ColumnWidget(Widget):
 
     id = 'column'
@@ -85,9 +98,7 @@ class ColumnWidget(Widget):
     template = """
         <xsl:template match="column">
             <div class="small-12 medium-{@span} columns">
-                <div class="row">
-                    <xsl:apply-templates select="node()"/>
-                </div>
+                <xsl:apply-templates select="node()"/>
             </div>
         </xsl:template>
     """
@@ -286,10 +297,11 @@ class TilesWidget(Widget):
 
 
 WIDGETS = [
+    RowWidget(),
     ColumnWidget(),
     PanelWidget(),
     NewsWidget(),
     ContentWidget(),
     EventsWidget(),
-    TilesWidget()
+    TilesWidget(),
 ]

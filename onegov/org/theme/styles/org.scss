@@ -1106,10 +1106,6 @@ div#redactor-droparea {
 .page-text {
     margin-bottom: 1rem;
 
-    &.homepage-content {
-        padding-right: 1.5rem;
-    }
-
     blockquote {
         background-color: $topbar-bg-color;
         padding: .5rem 1rem;
@@ -1355,7 +1351,6 @@ div#redactor-droparea {
 
 .newslist {
     margin-bottom: 1.5rem;
-    padding-right: 1rem;
 }
 
 .newslist .news-list-item {

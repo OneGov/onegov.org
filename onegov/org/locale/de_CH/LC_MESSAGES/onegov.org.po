@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2016-09-07 10:24+0200\n"
+"POT-Creation-Date: 2016-09-07 11:29+0200\n"
 "PO-Revision-Date: 2015-10-15 09:42+0200\n"
 "Last-Translator: Denis Krienbühl <denis.krienbuehl@seantis.ch>\n"
 "Language-Team: German\n"
@@ -45,6 +45,12 @@ msgstr "Abbrechen"
 
 msgid "This site is hidden from the general public"
 msgstr "Diese Seite ist nicht öffentlich."
+
+msgid "Events"
+msgstr "Veranstaltungen"
+
+msgid "All events"
+msgstr "Alle Veranstaltungen"
 
 msgid "Mo"
 msgstr "Mo"
@@ -91,9 +97,6 @@ msgstr "Einteilung bearbeiten"
 #, python-format
 msgid "Every ${days} until ${end}"
 msgstr "Jeden ${days} bis zum ${end}."
-
-msgid "Events"
-msgstr "Veranstaltungen"
 
 msgid "Newsletter"
 msgstr "Newsletter"

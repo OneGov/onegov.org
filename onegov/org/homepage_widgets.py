@@ -1,4 +1,7 @@
 from lxml import etree
+from onegov.event import OccurrenceCollection
+from onegov.org import _
+from onegov.org.elements import Link, LinkGroup
 
 
 XSLT_BASE = """<?xml version="1.0" encoding="UTF-8"?>
@@ -94,11 +97,18 @@ class PanelWidget(Widget):
 
     template = """
         <xsl:template match="panel">
-            <div class="homepage-links-panel">
-                <h2>
-                    <xsl:value-of select="@title" />
-                </h2>
-                <ul>
+            <div class="homepage-panel">
+                <xsl:if test="@title">
+                    <h2>
+                        <xsl:value-of select="@title" />
+                    </h2>
+                </xsl:if>
+
+                <xsl:if test="events">
+                    <xsl:apply-templates select="events"/>
+                </xsl:if>
+
+                <ul class="panel-links">
                     <xsl:for-each select="link">
                     <li>
                         <a>
@@ -155,9 +165,54 @@ class ContentWidget(Widget):
     """
 
 
+class EventsWidget(Widget):
+
+    id = 'events'
+
+    template = """
+        <xsl:template match="events">
+            <metal:block use-macro="layout.macros['events-panel']" />
+        </xsl:template>
+    """
+
+    def get_variables(self, layout):
+        occurrences = OccurrenceCollection(layout.app.session()).query()
+        occurrences = occurrences.limit(4)
+
+        # XXX circular import
+        from onegov.org.layout import EventBaseLayout
+
+        event_layout = EventBaseLayout(layout.model, layout.request)
+        event_links = [
+            Link(
+                text=o.title,
+                url=layout.request.link(o),
+                subtitle=event_layout.format_date(o.localized_start, 'event')
+            ) for o in occurrences
+        ]
+
+        event_links.append(
+            Link(
+                text=_("All events"),
+                url=event_layout.events_url,
+                classes=('more-link', )
+            )
+        )
+
+        latest_events = LinkGroup(
+            title=_("Events"),
+            links=event_links,
+        )
+
+        return {
+            'events_panel': latest_events
+        }
+
+
 WIDGETS = [
     ColumnWidget(),
     PanelWidget(),
     NewsWidget(),
-    ContentWidget()
+    ContentWidget(),
+    EventsWidget()
 ]

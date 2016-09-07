@@ -658,7 +658,7 @@ msgid "Homepage Image #6"
 msgstr "Startseiten Bild #6"
 
 msgid "Homepage Content"
-msgstr ""
+msgstr "Homepage Inhalt"
 
 msgid "Online Counter Label"
 msgstr "Online Schalter Beschreibung"

@@ -23,7 +23,7 @@ def view_org(self, request):
     if structure:
         used_widgets = (w for w in WIDGETS if w.is_used(structure))
 
-    for widget in used_widgets:
-        default.update(widget.get_variables(layout))
+        for widget in used_widgets:
+            default.update(widget.get_variables(layout))
 
     return default

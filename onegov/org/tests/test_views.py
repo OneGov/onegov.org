@@ -2536,7 +2536,7 @@ def test_newsletters_crud(org_app):
     assert newsletter.pyquery('h1').text() == "Our town is AWESOME"
     assert "Like many of you" in newsletter
     assert "Willkommen bei OneGov" in newsletter
-    assert "Ihre neuer Online Schalter" in newsletter
+    assert "Der Online Schalter" in newsletter
     assert "MuKi Turnen" in newsletter
     assert "Turnhalle" in newsletter
     assert "150 Jahre Govikon" in newsletter
@@ -2551,7 +2551,7 @@ def test_newsletters_crud(org_app):
     assert newsletter.pyquery('h1').text() == "I can't even"
     assert "Like many of you" in newsletter
     assert "Willkommen bei OneGov" in newsletter
-    assert "Ihre neuer Online Schalter" in newsletter
+    assert "Der Online Schalter" in newsletter
     assert "MuKi Turnen" in newsletter
     assert "Turnhalle" in newsletter
     assert "150 Jahre Govikon" not in newsletter

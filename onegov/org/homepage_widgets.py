@@ -4,6 +4,7 @@ from onegov.event import OccurrenceCollection
 from onegov.newsletter import NewsletterCollection
 from onegov.org import _
 from onegov.org.elements import Link, LinkGroup
+from wtforms import ValidationError
 
 
 XSLT_BASE = """<?xml version="1.0" encoding="UTF-8"?>
@@ -49,14 +50,36 @@ XML_BASE = """<?xml version="1.0" encoding="UTF-8"?>
 XML_LINE_OFFSET = 6
 
 
-def transform_homepage_structure(structure):
-    xslt = XSLT_BASE.format('\n'.join(w.template for w in WIDGETS))
-    xslt = etree.fromstring(xslt.encode('utf-8'))
+def parse_structure(structure):
+    """ Takes the XML homepage structure and returns the parsed etree xml.
+
+    Raises a wtforms.ValidationError if there's an element which is not
+    supported.
+
+    We could do this with DTDs but we don't actually need to, since we only
+    care to not include any unknown tags.
+
+    """
+
+    valid_tags = {w.id for w in WIDGETS}
+    valid_tags.add('page')  # wrapper element
+    valid_tags.add('link')  # doesn't exist as a widget
 
     xml = XML_BASE.format(structure)
     xml = etree.fromstring(xml.encode('utf-8'))
 
-    template = etree.XSLT(xslt)(xml)
+    for element in xml.iter():
+        if element.tag not in valid_tags:
+            raise ValidationError("Invalid element '<{}>'".format(element.tag))
+
+    return xml
+
+
+def transform_homepage_structure(structure):
+    xslt = XSLT_BASE.format('\n'.join(w.template for w in WIDGETS))
+    xslt = etree.fromstring(xslt.encode('utf-8'))
+
+    template = etree.XSLT(xslt)(parse_structure(structure))
 
     return etree.tostring(template, encoding='unicode', method='xml')
 

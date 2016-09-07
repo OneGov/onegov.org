@@ -287,6 +287,7 @@ def get_check_password_asset():
 def get_code_editor_asset():
     yield 'ace.js'
     yield 'ace-mode-form.js'
+    yield 'ace-mode-xml.js'
     yield 'ace-theme-tomorrow.js'
     yield 'code_editor.js'
 

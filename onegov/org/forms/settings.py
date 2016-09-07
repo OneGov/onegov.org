@@ -114,6 +114,12 @@ class SettingsForm(Form):
         fieldset=_("Homepage"),
         filters=(sanitize_html, annotate_html)
     )
+    homepage_structure = TextAreaField(
+        label=_("Homepage Structure (for advanced users only)"),
+        description=_("The structure of the homepage"),
+        render_kw={'rows': 32, 'data-editor': 'xml'},
+        fieldset=_("Homepage")
+    )
     online_counter_label = StringField(
         label=_("Online Counter Label"),
         description=_("Forms and applications"),
@@ -140,12 +146,6 @@ class SettingsForm(Form):
         label=_("Analytics Code"),
         description=_("JavaScript for web statistics support"),
         render_kw={'rows': 10},
-        fieldset=_("Advanced")
-    )
-    homepage_structure = TextAreaField(
-        label=_("Homepage Structure"),
-        description=_("The structure of the homepage"),
-        render_kw={'rows': 32, 'data-editor': 'form'},
         fieldset=_("Advanced")
     )
 

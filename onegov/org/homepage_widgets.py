@@ -56,7 +56,26 @@ def transform_homepage_structure(structure):
     return etree.tostring(template, encoding='unicode', method='xml')
 
 
-class ColumnWidget(object):
+class Widget(object):
+
+    @property
+    def id(self):
+        raise NotImplementedError
+
+    @property
+    def template(self):
+        raise NotImplementedError
+
+    def get_variables(self, layout):
+        return {}
+
+    def is_used(self, structure):
+        return '<{}'.format(self.id) in structure
+
+
+class ColumnWidget(Widget):
+
+    id = 'column'
 
     template = """
         <xsl:template match="column">
@@ -69,7 +88,9 @@ class ColumnWidget(object):
     """
 
 
-class PanelWidget(object):
+class PanelWidget(Widget):
+
+    id = 'panel'
 
     template = """
         <xsl:template match="panel">
@@ -101,7 +122,9 @@ class PanelWidget(object):
     """
 
 
-class NewsWidget(object):
+class NewsWidget(Widget):
+
+    id = 'news'
 
     template = """
         <xsl:template match="news">
@@ -111,8 +134,16 @@ class NewsWidget(object):
         </xsl:template>
     """
 
+    def get_variables(self, layout):
+        return {
+            'news': layout.root_pages[-1].news_query.limit(2).all()
+        }
 
-class ContentWidget(object):
+
+class ContentWidget(Widget):
+
+    id = 'homepage-content'
+
     template = """
         <xsl:template match="homepage-content">
             <div class="homepage-content page-text">

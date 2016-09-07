@@ -111,36 +111,42 @@ class PanelWidget(Widget):
     template = """
         <xsl:template match="panel">
             <div class="homepage-panel">
-                <xsl:if test="@title">
-                    <h2>
-                        <xsl:value-of select="@title" />
-                    </h2>
-                </xsl:if>
-
-                <xsl:if test="events">
-                    <xsl:apply-templates select="events"/>
-                </xsl:if>
-
-                <ul class="panel-links">
-                    <xsl:for-each select="link">
-                    <li>
-                        <a>
-                            <xsl:attribute name="href">
-                                <xsl:value-of select="@url" />
-                            </xsl:attribute>
-
-                            <xsl:value-of select="node()" />
-                        </a>
-
-                        <xsl:if test="@description">
-                            <small>
-                                <xsl:value-of select="@description" />
-                            </small>
-                        </xsl:if>
-                    </li>
-                    </xsl:for-each>
-                </ul>
+                <xsl:apply-templates select="node()"/>
             </div>
+        </xsl:template>
+    """
+
+
+class LinksWidget(Widget):
+
+    id = 'links'
+
+    template = """
+        <xsl:template match="links">
+            <xsl:if test="@title">
+                <h2>
+                    <xsl:value-of select="@title" />
+                </h2>
+            </xsl:if>
+            <ul class="panel-links">
+                <xsl:for-each select="link">
+                <li>
+                    <a>
+                        <xsl:attribute name="href">
+                            <xsl:value-of select="@url" />
+                        </xsl:attribute>
+
+                        <xsl:value-of select="node()" />
+                    </a>
+
+                    <xsl:if test="@description">
+                        <small>
+                            <xsl:value-of select="@description" />
+                        </small>
+                    </xsl:if>
+                </li>
+                </xsl:for-each>
+            </ul>
         </xsl:template>
     """
 
@@ -297,11 +303,12 @@ class TilesWidget(Widget):
 
 
 WIDGETS = [
-    RowWidget(),
     ColumnWidget(),
-    PanelWidget(),
-    NewsWidget(),
     ContentWidget(),
     EventsWidget(),
+    LinksWidget(),
+    NewsWidget(),
+    PanelWidget(),
+    RowWidget(),
     TilesWidget(),
 ]

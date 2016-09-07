@@ -1349,10 +1349,6 @@ div#redactor-droparea {
     news list
 */
 
-.newslist {
-    margin-bottom: 1.5rem;
-}
-
 .newslist .news-list-item {
     margin-bottom: .5rem;
 
@@ -1397,6 +1393,10 @@ div#redactor-droparea {
 
 .all-news {
     font-size: 1em;
+
+    a {
+        display: inline-block;
+    }
 }
 
 .all-news::before {

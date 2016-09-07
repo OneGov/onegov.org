@@ -167,6 +167,8 @@
                 <p class="news-lead">${item.content.lead}</p>
             </div>
         </div>
+
+        <h3 class="all-news" tal:condition="show_all_news_link|nothing"><a href="${layout.news_url}" i18n:translate>All news</a></h3>
     </div>
 </metal:newslist>
 

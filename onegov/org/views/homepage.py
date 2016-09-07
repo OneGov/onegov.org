@@ -15,4 +15,5 @@ def view_org(self, request):
     return {
         'layout': layout,
         'title': self.name,
+        'news': layout.root_pages[-1].news_query.limit(2).all()
     }

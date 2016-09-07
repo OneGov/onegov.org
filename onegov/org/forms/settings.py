@@ -6,7 +6,7 @@ from onegov.form.core import with_options
 from onegov.gis import CoordinatesField
 from onegov.org import _
 from onegov.org.homepage_widgets import (
-    transform_homepage_content,
+    transform_homepage_structure,
     XML_LINE_OFFSET
 )
 from onegov.org.theme import user_options
@@ -134,9 +134,9 @@ class SettingsForm(Form):
         render_kw={'rows': 10},
         fieldset=_("Advanced")
     )
-    homepage_content = TextAreaField(
-        label=_("Homepage Content"),
-        description=_("The content shown on the homepage"),
+    homepage_structure = TextAreaField(
+        label=_("Homepage Structure"),
+        description=_("The structure of the homepage"),
         render_kw={'rows': 32, 'data-editor': 'form'},
         fieldset=_("Advanced")
     )
@@ -145,11 +145,10 @@ class SettingsForm(Form):
     # common.js for more information (search for footer)
     footer_height = HiddenField()
 
-    def validate_homepage_content(self, field):
+    def validate_homepage_structure(self, field):
         if field.data:
-            # raises a validation error if there's anything awry
             try:
-                transform_homepage_content(field.data)
+                transform_homepage_structure(field.data)
             except etree.XMLSyntaxError as e:
                 correct_line = e.position[0] - XML_LINE_OFFSET
 

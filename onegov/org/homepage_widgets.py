@@ -39,16 +39,16 @@ XML_BASE = """<?xml version="1.0" encoding="UTF-8"?>
     </page>
 """
 
-# the number of lines from the start of XML_Base to where the content is
+# the number of lines from the start of XML_Base to where the structure is
 # injected (for correct line error reporting on the UI side)
 XML_LINE_OFFSET = 6
 
 
-def transform_homepage_content(content):
+def transform_homepage_structure(structure):
     xslt = XSLT_BASE.format('\n'.join(w.template for w in WIDGETS))
     xslt = etree.fromstring(xslt.encode('utf-8'))
 
-    xml = XML_BASE.format(content)
+    xml = XML_BASE.format(structure)
     xml = etree.fromstring(xml.encode('utf-8'))
 
     template = etree.XSLT(xslt)(xml)

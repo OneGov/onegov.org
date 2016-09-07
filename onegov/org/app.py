@@ -8,7 +8,7 @@ from onegov.core import Framework, utils
 from onegov.file import DepotApp
 from onegov.gis import MapboxApp
 from onegov.libres import LibresIntegration
-from onegov.org.homepage_widgets import transform_homepage_content
+from onegov.org.homepage_widgets import transform_homepage_structure
 from onegov.org.initial_content import create_new_organisation
 from onegov.org.models import Topic, Organisation
 from onegov.org.request import OrgRequest
@@ -124,9 +124,11 @@ class OrgApp(Framework, LibresIntegration, ElasticsearchApp, MapboxApp,
         to live as long as the application itself.
 
         """
-        if 'homepage_content' in self.org.meta:
+        homepage_structure = self.org.meta.get('homepage_structure')
+
+        if homepage_structure:
             return PageTemplate(
-                transform_homepage_content(self.org.meta['homepage_content']))
+                transform_homepage_structure(homepage_structure))
         else:
             return PageTemplate('')
 

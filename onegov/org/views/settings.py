@@ -40,5 +40,5 @@ def handle_settings(self, request, form):
         'layout': layout,
         'title': _('Settings'),
         'form': form,
-        'form_width': 'large'
+        'form_width': 'huge'
     }

@@ -121,4 +121,22 @@ class NewsWidget(object):
     """
 
 
-WIDGETS = [HeadingWidget(), ColumnWidget(), PanelWidget(), NewsWidget()]
+class ContentWidget(object):
+    template = """
+        <xsl:template match="homepage-content">
+            <div class="homepage-content page-text">
+                <tal:block
+                    content="structure layout.org.meta.get('homepage_content')"
+                />
+            </div>
+        </xsl:template>
+    """
+
+
+WIDGETS = [
+    HeadingWidget(),
+    ColumnWidget(),
+    PanelWidget(),
+    NewsWidget(),
+    ContentWidget()
+]

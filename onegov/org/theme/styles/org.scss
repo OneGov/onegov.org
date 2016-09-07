@@ -1089,6 +1089,10 @@ div#redactor-droparea {
 .page-text {
     margin-bottom: 1rem;
 
+    &.homepage-content {
+        padding-right: 1.5rem;
+    }
+
     blockquote {
         background-color: $topbar-bg-color;
         padding: .5rem 1rem;

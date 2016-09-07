@@ -1,10 +1,12 @@
 import re
 
 from lxml import etree
+from onegov.core.utils import sanitize_html
 from onegov.form import Form
 from onegov.form.core import with_options
 from onegov.gis import CoordinatesField
 from onegov.org import _
+from onegov.org.utils import annotate_html
 from onegov.org.homepage_widgets import (
     transform_homepage_structure,
     XML_LINE_OFFSET
@@ -105,6 +107,12 @@ class SettingsForm(Form):
         label=_("Homepage Image #6"),
         render_kw={'class_': 'image-url'},
         fieldset=_("Homepage")
+    )
+    homepage_content = TextAreaField(
+        label=_("Homepage Content"),
+        render_kw={'class_': 'editor', 'rows': 10},
+        fieldset=_("Homepage"),
+        filters=(sanitize_html, annotate_html)
     )
     online_counter_label = StringField(
         label=_("Online Counter Label"),

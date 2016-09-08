@@ -128,7 +128,7 @@ class OrgApp(Framework, LibresIntegration, ElasticsearchApp, MapboxApp,
 
         if homepage_structure:
             return PageTemplate(
-                transform_homepage_structure(homepage_structure))
+                transform_homepage_structure(self, homepage_structure))
         else:
             return PageTemplate('')
 

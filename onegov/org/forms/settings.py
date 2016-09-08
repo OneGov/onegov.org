@@ -120,21 +120,6 @@ class SettingsForm(Form):
         render_kw={'rows': 32, 'data-editor': 'xml'},
         fieldset=_("Homepage")
     )
-    online_counter_label = StringField(
-        label=_("Online Counter Label"),
-        description=_("Forms and applications"),
-        fieldset=_("Homepage")
-    )
-    reservations_label = StringField(
-        label=_("Reservations Label"),
-        description=_("Daypasses and rooms"),
-        fieldset=_("Homepage")
-    )
-    sbb_daypass_label = StringField(
-        label=_("SBB Daypass Label"),
-        description=_("Generalabonnement for Towns"),
-        fieldset=_("Homepage")
-    )
     default_map_view = CoordinatesField(
         label=_("The default map view. This should show the whole town"),
         render_kw={
@@ -156,7 +141,7 @@ class SettingsForm(Form):
     def validate_homepage_structure(self, field):
         if field.data:
             try:
-                transform_homepage_structure(field.data)
+                transform_homepage_structure(self.request.app, field.data)
             except etree.XMLSyntaxError as e:
                 correct_line = e.position[0] - XML_LINE_OFFSET
 

@@ -1,110 +1,13 @@
 from collections import namedtuple
-from lxml import etree
 from onegov.event import OccurrenceCollection
 from onegov.newsletter import NewsletterCollection
-from onegov.org import _
+from onegov.org import _, OrgApp
 from onegov.org.elements import Link, LinkGroup
-from wtforms import ValidationError
+from onegov.org.layout import EventBaseLayout
 
 
-XSLT_BASE = """<?xml version="1.0" encoding="UTF-8"?>
-
-    <xsl:stylesheet version="1.0"
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-    xmlns:metal="http://xml.zope.org/namespaces/metal"
-    xmlns:tal="http://xml.zope.org/namespaces/tal">
-
-    <xsl:template match="@*|node()" name="identity">
-      <xsl:copy>
-        <xsl:apply-templates select="@*|node()"/>
-      </xsl:copy>
-    </xsl:template>
-
-    <xsl:template match="page">
-      <div class="homepage">
-        <xsl:apply-templates select="@*|node()"/>
-      </div>
-    </xsl:template>
-
-    {}
-
-    </xsl:stylesheet>
-
-"""
-
-
-XML_BASE = """<?xml version="1.0" encoding="UTF-8"?>
-
-    <page xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-          xmlns:metal="http://xml.zope.org/namespaces/metal"
-          xmlns:tal="http://xml.zope.org/namespaces/tal">
-
-          {}
-
-    </page>
-"""
-
-# the number of lines from the start of XML_Base to where the structure is
-# injected (for correct line error reporting on the UI side)
-XML_LINE_OFFSET = 6
-
-
-def parse_structure(structure):
-    """ Takes the XML homepage structure and returns the parsed etree xml.
-
-    Raises a wtforms.ValidationError if there's an element which is not
-    supported.
-
-    We could do this with DTDs but we don't actually need to, since we only
-    care to not include any unknown tags.
-
-    """
-
-    valid_tags = {w.id for w in WIDGETS}
-    valid_tags.add('page')  # wrapper element
-    valid_tags.add('link')  # doesn't exist as a widget
-
-    xml = XML_BASE.format(structure)
-    xml = etree.fromstring(xml.encode('utf-8'))
-
-    for element in xml.iter():
-        if element.tag not in valid_tags:
-            raise ValidationError("Invalid element '<{}>'".format(element.tag))
-
-    return xml
-
-
-def transform_homepage_structure(structure):
-    xslt = XSLT_BASE.format('\n'.join(w.template for w in WIDGETS))
-    xslt = etree.fromstring(xslt.encode('utf-8'))
-
-    template = etree.XSLT(xslt)(parse_structure(structure))
-
-    return etree.tostring(template, encoding='unicode', method='xml')
-
-
-class Widget(object):
-
-    @property
-    def id(self):
-        raise NotImplementedError
-
-    @property
-    def template(self):
-        raise NotImplementedError
-
-    def get_variables(self, layout):
-        return {}
-
-    def is_used(self, structure):
-        return '<{}'.format(self.id) in structure
-
-
-class RowWidget(Widget):
-
-    id = 'row'
-
+@OrgApp.homepage_widget(tag='row')
+class RowWidget(object):
     template = """
         <xsl:template match="row">
             <div class="row">
@@ -114,10 +17,8 @@ class RowWidget(Widget):
     """
 
 
-class ColumnWidget(Widget):
-
-    id = 'column'
-
+@OrgApp.homepage_widget(tag='column')
+class ColumnWidget(object):
     template = """
         <xsl:template match="column">
             <div class="small-12 medium-{@span} columns">
@@ -127,10 +28,8 @@ class ColumnWidget(Widget):
     """
 
 
-class PanelWidget(Widget):
-
-    id = 'panel'
-
+@OrgApp.homepage_widget(tag='panel')
+class PanelWidget(object):
     template = """
         <xsl:template match="panel">
             <div class="homepage-panel">
@@ -140,10 +39,8 @@ class PanelWidget(Widget):
     """
 
 
-class LinksWidget(Widget):
-
-    id = 'links'
-
+@OrgApp.homepage_widget(tag='links')
+class LinksWidget(object):
     template = """
         <xsl:template match="links">
             <xsl:if test="@title">
@@ -174,10 +71,8 @@ class LinksWidget(Widget):
     """
 
 
-class NewsWidget(Widget):
-
-    id = 'news'
-
+@OrgApp.homepage_widget(tag='news')
+class NewsWidget(object):
     template = """
         <xsl:template match="news">
             <div metal:use-macro="layout.macros.newslist"
@@ -192,10 +87,8 @@ class NewsWidget(Widget):
         }
 
 
-class ContentWidget(Widget):
-
-    id = 'homepage-content'
-
+@OrgApp.homepage_widget(tag='homepage-content')
+class ContentWidget(object):
     template = """
         <xsl:template match="homepage-content">
             <div class="homepage-content page-text">
@@ -207,10 +100,8 @@ class ContentWidget(Widget):
     """
 
 
-class EventsWidget(Widget):
-
-    id = 'events'
-
+@OrgApp.homepage_widget(tag='events')
+class EventsWidget(object):
     template = """
         <xsl:template match="events">
             <metal:block use-macro="layout.macros['events-panel']" />
@@ -220,9 +111,6 @@ class EventsWidget(Widget):
     def get_variables(self, layout):
         occurrences = OccurrenceCollection(layout.app.session()).query()
         occurrences = occurrences.limit(4)
-
-        # XXX circular import
-        from onegov.org.layout import EventBaseLayout
 
         event_layout = EventBaseLayout(layout.model, layout.request)
         event_links = [
@@ -251,13 +139,8 @@ class EventsWidget(Widget):
         }
 
 
-Tile = namedtuple('Tile', ['page', 'links', 'number'])
-
-
-class TilesWidget(Widget):
-
-    id = 'homepage-tiles'
-
+@OrgApp.homepage_widget(tag='homepage-tiles')
+class TilesWidget(object):
     template = """
         <xsl:template match="homepage-tiles">
             <xsl:choose>
@@ -277,6 +160,8 @@ class TilesWidget(Widget):
         return {'tiles': tuple(self.get_tiles(layout))}
 
     def get_tiles(self, layout):
+        Tile = namedtuple('Tile', ['page', 'links', 'number'])
+
         homepage_pages = layout.request.app.homepage_pages
         request = layout.request
         link = request.link
@@ -323,15 +208,3 @@ class TilesWidget(Widget):
                 )
             else:
                 raise NotImplementedError
-
-
-WIDGETS = [
-    ColumnWidget(),
-    ContentWidget(),
-    EventsWidget(),
-    LinksWidget(),
-    NewsWidget(),
-    PanelWidget(),
-    RowWidget(),
-    TilesWidget(),
-]

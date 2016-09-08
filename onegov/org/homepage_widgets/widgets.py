@@ -87,13 +87,13 @@ class NewsWidget(object):
         }
 
 
-@OrgApp.homepage_widget(tag='homepage-content')
-class ContentWidget(object):
+@OrgApp.homepage_widget(tag='homepage-cover')
+class CoverWidget(object):
     template = """
-        <xsl:template match="homepage-content">
+        <xsl:template match="homepage-cover">
             <div class="homepage-content page-text">
                 <tal:block
-                    content="structure layout.org.meta.get('homepage_content')"
+                    content="structure layout.org.meta.get('homepage_cover')"
                 />
             </div>
         </xsl:template>

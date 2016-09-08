@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2016-09-07 14:52+0200\n"
+"POT-Creation-Date: 2016-09-08 14:27+0200\n"
 "PO-Revision-Date: 2015-10-15 09:42+0200\n"
 "Last-Translator: Denis Krienbühl <denis.krienbuehl@seantis.ch>\n"
 "Language-Team: German\n"
@@ -45,15 +45,6 @@ msgstr "Abbrechen"
 
 msgid "This site is hidden from the general public"
 msgstr "Diese Seite ist nicht öffentlich."
-
-msgid "Events"
-msgstr "Veranstaltungen"
-
-msgid "All events"
-msgstr "Alle Veranstaltungen"
-
-msgid "Newsletter"
-msgstr "Newsletter"
 
 msgid "Mo"
 msgstr "Mo"
@@ -100,6 +91,12 @@ msgstr "Einteilung bearbeiten"
 #, python-format
 msgid "Every ${days} until ${end}"
 msgstr "Jeden ${days} bis zum ${end}."
+
+msgid "Events"
+msgstr "Veranstaltungen"
+
+msgid "Newsletter"
+msgstr "Newsletter"
 
 msgid "Subscribers"
 msgstr "Abonnenten"
@@ -666,35 +663,14 @@ msgstr "Startseiten Bild #5"
 msgid "Homepage Image #6"
 msgstr "Startseiten Bild #6"
 
-msgid "Homepage Content"
-msgstr "Startseiten Covertext"
+msgid "Homepage Cover"
+msgstr "Startseiten Cover"
 
 msgid "Homepage Structure (for advanced users only)"
 msgstr "Startseiten Struktur (nur für fortgeschrittene Benutzer)"
 
 msgid "The structure of the homepage"
 msgstr "Die Struktur der Homepage"
-
-msgid "Advanced"
-msgstr "Erweitert"
-
-msgid "Online Counter Label"
-msgstr "Online Schalter Beschreibung"
-
-msgid "Forms and applications"
-msgstr "Formulare und Gesuche"
-
-msgid "Reservations Label"
-msgstr "Reservations Beschreibung"
-
-msgid "Daypasses and rooms"
-msgstr "Tageskarten und Räume"
-
-msgid "SBB Daypass Label"
-msgstr "SBB Tageskarte Beschreibung"
-
-msgid "Generalabonnement for Towns"
-msgstr "Generalabonnement Gemeinde"
 
 msgid "The default map view. This should show the whole town"
 msgstr "Die Standard Kartenansicht. Diese sollte die ganze Gemeinde zeigen."
@@ -707,6 +683,9 @@ msgstr "Analytics Code"
 
 msgid "JavaScript for web statistics support"
 msgstr "JavaScript für Web-Statistik"
+
+msgid "Advanced"
+msgstr "Erweitert"
 
 msgid "E-Mail Address"
 msgstr "E-Mail Adresse"
@@ -750,6 +729,9 @@ msgstr "Administratoren und Editoren müssen zwingend einen YubiKey verwenden"
 
 msgid "Send me a daily e-mail with information about the website's state."
 msgstr "Ich möchte ein tägliches Status E-Mail erhalten."
+
+msgid "All events"
+msgstr "Alle Veranstaltungen"
 
 msgid "Hide from the public"
 msgstr "Vor der Öffentlichkeit verstecken"
@@ -1811,5 +1793,23 @@ msgstr "Ein Benutzer mit dieser E-Mail Adresse existiert bereits"
 msgid "You have been successfully unsubscribed from all regular emails."
 msgstr "Sie wurden erfolgreich von allen regelmässigen E-Mails abgemeldet."
 
-#~ msgid "Homepage Structure"
-#~ msgstr "Startseiten Struktur"
+#~ msgid "Homepage Content"
+#~ msgstr "Startseiten Covertext"
+
+#~ msgid "Online Counter Label"
+#~ msgstr "Online Schalter Beschreibung"
+
+#~ msgid "Forms and applications"
+#~ msgstr "Formulare und Gesuche"
+
+#~ msgid "Reservations Label"
+#~ msgstr "Reservations Beschreibung"
+
+#~ msgid "Daypasses and rooms"
+#~ msgstr "Tageskarten und Räume"
+
+#~ msgid "SBB Daypass Label"
+#~ msgstr "SBB Tageskarte Beschreibung"
+
+#~ msgid "Generalabonnement for Towns"
+#~ msgstr "Generalabonnement Gemeinde"

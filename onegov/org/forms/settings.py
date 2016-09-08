@@ -108,8 +108,8 @@ class SettingsForm(Form):
         render_kw={'class_': 'image-url'},
         fieldset=_("Homepage")
     )
-    homepage_content = TextAreaField(
-        label=_("Homepage Content"),
+    homepage_cover = TextAreaField(
+        label=_("Homepage Cover"),
         render_kw={'class_': 'editor', 'rows': 10},
         fieldset=_("Homepage"),
         filters=(sanitize_html, annotate_html)

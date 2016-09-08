@@ -1,6 +1,5 @@
 """ Contains the base application used by other applications. """
 
-from cached_property import cached_property
 from chameleon import PageTemplate
 from collections import defaultdict
 from contextlib import contextmanager
@@ -109,21 +108,20 @@ class OrgApp(Framework, LibresIntegration, ElasticsearchApp, MapboxApp,
 
         session.flush()
 
+        self.update_homepage_template()
         self.cache.delete('org')
 
-        if 'homepage_template' in self.__dict__:
-            del self.__dict__['homepage_template']
-
-    @cached_property
+    @property
     def homepage_template(self):
         """ Returns the homepage template built from the homepage content
         setting which contains a simplified and limited xml to define the
         homepage.
 
-        We cache this on the application itself, because we want this cache
-        to live as long as the application itself.
-
         """
+        return self.runtime_cache.get_or_create(
+            'homepage_template', self.load_homepage_template)
+
+    def load_homepage_template(self):
         homepage_structure = self.org.meta.get('homepage_structure')
 
         if homepage_structure:
@@ -131,6 +129,9 @@ class OrgApp(Framework, LibresIntegration, ElasticsearchApp, MapboxApp,
                 transform_homepage_structure(self, homepage_structure))
         else:
             return PageTemplate('')
+
+    def update_homepage_template(self):
+        self.runtime_cache.delete('homepage_template')
 
     @property
     def ticket_count(self):

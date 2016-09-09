@@ -54,16 +54,35 @@ def parse_structure(widgets, structure):
     We could do this with DTDs but we don't actually need to, since we only
     care to not include any unknown tags.
 
+    Note that we *try* to make sure that this is no vector for remote code
+    execution, but we ultimately do not guarantee it can't happen.
+
+    This xml structure is meant to be static or possibly changeable by admins.
+    Ordinary users should not be able to influence this structure.
+
     """
 
     valid_tags = {w.tag for w in widgets}
     valid_tags.add('page')  # wrapper element
     valid_tags.add('link')  # doesn't exist as a widget
 
+    # should not be possible anyway, but let's be extra sure
+    # (<?python can be used in chameleon to write python code)
+    if '<?' in structure:
+        raise ValidationError("Invalid element '<?'")
+
+    # do not allow chameleon variables
+    if '${' in structure:
+        raise ValidationError("Chameleon variables are not allowed")
+
     xml = XML_BASE.format(structure)
     xml = etree.fromstring(xml.encode('utf-8'))
 
     for element in xml.iter():
+        for attrib in element.attrib:
+            if ':' in attrib:
+                raise ValidationError("Namespaced attributes are not allowed")
+
         if element.tag not in valid_tags:
             raise ValidationError("Invalid element '<{}>'".format(element.tag))
 

@@ -2,36 +2,48 @@ var datetimepicker_i18n = {
     de_CH: {
         dayOfWeekStart: 1, // Monday
         dateformat: 'd.m.Y',
-        datetimeformat: 'd.m.Y h:m',
-        placeholder: 'TT.MM.JJJJ',
+        dateformat_momentjs: 'DD.MM.YYYY',
+        datetimeformat: 'd.m.Y H:i',
+        datetimeformat_momentjs: 'DD.MM.YYYY HH:mm',
+        placeholder_date: 'TT.MM.JJJJ',
+        placeholder_datetime: 'TT.MM.JJJJ',
         lang: 'de'
     },
     it_CH: {
         dayOfWeekStart: 1,
         dateformat: 'd.m.Y',
-        datetimeformat: 'd.m.Y h:m',
-        placeholder: 'gg.mm.aaaa',
+        dateformat_momentjs: 'DD.MM.YYYY',
+        datetimeformat: 'd.m.Y H:i',
+        datetimeformat_momentjs: 'DD.MM.YYYY HH:mm',
+        placeholder_date: 'gg.mm.aaaa',
+        placeholder_datetime: 'gg.mm.aaaa oo:mm',
         lang: 'it'
     },
     fr_CH: {
         dayOfWeekStart: 1,
         dateformat: 'd.m.Y',
-        datetimeformat: 'd.m.Y h:m',
-        placeholder: 'jj.mm.aaaa',
+        dateformat_momentjs: 'DD.MM.YYYY',
+        datetimeformat: 'd.m.Y H:i',
+        datetimeformat_momentjs: 'DD.MM.YYYY HH:mm',
+        placeholder_date: 'jj.mm.aaaa',
+        placeholder_datetime: 'jj.mm.aaaa hh:mm',
         lang: 'fr'
     },
     rm_CH: {
         dayOfWeekStart: 1,
         dateformat: 'd-m-Y',
-        datetimeformat: 'd.m.Y h:m',
-        placeholder: 'dd-mm-oooo',
+        dateformat_momentjs: 'DD-MM-YYYY',
+        datetimeformat: 'd-m-Y H:i',
+        datetimeformat_momentjs: 'DD-MM-YYYY HH:mm',
+        placeholder_date: 'dd-mm-oooo',
+        placeholder_datetime: 'dd-mm-oooo uu:mm',
         lang: 'rm'
     }
 };
 
 var convert_date = function(value, from_format, to_format) {
     if (value) {
-        var as_date = Date.parseDate(value, from_format);
+        var as_date = moment(value, from_format).toDate();
         if (as_date) {
             return as_date.dateFormat(to_format);
         }
@@ -66,15 +78,13 @@ var attach_button = function(input) {
         '</div>'
     ].join(''));
 
-    var visible = false;
-
     grid.insertBefore(input);
     input.detach().appendTo(grid.find('.' + large_column));
     button.appendTo(grid.find('.' + small_column));
 
-    // hide/show the datetime picker when clicking on the button
+    // toggle the datetime picker when clicking on the button
     button.click(function(e) {
-        if (visible) {
+        if (input.data('visible')) {
             input.datetimepicker('hide');
         } else {
             input.datetimepicker('show');
@@ -94,21 +104,23 @@ var setup_datetimepicker = function(type) {
         date: {
             timepicker: false,
             format: i18n_options.dateformat,
+            placeholder: i18n_options.placeholder_date,
             server_to_client: function(value) {
-                return convert_date(value, 'Y-m-d', i18n_options.dateformat);
+                return convert_date(value, 'YYYY-MM-DD', i18n_options.dateformat);
             },
             client_to_server: function(value) {
-                return convert_date(value, i18n_options.dateformat, 'Y-m-d');
+                return convert_date(value, i18n_options.dateformat_momentjs, 'Y-m-d');
             }
         },
         datetime: {
             timepicker: true,
             format: i18n_options.datetimeformat,
+            placeholder: i18n_options.placeholder_datetime,
             server_to_client: function(value) {
-
+                return convert_date(value, 'YYYY-MM-DD HH:mm', i18n_options.datetimeformat);
             },
             client_to_server: function(value) {
-
+                return convert_date(value, i18n_options.datetimeformat_momentjs, 'Y-m-d H:i:00');
             }
         }
     }[type];
@@ -123,17 +135,21 @@ var setup_datetimepicker = function(type) {
                 value: $input.val()
             });
 
-            visible = true;
+            $input.data('visible', true);
+
+            setTimeout(function() {
+                $('.xdsoft_datetimepicker').trigger('afterOpen.xdsoft');
+            }, 50);
         },
-        onSelectDate: function() {
-            visible = false;
+        onSelectDate: function(_current_time, $input) {
+            $input.data('visible', false);
         },
-        onClose: function() {
+        onClose: function(_current_time, $input) {
             // we have to delay setting the visible flag slightly, otherwise
             // clicking on the button when the picker is visible leads to
             // it being hidden and shown again immediately.
             setTimeout(function() {
-                visible = false;
+                $input.data('visible', false);
             }, 500);
         }
     };
@@ -149,7 +165,7 @@ var setup_datetimepicker = function(type) {
         ));
 
         // convert the initial value to the localized format
-        input.attr('placeholder', i18n_options.placeholder);
+        input.attr('placeholder', type_specific.placeholder);
         input.val(type_specific.server_to_client(input.val()));
 
         // remove all default on-focus events, to only show the picker when

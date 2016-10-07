@@ -117,6 +117,22 @@ body {
     }
 }
 
+.header-bar {
+    background: $primary-color;
+    font-size: .8125rem;
+    height: 35px;
+    margin-bottom: 0.7em;
+    padding-top: 7px;
+
+    a {
+        color: #fff;
+    }
+
+    .logout {
+        text-align: right;
+    }
+}
+
 .header {
     // the header is fixed and the logo in it tries to fill it out
     // therefore an svg logo should be used!
@@ -184,7 +200,6 @@ footer {
 
 .main-navigation {
     background-color: $topbar-bg-color;
-    border-bottom: $top-bar-border-size solid $primary-color;
     margin-bottom: .1rem;
 }
 

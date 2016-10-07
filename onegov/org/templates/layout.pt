@@ -36,7 +36,7 @@
             <div class="brand"><a href="">Gemeinde Govikon</a></div>
           </div>
           <div class="large-2 columns">
-            <div class="logout"><a href="">Logout</a></div>
+            <div class="login"><a href=""><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a></div>
           </div>
         </div>
       </div>

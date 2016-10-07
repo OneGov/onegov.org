@@ -120,16 +120,16 @@ body {
 .header-bar {
     background: $primary-color;
     font-size: .8125rem;
-    height: 35px;
     margin-bottom: 0.7em;
-    padding-top: 7px;
+    padding: 1em 0;
 
     a {
         color: #fff;
     }
 
-    .logout {
+    .login {
         text-align: right;
+        font-weight: bold;
     }
 }
 

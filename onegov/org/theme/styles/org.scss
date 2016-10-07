@@ -79,17 +79,17 @@ h6,
 
     (100vw includes the scrollbar, 100% does not)
 */
-html {
-    @media not print {
-        margin-left: calc(100vw - 100%);
-
-        /* override the redactor style set on the body, which leads to
-           jumpy modal dialogs
-        */
-        overflow: auto !important;
-        padding-right: 0 !important;
-    }
-}
+// html {
+//     @media not print {
+//         margin-left: calc(100vw - 100%);
+//
+//         /* override the redactor style set on the body, which leads to
+//            jumpy modal dialogs
+//         */
+//         overflow: auto !important;
+//         padding-right: 0 !important;
+//     }
+// }
 
 /*
     our footer is sticky, which is no easy feat, since variable length
@@ -1241,12 +1241,18 @@ div#redactor-droparea {
 
 .breadcrumbs {
     @include hairline;
-    margin-bottom: 1rem;
+    border-radius: 0;
+    color: $gray-dark !important;
+    margin-bottom: 1.5rem;
     padding-bottom: .7rem;
     padding-left: 1rem;
 
     li {
         line-height: 1rem;
+    }
+
+    a {
+        color: $gray-dark !important;
     }
 }
 

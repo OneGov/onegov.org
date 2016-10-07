@@ -633,13 +633,18 @@ input[type=color] {
     }
 
     .tile-image {
-        @include smooth-edges;
-
         background-position: center center;
         background-size: cover;
         display: block;
         height: 5rem;
         width: 100%;
+    }
+
+    .tile-links {
+        border: 1px solid $gray;
+        border-top: none;
+        padding: 0.75em;
+        height: 6em;
     }
 
     .tile-link:hover h2 {

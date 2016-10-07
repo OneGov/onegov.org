@@ -1337,11 +1337,18 @@ div#redactor-droparea {
     sticky footer
 */
 
+footer {
+    background-color: $topbar-bg-color;
+    border-top: 2px solid $gray;
+    margin-top: 2rem;
+    padding-top: 0.5rem;
+}
+
 .footer {
     // please do not add a margin here, it will mess up the sticky footer!
     // instead add a margin-bottom to whatever is rendered before the footer.
 
-    padding: 0 1rem;
+    padding: 0;
 
     h2,
     div {
@@ -1351,6 +1358,7 @@ div#redactor-droparea {
 
     h2 {
         font-weight: bold;
+        text-transform: uppercase;
     }
 
     .bottom-links {
@@ -1364,7 +1372,6 @@ div#redactor-droparea {
     }
 
     .footer-columns {
-        background-color: $topbar-bg-color;
         padding-bottom: 1rem;
         padding-top: 1rem;
     }

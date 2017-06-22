@@ -1,6 +1,9 @@
 Changelog
 ---------
 
+- Upgrade to latest onegov.core release.
+  [msom]
+
 0.9.2 (2017-06-19)
 ~~~~~~~~~~~~~~~~~~~
 

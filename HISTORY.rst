@@ -1,6 +1,12 @@
 Changelog
 ---------
 
+- Upgrades to latest onegov.user release.
+  [msom]
+
+- Upgrades to latest onegov.core release.
+  [msom]
+
 0.10.0 (2017-06-21)
 ~~~~~~~~~~~~~~~~~~~
 

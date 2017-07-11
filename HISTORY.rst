@@ -1,6 +1,9 @@
 Changelog
 ---------
 
+- Fixes calucating the contrast of an invalid color throwing an error.
+  [msom]
+
 0.14.0 (2017-07-10)
 ~~~~~~~~~~~~~~~~~~~
 

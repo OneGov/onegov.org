@@ -3762,3 +3762,12 @@ def test_stripe_charge_fee_to_customer(org_app):
     assert "info@example.org" in payments
     assert "10.00" in payments
     assert "0.61" in payments
+
+
+def test_view_activities(browser, org_app_url):
+    browser.baseurl = org_app_url
+
+    browser.login_admin()
+    browser.visit('/timeline')
+
+    assert browser.is_text_present("Noch keine Aktivität")

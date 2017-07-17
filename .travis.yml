@@ -23,6 +23,7 @@ addons:
     apt:
         packages:
             - oracle-java8-set-default
+            - google-chrome-stable
 
 install: ./.travis-install.sh
 

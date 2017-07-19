@@ -1,5 +1,8 @@
 cache: pip
 
+# required for google chrome
+dist: trusty
+
 matrix:
   include:
     - language: python

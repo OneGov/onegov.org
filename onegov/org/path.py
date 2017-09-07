@@ -1,5 +1,8 @@
 """ Contains the paths to the different models served by onegov.org. """
 
+import morepath
+
+from collections import defaultdict
 from datetime import date
 from onegov.chat import MessageCollection
 from onegov.core.converters import extended_date_converter
@@ -458,17 +461,45 @@ def get_directories(app):
     return DirectoryCollection(app.session(), type='extended')
 
 
+def keywords_decode(s):
+    """ Deocdes the directory entry collection keywords. """
+    if not s:
+        return None
+
+    result = defaultdict(list)
+
+    for item in s.split('+'):
+        key, value = item.split(':', 1)
+        result[key].append(value)
+
+    return result
+
+
+def keywords_encode(d):
+    """ Encodes the directory entry collection keywords. """
+    if not d:
+        return ''
+
+    return '+'.join('{}:{}'.format(k, v) for k in d for v in d[k])
+
+
+keywords_converter = morepath.Converter(
+    decode=keywords_decode, encode=keywords_encode
+)
+
+
 @OrgApp.path(
     model=DirectoryEntryCollection,
-    path='/verzeichnisse/{directory_name}')
-def get_directory_entries(app, directory_name, extra_parameters, page=0):
+    path='/verzeichnisse/{directory_name}',
+    converters={'keywords': keywords_converter})
+def get_directory_entries(app, directory_name, keywords, page=0):
     directory = DirectoryCollection(app.session()).by_name(directory_name)
 
     if directory:
         collection = DirectoryEntryCollection(
             directory=directory,
             type='extended',
-            extra_parameters=extra_parameters,
+            keywords=keywords,
             page=page
         )
 

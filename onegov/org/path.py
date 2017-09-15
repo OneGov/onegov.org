@@ -3,6 +3,7 @@
 from datetime import date
 from onegov.chat import MessageCollection
 from onegov.core.converters import extended_date_converter
+from onegov.core.i18n import SiteLocale
 from onegov.event import (
     Event,
     EventCollection,
@@ -439,3 +440,9 @@ def get_messages(app, channel_id='*', type='*',
         older_than=older_than,
         limit=min(25, limit)  # bind the limit to a max of 25
     )
+
+
+@OrgApp.path(model=SiteLocale, path='/locale/{locale}')
+def get_locale(request, app, locale, to=None):
+    to = to or request.link(app.org)
+    return SiteLocale.for_path(app, locale, to)

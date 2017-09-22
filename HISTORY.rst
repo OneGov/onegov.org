@@ -1,6 +1,9 @@
 Changelog
 ---------
 
+- Switches to onegov.file for form submission files.
+  [href]
+
 - Fixes dialog not showing for undeletable objects.
   [href]
 

@@ -42,7 +42,7 @@ def view_resource_recipients(self, request):
 
 @OrgApp.form(
     model=ResourceRecipientCollection,
-    name='neuer-empfaenger',
+    name='new',
     template='form.pt',
     permission=Private,
     form=ResourceRecipientForm)
@@ -71,7 +71,7 @@ def handle_new_resource_recipient(self, request, form):
 
 @OrgApp.form(
     model=ResourceRecipient,
-    name='bearbeiten',
+    name='edit',
     template='form.pt',
     permission=Private,
     form=ResourceRecipientForm)

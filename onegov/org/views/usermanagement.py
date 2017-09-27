@@ -132,7 +132,7 @@ def ticket_links(request, user):
 
 
 def get_manage_user_form(self, request):
-    userprofile_form = query_form_class(request, self, name='benutzerprofil')
+    userprofile_form = query_form_class(request, self, name='profile')
     assert userprofile_form
 
     class OptionalUserprofile(userprofile_form):

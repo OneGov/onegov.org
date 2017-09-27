@@ -3371,7 +3371,7 @@ def test_login_with_required_userprofile(org_app):
     page.form['password'] = 'hunter2'
     page = page.form.submit().follow()
 
-    assert 'benutzerprofil' in page.request.url
+    assert 'profile' in page.request.url
     assert "Ihr Benutzerprofil ist unvollständig" in page
     page = page.form.submit().follow()
 

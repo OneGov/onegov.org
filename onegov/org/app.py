@@ -5,6 +5,7 @@ from collections import defaultdict
 from dectate import directive
 from onegov.core import Framework, utils
 from onegov.core.orm import orm_cached
+from onegov.core.i18n import default_locale_negotiator
 from onegov.file import DepotApp
 from onegov.gis import MapboxApp
 from onegov.org import directives
@@ -172,7 +173,7 @@ def get_shared_assets_path():
 
 @OrgApp.setting(section='i18n', name='locales')
 def get_i18n_used_locales():
-    return {'de_CH'}
+    return {'de_CH', 'fr_CH'}
 
 
 @OrgApp.setting(section='i18n', name='localedirs')
@@ -187,6 +188,21 @@ def get_i18n_localedirs():
 @OrgApp.setting(section='i18n', name='default_locale')
 def get_i18n_default_locale():
     return 'de_CH'
+
+
+@OrgApp.setting(section='i18n', name='locale_negotiator')
+def get_locale_negotiator():
+    def locale_negotiator(locales, request):
+        if request.app.org:
+            locales = request.app.org.locales or get_i18n_default_locale()
+
+            if isinstance(locales, str):
+                locales = (locales, )
+
+            return default_locale_negotiator(locales, request) or locales[0]
+        else:
+            return default_locale_negotiator(locales, request)
+    return locale_negotiator
 
 
 @OrgApp.static_directory()
@@ -263,6 +279,7 @@ def get_fullcalendar_asset():
     yield 'fullcalendar.css'
     yield 'fullcalendar.js'
     yield 'fullcalendar.de.js'
+    yield 'fullcalendar.fr.js'
     yield 'reservationcalendar.jsx'
     yield 'reservationcalendar_custom.js'
 
@@ -294,6 +311,7 @@ def get_editor_asset():
     yield 'filemanager.js'
     yield 'imagemanager.js'
     yield 'redactor.de.js'
+    yield 'redactor.fr.js'
     yield 'input_with_button.js'
     yield 'editor.js'
 
@@ -356,7 +374,8 @@ def get_common_asset():
     yield 'leaflet'
     yield 'pay'
     yield 'moment.js'
-    yield 'moment.de.js'
+    yield 'moment.de-ch.js'
+    yield 'moment.fr-ch.js'
     yield 'jquery.datetimepicker.js'
     yield 'jquery.mousewheel.js'
     yield 'jquery.popupoverlay.js'

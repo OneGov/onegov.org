@@ -134,7 +134,7 @@ body {
     for onegov.feriennet and should probably replaced by something feriennet
     specific.
 */
-#einstellungen #fieldset-payment {
+#settings #fieldset-payment {
     display: none;
 }
 
@@ -396,7 +396,7 @@ $footer-border-width: 0;
 .social-media-links {
     font-size: 1em;
     list-style-type: none;
-    margin: 0;
+    margin: 0 0 1rem;
 }
 
 /*
@@ -2523,6 +2523,7 @@ button {
 
         .fc-title {
             font-size: .8rem;
+            padding: 0;
         }
 
         &.fc-short .fc-title {

@@ -1,4 +1,3 @@
-from onegov.core import utils
 from onegov.core.orm.mixins import content_property
 from onegov.org import _
 from onegov.org.forms import LinkForm, PageForm
@@ -31,10 +30,6 @@ class SearchablePage(ORMSearchable):
     @property
     def es_public(self):
         return not self.is_hidden_from_public
-
-    @property
-    def es_language(self):
-        return 'de'  # xxx for now there's no other language
 
     @property
     def es_skip(self):
@@ -108,7 +103,7 @@ class News(Page, TraitInfo, SearchablePage, HiddenFromPublicExtension,
 
     @property
     def absorb(self):
-        return utils.lchop(self.path, 'aktuelles').lstrip('/')
+        return ''.join(self.path.split('/', 1)[1:])
 
     @property
     def deletable(self):

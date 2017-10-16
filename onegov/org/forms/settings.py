@@ -51,6 +51,15 @@ class SettingsForm(Form):
         label=_("Primary Color"),
         fieldset=_("General")
     )
+    locales = RadioField(
+        label=_("Languages"),
+        fieldset=_("General"),
+        choices=(
+            ('de_CH', _("German")),
+            ('fr_CH', _("French"))
+        ),
+        validators=[validators.InputRequired()]
+    )
     bank_account = StringField(
         label=_("Bank Account (IBAN)"),
         fieldset=_("Payment"),

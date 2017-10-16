@@ -12,6 +12,18 @@ from onegov.user import User
 from pytest_localserver.http import WSGIServer
 
 
+@pytest.fixture(scope="session", autouse=True)
+def import_scan():
+    """ Scans all the onegov.* sources to make sure that the tables are
+    created.
+
+    """
+
+    import importscan
+    import onegov
+    importscan.scan(onegov, ignore=['.test', '.tests'])
+
+
 @pytest.yield_fixture(scope='session')
 def handlers():
     yield onegov.ticket.handlers
@@ -54,6 +66,7 @@ def create_org_app(request, use_elasticsearch, cls=OrgApp):
 
     org = create_new_organisation(app, name="Govikon", create_files=False)
     org.meta['reply_to'] = 'mails@govikon.ch'
+    org.meta['locales'] = 'de_CH'
 
     # usually we don't want to create the users directly, anywhere else you
     # *need* to go through the UserCollection. Here however, we can improve

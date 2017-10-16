@@ -10,7 +10,7 @@ from onegov.org.models import Organisation
 
 
 @OrgApp.form(
-    model=Organisation, name='einstellungen', template='form.pt',
+    model=Organisation, name='settings', template='form.pt',
     permission=Secret, form=SettingsForm)
 def handle_settings(self, request, form):
     """ Handles the GET and POST login requests. """
@@ -27,8 +27,12 @@ def handle_settings(self, request, form):
 
         request.success(_("Your changes were saved"))
 
-        if 'return-to' in request.params:
-            return request.redirect(request.link(self, name='einstellungen'))
+        @request.after
+        def clear_locale(response):
+            response.delete_cookie('locale')
+
+        # always redirect to make sure locale changes are applied
+        return request.redirect(request.link(self, name='settings'))
 
     elif request.method == 'GET':
         form.process(obj=self)

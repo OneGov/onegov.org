@@ -800,6 +800,10 @@ form {
 .field-display {
     .field-display-data {
         margin-bottom: 1rem;
+
+        img {
+            margin-top: .5rem;
+        }
     }
 }
 
@@ -1531,7 +1535,7 @@ div#redactor-droparea {
     }
 
     p {
-        max-widht: $max-line-width;
+        max-width: $max-line-width;
     }
 
     .button {

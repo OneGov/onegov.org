@@ -138,7 +138,7 @@ class EventsWidget(object):
                 text=o.title,
                 url=layout.request.link(o),
                 subtitle=event_layout.format_date(o.localized_start, 'event')
-                .capitalize()
+                .title()
             ) for o in occurrences
         ]
 

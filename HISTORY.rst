@@ -1,6 +1,21 @@
 Changelog
 ---------
 
+- Fixes footer-height not working with new foundation theme release.
+  [href]
+
+0.16.2 (2017-10-19)
+~~~~~~~~~~~~~~~~~~~
+
+- Removes left-over pdb call.
+  [href]
+
+0.16.1 (2017-10-19)
+~~~~~~~~~~~~~~~~~~~
+
+- Fixes event dates being capitalized instead of titled.
+  [href]
+
 0.16.0 (2017-10-19)
 ~~~~~~~~~~~~~~~~~~~
 

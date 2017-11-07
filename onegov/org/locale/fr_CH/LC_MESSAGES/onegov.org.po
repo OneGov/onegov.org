@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-09-25 14:47+0200\n"
+"POT-Creation-Date: 2017-11-07 14:19+0100\n"
 "PO-Revision-Date: 2017-03-02 09:52+0100\n"
 "Last-Translator: Denis Krienbühl <denis.krienbuehl@seantis.ch>\n"
 "Language-Team: French\n"
@@ -195,6 +195,9 @@ msgstr "Exports"
 msgid "Payment Providers"
 msgstr "Opérateurs de paiement"
 
+msgid "Directories"
+msgstr ""
+
 msgid "Delete"
 msgstr "Supprimer"
 
@@ -252,6 +255,12 @@ msgstr "Choisir des images"
 
 msgid "Synchronise"
 msgstr "Synchroniser"
+
+msgid "Configure"
+msgstr ""
+
+msgid "Import"
+msgstr ""
 
 msgid "Yes"
 msgstr "Oui"
@@ -326,6 +335,19 @@ msgstr "Supprimer la newsletter"
 msgid "Delete photo album"
 msgstr "Supprimer l'album photo"
 
+#, python-format
+msgid "Do you really want to delete \"${title}\"?"
+msgstr ""
+
+msgid "All entries will be deleted as well!"
+msgstr ""
+
+msgid "Delete directory"
+msgstr ""
+
+msgid "Delete entry"
+msgstr ""
+
 msgid "Form"
 msgstr "Formulaire"
 
@@ -364,8 +386,17 @@ msgstr "Utilisateur"
 msgid "Stripe Connect"
 msgstr "Stripe Connect"
 
+msgid "Directory"
+msgstr ""
+
+msgid "Entry"
+msgstr ""
+
 msgid "Not a valid color."
 msgstr "Couleur non valide."
+
+msgid "Not a valid choice"
+msgstr ""
 
 msgid "Admins"
 msgstr "Admins"
@@ -497,6 +528,58 @@ msgstr "De"
 msgid "Until"
 msgstr "Jusqu'à"
 
+msgid "Title"
+msgstr "Titre"
+
+msgid "Lead"
+msgstr "Accroche"
+
+msgid "Describes what this directory is about"
+msgstr ""
+
+msgid "Definition"
+msgstr "Définition"
+
+msgid "Title-Format"
+msgstr ""
+
+msgid "Lead-Format"
+msgstr ""
+
+msgid "Main view"
+msgstr ""
+
+msgid "Address"
+msgstr "Adresse"
+
+msgid "Filters"
+msgstr ""
+
+msgid "Directory entries may have coordinates"
+msgstr ""
+
+msgid "Apply directory configuration"
+msgstr ""
+
+msgid "Mode"
+msgstr ""
+
+#, python-format
+msgid "The following fields are unknown: ${fields}"
+msgstr ""
+
+msgid "Yes, import configuration and entries"
+msgstr ""
+
+msgid "No, only import entries"
+msgstr ""
+
+msgid "Only import new entries"
+msgstr ""
+
+msgid "Replace all entries"
+msgstr ""
+
 msgid "Exhibition"
 msgstr "Exposition"
 
@@ -554,9 +637,6 @@ msgstr "Conférence"
 msgid "E-Mail"
 msgstr "E-mail"
 
-msgid "Title"
-msgstr "Titre"
-
 msgid "Concerto in the castle garden"
 msgstr "Concerto dans le jardin du château"
 
@@ -609,17 +689,11 @@ msgid "The weekday of the start date must be selected."
 msgstr ""
 "Le jour de la semaine correspondant à la date de début doit être sélectionné."
 
-msgid "Lead"
-msgstr "Accroche"
-
 msgid "Describes what this form is about"
 msgstr "Décrit le contenu de ce formulaire"
 
 msgid "Text"
 msgstr "Texte"
-
-msgid "Definition"
-msgstr "Définition"
 
 msgid "Format"
 msgstr "Format"
@@ -713,9 +787,6 @@ msgstr "Photo"
 
 msgid "URL pointing to the picture"
 msgstr "URL pointant vers la photo"
-
-msgid "Address"
-msgstr "Adresse"
 
 msgid "Notes"
 msgstr "Notes"
@@ -953,8 +1024,18 @@ msgstr "Les administrateurs et les programmateurs doivent utiliser une YubiKey"
 msgid "Send a daily status e-mail."
 msgstr "Envoyez un e-mail de suivi quotidien."
 
+msgid "All directories"
+msgstr ""
+
 msgid "All events"
 msgstr "Tous les événements"
+
+#, python-format
+msgid "${count} entries"
+msgstr ""
+
+msgid "1 entry"
+msgstr ""
 
 msgid "Hide from the public"
 msgstr "Cacher au public"
@@ -1140,6 +1221,52 @@ msgstr ""
 "supprimer des pages avec des sous-pages. Pour supprimer cette page, "
 "supprimez d'abord toutes les sous-pages, ou demandez à un administrateur de "
 "le faire pour vous."
+
+msgid "No directories defined yet."
+msgstr ""
+
+msgid "No entries found."
+msgstr ""
+
+msgid ""
+"Your edit requires a migration of existing entries. Please confirm the "
+"following changes."
+msgstr ""
+
+msgid ""
+"Changes are detected using a heuristic. Therefore it is possible that your "
+"changes were misdetected. If in doubt, press cancel and try to change the "
+"directory in small increments."
+msgstr ""
+
+msgid "For additional safety you can also download a backup before continuing:"
+msgstr ""
+
+msgid "Download backup"
+msgstr ""
+
+msgid ""
+"There was an error while migrating your directory! You can fix the displayed "
+"entries in a separate window and then continue here."
+msgstr ""
+
+msgid "Added:"
+msgstr ""
+
+msgid "Removed:"
+msgstr ""
+
+msgid "Renamed:"
+msgstr ""
+
+msgid "Changed:"
+msgstr ""
+
+msgid "Confirm"
+msgstr "Confirmer"
+
+msgid "There was an error while importing your directory!"
+msgstr ""
 
 msgid ""
 "Please review your data and press \"Complete\" to finalize the process. If "
@@ -1395,6 +1522,21 @@ msgstr "Payer hors ligne plus tard"
 
 msgid "at ${time}"
 msgstr "à ${time}"
+
+msgid "Object"
+msgstr "Objet"
+
+msgid "Net Amount"
+msgstr "Montant net"
+
+msgid "Fee"
+msgstr "Tarif"
+
+msgid "Created"
+msgstr "Créé"
+
+msgid "Disbursed"
+msgstr "Décaissé"
 
 msgid "Dear Sir or Madam,"
 msgstr "Cher Monsieur, chère Madame,"
@@ -1729,21 +1871,6 @@ msgstr "Tarif :"
 msgid "No payments yet."
 msgstr "Pas de paiements pour le moment."
 
-msgid "Object"
-msgstr "Objet"
-
-msgid "Net Amount"
-msgstr "Montant net"
-
-msgid "Fee"
-msgstr "Tarif"
-
-msgid "Created"
-msgstr "Créé"
-
-msgid "Disbursed"
-msgstr "Décaissé"
-
 msgid "No people added yet."
 msgstr "Aucune personne n'a encore été ajoutée."
 
@@ -2019,6 +2146,46 @@ msgstr "Ce lien d'inscription a expiré"
 msgid "A link was added to the clipboard"
 msgstr "Un lien a été ajouté au presse-papiers"
 
+msgid "New Directory"
+msgstr ""
+
+msgid "The directory was deleted"
+msgstr ""
+
+msgid "New Directory Entry"
+msgstr ""
+
+msgid "The entry was deleted"
+msgstr ""
+
+msgid ""
+"Exports all entries of this directory. The resulting zipfile contains the "
+"selected format as well as metadata and images/files if the directory "
+"contains any."
+msgstr ""
+
+msgid ""
+"Updates the directory configuration and imports all entries given in the ZIP "
+"file. The format is the same as produced by the export function. Note that "
+"only 100 items are imported at a time. To import more items repeat the "
+"import accordingly."
+msgstr ""
+
+msgid "Added a new directory"
+msgstr ""
+
+msgid "Added a new directory entry"
+msgstr ""
+
+#, python-format
+msgid "The column ${name} is missing"
+msgstr ""
+
+msgid ""
+"The requested change cannot be performed, as it is incompatible with "
+"existing entries"
+msgstr ""
+
 msgid "Submit an event"
 msgstr "Soumettre un événement"
 
@@ -2190,9 +2357,6 @@ msgstr "Confirmer votre réservation"
 
 msgid "Reserve"
 msgstr "Réserver"
-
-msgid "Confirm"
-msgstr "Confirmer"
 
 msgid "Thank you for your reservation!"
 msgstr "Merci pour votre réservation !"

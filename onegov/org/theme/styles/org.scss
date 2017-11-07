@@ -62,6 +62,15 @@
 */
 $max-line-width: 67ex;
 
+.limit-line-width {
+    max-width: $max-line-width;
+}
+
+/*
+    The height of full-width banners
+*/
+$full-width-banner-height: 333px;
+
 /*
     Zurb foundation uses this without !import, which causes IE11 to not
     apply the placeholder color.
@@ -312,7 +321,8 @@ $global-tools-height: 2.5rem;
 .blank-label {
     @include label($bg: $white);
     border: 1px solid $gray;
-    margin: 0 4px 6px 0;
+    font-size: .8rem;
+    margin: 0 4px 7px 0;
 
     &.active {
         @include primary-color-background;
@@ -322,6 +332,13 @@ $global-tools-height: 2.5rem;
     a {
         color: inherit;
     }
+}
+
+/*
+    Click through
+*/
+.click-through {
+    cursor: pointer;
 }
 
 // we need to use exact pixel measurements for the footer or we end up with
@@ -588,6 +605,12 @@ form {
         min-height: 250px;
     }
 
+    .formcode-select {
+        @include form-element;
+        height: 100%;
+        min-height: 2.3125rem;
+    }
+
     small.error {
         padding: .5rem;
         padding-left: .5rem;
@@ -805,10 +828,12 @@ form {
 }
 
 .field-display {
-    margin-bottom: .5em;
-
     .field-display-data {
         margin-bottom: 1rem;
+
+        img {
+            margin-top: .5rem;
+        }
     }
 }
 
@@ -1136,12 +1161,15 @@ $edit-link-icon: '\f040';
 $export-link-icon: '\f019';
 $file-link-icon: '\f0c6';
 $image-link-icon: '\f03e';
+$import-link-icon: '\f093';
 $internal-link-icon: '\f0c1';
 $manage-recipients: '\f003';
 $manage-subscribers: '\f0c0';
 $mark-as-paid: '\f058';
 $mark-as-unpaid: '\f057';
 $new-daypass-icon: '\f145';
+$new-directory-icon: '\f0e8';
+$new-directory-entry-icon: '\f192';
 $new-recipient: '\f1fa';
 $new-form-icon: '\f044';
 $new-link-icon: '\f0c1';
@@ -1236,12 +1264,15 @@ $editbar-bg-color: $topbar-link-bg-hover;
     .export-link::before { @include icon($export-link-icon); }
     .file-url::before { @include icon($file-link-icon); }
     .image-url::before { @include icon($image-link-icon); }
+    .import-link::before { @include icon($import-link-icon); }
     .internal-url::before { @include icon($internal-link-icon); }
     .manage-recipients::before { @include icon($manage-recipients); }
     .manage-subscribers::before { @include icon($manage-subscribers); }
     .mark-as-paid::before { @include icon($mark-as-paid); }
     .mark-as-unpaid::before { @include icon($mark-as-unpaid); }
     .new-daypass::before { @include icon($new-daypass-icon); }
+    .new-directory::before { @include icon($new-directory-icon); }
+    .new-directory-entry::before { @include icon($new-directory-entry-icon); }
     .new-form::before { @include icon($new-form-icon); }
     .new-link::before { @include icon($new-link-icon); }
     .new-news::before { @include icon($new-news-icon); }
@@ -1536,7 +1567,7 @@ div#redactor-droparea {
     }
 
     p {
-        max-widht: $max-line-width;
+        max-width: $max-line-width;
     }
 
     .button {
@@ -2640,6 +2671,17 @@ button {
 }
 
 /*
+    Leaflet customisation
+*/
+.leaflet-popup-content a {
+    color: $anchor-font-color !important;
+
+    &:hover {
+        color: $anchor-font-color-hover !important;
+    }
+}
+
+/*
     Events
 */
 
@@ -3516,7 +3558,7 @@ ul.recipients {
 }
 
 .slider {
-    height: 333px;
+    height: $full-width-banner-height;
 
     li {
         @include smooth-edges;
@@ -3524,7 +3566,7 @@ ul.recipients {
         background-position: center center !important;
         background-size: cover !important;
 
-        height: 333px;
+        height: $full-width-banner-height;
     }
 
     &.no-images {
@@ -3730,6 +3772,13 @@ ul.recipients {
 
         li {
             display: inline-block;
+            font-size: .875rem;
+            margin-bottom: 8px;
+
+            &:hover .blank-label {
+                @include primary-color-background;
+                border: 1px solid $primary-color;
+            }
         }
 
         a {
@@ -3739,6 +3788,10 @@ ul.recipients {
 
         span {
             margin-bottom: 0;
+
+            &.rounded {
+                @include circle;
+            }
         }
     }
 
@@ -3896,6 +3949,15 @@ h2 + div.timeline {
 }
 
 /*
+    Directories
+*/
+
+.directories-map {
+    height: $full-width-banner-height;
+    margin-bottom: 1rem;
+}
+
+/*
     Formcode Toolbar
 */
 
@@ -3926,6 +3988,7 @@ h2 + div.timeline {
     color: $body-font-color;
     display: table;
     font-size: .875rem;
+    min-width: 150px;
     padding: 4px;
     position: absolute;
     right: 0;

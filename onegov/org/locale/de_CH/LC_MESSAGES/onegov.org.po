@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-09-25 14:47+0200\n"
+"POT-Creation-Date: 2017-11-07 14:19+0100\n"
 "PO-Revision-Date: 2017-03-02 09:52+0100\n"
 "Last-Translator: Denis Krienbühl <denis.krienbuehl@seantis.ch>\n"
 "Language-Team: German\n"
@@ -194,6 +194,9 @@ msgstr "Exporte"
 msgid "Payment Providers"
 msgstr "Zahlungsanbieter"
 
+msgid "Directories"
+msgstr "Verzeichnisse"
+
 msgid "Delete"
 msgstr "Löschen"
 
@@ -251,6 +254,12 @@ msgstr "Bilder auswählen"
 
 msgid "Synchronise"
 msgstr "Synchronisieren"
+
+msgid "Configure"
+msgstr "Konfigurieren"
+
+msgid "Import"
+msgstr "Import"
 
 msgid "Yes"
 msgstr "Ja"
@@ -327,6 +336,19 @@ msgstr "Newsletter löschen"
 msgid "Delete photo album"
 msgstr "Fotoalbum löschen"
 
+#, python-format
+msgid "Do you really want to delete \"${title}\"?"
+msgstr "Möchten Sie \"${title}\" wirklich löschen?"
+
+msgid "All entries will be deleted as well!"
+msgstr "Alle Einträge werden ebenfalls gelöscht!"
+
+msgid "Delete directory"
+msgstr "Verzeichnis löschen"
+
+msgid "Delete entry"
+msgstr "Eintrag löschen"
+
 msgid "Form"
 msgstr "Formular"
 
@@ -365,8 +387,17 @@ msgstr "Benutzer"
 msgid "Stripe Connect"
 msgstr ""
 
+msgid "Directory"
+msgstr "Verzeichnis"
+
+msgid "Entry"
+msgstr "Eintrag"
+
 msgid "Not a valid color."
 msgstr "Ungültige Farbe."
+
+msgid "Not a valid choice"
+msgstr "Ungültige Auswahl"
 
 msgid "Admins"
 msgstr "Administratoren"
@@ -499,6 +530,58 @@ msgstr "Von"
 msgid "Until"
 msgstr "Bis zum"
 
+msgid "Title"
+msgstr "Titel"
+
+msgid "Lead"
+msgstr "Einleitung"
+
+msgid "Describes what this directory is about"
+msgstr "Beschreibt worum es bei diesem Verzeichnis geht"
+
+msgid "Definition"
+msgstr "Definition"
+
+msgid "Title-Format"
+msgstr "Titel-Format"
+
+msgid "Lead-Format"
+msgstr "Lead-Format"
+
+msgid "Main view"
+msgstr "Hauptansicht"
+
+msgid "Address"
+msgstr "Adresse"
+
+msgid "Filters"
+msgstr "Filter"
+
+msgid "Directory entries may have coordinates"
+msgstr "Zu Verzeichnis-Einträgen können Koordinaten erfasst werden"
+
+msgid "Apply directory configuration"
+msgstr "Verzeichniskonfiguration anwenden"
+
+msgid "Mode"
+msgstr "Modus"
+
+#, python-format
+msgid "The following fields are unknown: ${fields}"
+msgstr "Die folgenden Felder sind unbekannt: ${fields}"
+
+msgid "Yes, import configuration and entries"
+msgstr "Ja, Konfiguration und Einträge importieren"
+
+msgid "No, only import entries"
+msgstr "Nein, nur Einträge importieren"
+
+msgid "Only import new entries"
+msgstr "Nur neue Einträge importieren"
+
+msgid "Replace all entries"
+msgstr "Alle Einträge ersetzen"
+
 msgid "Exhibition"
 msgstr "Ausstellung"
 
@@ -556,9 +639,6 @@ msgstr "Vortrag"
 msgid "E-Mail"
 msgstr "E-Mail"
 
-msgid "Title"
-msgstr "Titel"
-
 msgid "Concerto in the castle garden"
 msgstr "Konzert im Schlossgarten"
 
@@ -610,17 +690,11 @@ msgstr "Das Enddatum muss nach dem Startdatum liegen."
 msgid "The weekday of the start date must be selected."
 msgstr "Der Wochentag der Veranstaltung muss ausgewählt sein."
 
-msgid "Lead"
-msgstr "Einleitung"
-
 msgid "Describes what this form is about"
 msgstr "Beschreibt kurz um was es bei diesem Formular geht"
 
 msgid "Text"
 msgstr "Text"
-
-msgid "Definition"
-msgstr "Definition"
 
 msgid "Format"
 msgstr "Format"
@@ -714,9 +788,6 @@ msgstr "Bild"
 
 msgid "URL pointing to the picture"
 msgstr "Link zum Bild"
-
-msgid "Address"
-msgstr "Adresse"
 
 msgid "Notes"
 msgstr "Notizen"
@@ -953,8 +1024,18 @@ msgstr "Administratoren und Editoren müssen zwingend einen YubiKey verwenden"
 msgid "Send a daily status e-mail."
 msgstr "Ein tägliches Status E-Mail senden."
 
+msgid "All directories"
+msgstr "Alle Verzeichnisse"
+
 msgid "All events"
 msgstr "Alle Veranstaltungen"
+
+#, python-format
+msgid "${count} entries"
+msgstr "${count} Einträge"
+
+msgid "1 entry"
+msgstr "1 Eintrag"
 
 msgid "Hide from the public"
 msgstr "Vor der Öffentlichkeit verstecken"
@@ -1139,6 +1220,62 @@ msgstr ""
 "Diese Seite hat Unterseiten. Nur Administratoren können Seiten mit "
 "Unterseiten löschen. Um diese Seite zu löschen müssen Sie erst alle "
 "Unterseiten löschen, oder Sie wenden sich an einen Administrator."
+
+msgid "No directories defined yet."
+msgstr "Noch keine Verzeichnisse definiert."
+
+msgid "No entries found."
+msgstr "Keine Einträge gefunden."
+
+msgid ""
+"Your edit requires a migration of existing entries. Please confirm the "
+"following changes."
+msgstr ""
+"Ihre Änderung bedingt eine Migration der bestehenden Einträge. Bitte "
+"bestätigen Sie die folgenden Änderungen."
+
+msgid ""
+"Changes are detected using a heuristic. Therefore it is possible that your "
+"changes were misdetected. If in doubt, press cancel and try to change the "
+"directory in small increments."
+msgstr ""
+"Änderungen werden durch eine Heuristik erkannt. Deshalb kann es vorkommen "
+"dass Änderungen falsch erkannt werden. Im Zweifelsfall brechen Sie die "
+"Änderung ab und versuchen es mit kleineren Änderungsschritten."
+
+msgid "For additional safety you can also download a backup before continuing:"
+msgstr ""
+"Zu Ihrer zusätzlichen Sicherheit können Sie ausserdem vorher ein Backup "
+"herunterladen:"
+
+msgid "Download backup"
+msgstr "Backup herunterladen"
+
+msgid ""
+"There was an error while migrating your directory! You can fix the displayed "
+"entries in a separate window and then continue here."
+msgstr ""
+"Bei der Verzeichnismigration ist ein Fehler aufgetreten! Sie können den "
+"angezeigten Fehler im Eintrag in einem separaten Fenster beheben und danach "
+"hier weiterfahren."
+
+msgid "Added:"
+msgstr "Hinzugefügt:"
+
+msgid "Removed:"
+msgstr "Entfernt:"
+
+msgid "Renamed:"
+msgstr "Umbenannt:"
+
+msgid "Changed:"
+msgstr "Verändert:"
+
+msgid "Confirm"
+msgstr "Bestätigen"
+
+msgid "There was an error while importing your directory!"
+msgstr "Beim Verzeichnisimport ist ein Fehler aufgetreten!"
 
 msgid ""
 "Please review your data and press \"Complete\" to finalize the process. If "
@@ -1391,6 +1528,21 @@ msgstr "Später bezahlen"
 
 msgid "at ${time}"
 msgstr "um ${time}"
+
+msgid "Object"
+msgstr "Objekt"
+
+msgid "Net Amount"
+msgstr "Netto Betrag"
+
+msgid "Fee"
+msgstr "Gebühr"
+
+msgid "Created"
+msgstr "Erstellt"
+
+msgid "Disbursed"
+msgstr "Ausbezahlt"
 
 msgid "Dear Sir or Madam,"
 msgstr "Guten Tag"
@@ -1726,21 +1878,6 @@ msgstr "Gebühr:"
 msgid "No payments yet."
 msgstr "Noch keine Zahlungen."
 
-msgid "Object"
-msgstr "Objekt"
-
-msgid "Net Amount"
-msgstr "Netto Betrag"
-
-msgid "Fee"
-msgstr "Gebühr"
-
-msgid "Created"
-msgstr "Erstellt"
-
-msgid "Disbursed"
-msgstr "Ausbezahlt"
-
 msgid "No people added yet."
 msgstr "Es wurden noch keine Personen hinzugefügt."
 
@@ -2015,6 +2152,56 @@ msgstr "Der Registrationslink ist abgelaufen"
 msgid "A link was added to the clipboard"
 msgstr "Ein Verweis wurde in die Zwischenablage kopiert"
 
+msgid "New Directory"
+msgstr "Neues Verzeichnis"
+
+msgid "The directory was deleted"
+msgstr "Das Verzeichnis wurde gelöscht"
+
+msgid "New Directory Entry"
+msgstr "Neuer Verzeichniseintrag"
+
+msgid "The entry was deleted"
+msgstr "Der Eintrag wurde gelöscht"
+
+msgid ""
+"Exports all entries of this directory. The resulting zipfile contains the "
+"selected format as well as metadata and images/files if the directory "
+"contains any."
+msgstr ""
+"Exportiert alle Einträge dieses Verzeichnisses. Die resultierende Zip-Datei "
+"enthält das gewählte Format sowie alle Metadaten und allfällige Bilder/"
+"Dateien."
+
+msgid ""
+"Updates the directory configuration and imports all entries given in the ZIP "
+"file. The format is the same as produced by the export function. Note that "
+"only 100 items are imported at a time. To import more items repeat the "
+"import accordingly."
+msgstr ""
+"Aktualisiert die Konfiguration des Verzeichnis und importiert alle Einträge "
+"gemäss der angegebenen Zip Datei. Das Format entspricht dem Format des "
+"Exports. Bitte beachten Sie das nur bis zu 100 Einträge pro Import "
+"berücksichtigt werden. Um mehr Einträge zu importieren muss der Import "
+"wiederholt werden."
+
+msgid "Added a new directory"
+msgstr "Ein neues Verzeichnis wurde hinzugefügt"
+
+msgid "Added a new directory entry"
+msgstr "Ein neuer Verzeichniseintrag wurde hinzugefügt"
+
+#, python-format
+msgid "The column ${name} is missing"
+msgstr "Die Spalte ${name} fehlt"
+
+msgid ""
+"The requested change cannot be performed, as it is incompatible with "
+"existing entries"
+msgstr ""
+"Die verlangte Änderung kann nicht durchgeführt werden, da sie mit den "
+"bereist existierenden Einträgen inkompatibel ist."
+
 msgid "Submit an event"
 msgstr "Veranstaltung melden"
 
@@ -2186,9 +2373,6 @@ msgstr "Bestätigen Sie Ihre Reservation"
 
 msgid "Reserve"
 msgstr "Reservieren"
-
-msgid "Confirm"
-msgstr "Bestätigen"
 
 msgid "Thank you for your reservation!"
 msgstr "Vielen Dank für Ihre Reservation!"

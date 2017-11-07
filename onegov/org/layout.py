@@ -10,6 +10,8 @@ from onegov.core.i18n import SiteLocale
 from onegov.core.layout import ChameleonLayout
 from onegov.core.static import StaticFile
 from onegov.core.utils import linkify
+from onegov.directory import DirectoryCollection
+from onegov.directory import DirectoryEntryCollection
 from onegov.event import OccurrenceCollection
 from onegov.file import File
 from onegov.form import FormCollection, render_field
@@ -276,7 +278,7 @@ class Layout(ChameleonLayout):
 
             return value
 
-        if format == 'xlsx':
+        if format in ('xlsx', 'csv'):
             def formatter(value):
                 if is_daterange_list(value, (date, datetime)):
                     return '\n'.join(formatter(v) for v in value)
@@ -1692,3 +1694,175 @@ class MessageCollectionLayout(DefaultLayout):
             Link(_("Homepage"), self.homepage_url),
             Link(_("Timeline"), '#')
         ]
+
+
+class DirectoryCollectionLayout(DefaultLayout):
+
+    def __init__(self, model, request):
+        super().__init__(model, request)
+        self.include_editor()
+        self.include_code_editor()
+
+    @cached_property
+    def breadcrumbs(self):
+        return [
+            Link(_("Homepage"), self.homepage_url),
+            Link(_("Directories"), '#')
+        ]
+
+    @cached_property
+    def editbar_links(self):
+        if self.request.is_admin:
+            return [
+                LinkGroup(
+                    title=_("Add"),
+                    links=[
+                        Link(
+                            text=_("Directory"),
+                            url=self.request.link(
+                                self.model,
+                                name='+new'
+                            ),
+                            attrs={'class': 'new-directory'}
+                        )
+                    ]
+                ),
+            ]
+
+
+class DirectoryEntryCollectionLayout(DefaultLayout):
+
+    @cached_property
+    def breadcrumbs(self):
+        return [
+            Link(_("Homepage"), self.homepage_url),
+            Link(_("Directories"), self.request.class_link(
+                DirectoryCollection
+            )),
+            Link(_(self.model.directory.title), self.request.class_link(
+                DirectoryEntryCollection, {
+                    'directory_name': self.model.directory_name
+                }
+            ))
+        ]
+
+    @cached_property
+    def editbar_links(self):
+        if self.request.is_admin:
+            return [
+                Link(
+                    text=_("Configure"),
+                    url=self.request.link(self.model, '+edit'),
+                    attrs={'class': 'edit-link'}
+                ),
+                Link(
+                    text=_("Export"),
+                    url=self.request.class_link(
+                        DirectoryEntryCollection, {
+                            'directory_name': self.model.directory_name
+                        }, name='+export'
+                    ),
+                    attrs={'class': 'export-link'}
+                ),
+                Link(
+                    text=_("Import"),
+                    url=self.request.class_link(
+                        DirectoryEntryCollection, {
+                            'directory_name': self.model.directory_name
+                        }, name='+import'
+                    ),
+                    attrs={'class': 'import-link'}
+                ),
+                Link(
+                    text=_("Delete"),
+                    url=self.csrf_protected_url(
+                        self.request.link(self.model)
+                    ),
+                    attrs={'class': 'delete-link'},
+                    traits=(
+                        Confirm(
+                            _(
+                                'Do you really want to delete "${title}"?',
+                                mapping={
+                                    'title': self.model.directory.title
+                                }
+                            ),
+                            _("All entries will be deleted as well!"),
+                            _("Delete directory")
+                        ),
+                        Intercooler(
+                            request_method='DELETE',
+                            redirect_after=self.request.class_link(
+                                DirectoryCollection
+                            )
+                        )
+                    )
+                ),
+                LinkGroup(
+                    title=_("Add"),
+                    links=[
+                        Link(
+                            text=_("Entry"),
+                            url=self.request.link(
+                                self.model,
+                                name='+new'
+                            ),
+                            attrs={'class': 'new-directory-entry'}
+                        )
+                    ]
+                ),
+            ]
+
+
+class DirectoryEntryLayout(DefaultLayout):
+
+    @cached_property
+    def breadcrumbs(self):
+        return [
+            Link(_("Homepage"), self.homepage_url),
+            Link(_("Directories"), self.request.class_link(
+                DirectoryCollection
+            )),
+            Link(_(self.model.directory.title), self.request.class_link(
+                DirectoryEntryCollection, {
+                    'directory_name': self.model.directory.name
+                }
+            )),
+            Link(_(self.model.title), self.request.link(self.model))
+        ]
+
+    @cached_property
+    def editbar_links(self):
+        if self.request.is_manager:
+            return [
+                Link(
+                    text=_("Edit"),
+                    url=self.request.link(self.model, '+edit'),
+                    attrs={'class': 'edit-link'}
+                ),
+                Link(
+                    text=_("Delete"),
+                    url=self.csrf_protected_url(
+                        self.request.link(self.model)
+                    ),
+                    attrs={'class': 'delete-link'},
+                    traits=(
+                        Confirm(
+                            _(
+                                'Do you really want to delete "${title}"?',
+                                mapping={
+                                    'title': self.model.title
+                                }
+                            ),
+                            _("This cannot be undone."),
+                            _("Delete entry")
+                        ),
+                        Intercooler(
+                            request_method='DELETE',
+                            redirect_after=self.request.link(
+                                DirectoryEntryCollection(self.model.directory)
+                            )
+                        )
+                    )
+                )
+            ]

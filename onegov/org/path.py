@@ -1,8 +1,15 @@
 """ Contains the paths to the different models served by onegov.org. """
 
+import morepath
+
+from collections import defaultdict
 from datetime import date
 from onegov.chat import MessageCollection
 from onegov.core.converters import extended_date_converter
+from onegov.directory import Directory
+from onegov.directory import DirectoryCollection
+from onegov.directory import DirectoryEntryCollection
+from onegov.directory import DirectoryEntry
 from onegov.event import (
     Event,
     EventCollection,
@@ -473,3 +480,77 @@ def get_messages(app, channel_id='*', type='*',
         older_than=older_than,
         limit=min(25, limit)  # bind the limit to a max of 25
     )
+
+
+@OrgApp.path(
+    model=DirectoryCollection,
+    path='/directories')
+def get_directories(app):
+    return DirectoryCollection(app.session(), type='extended')
+
+
+def keywords_decode(s):
+    """ Deocdes the directory entry collection keywords. """
+    if not s:
+        return None
+
+    result = defaultdict(list)
+
+    for item in s.split('+'):
+        key, value = item.split(':', 1)
+        result[key].append(value)
+
+    return result
+
+
+def keywords_encode(d):
+    """ Encodes the directory entry collection keywords. """
+    if not d:
+        return ''
+
+    return '+'.join('{}:{}'.format(k, v) for k in d for v in d[k])
+
+
+keywords_converter = morepath.Converter(
+    decode=keywords_decode, encode=keywords_encode
+)
+
+
+@OrgApp.path(
+    model=Directory,
+    path='/directory/{name}')
+def get_directory(app, name):
+    return DirectoryCollection(app.session()).by_name(name)
+
+
+@OrgApp.path(
+    model=DirectoryEntryCollection,
+    path='/directories/{directory_name}',
+    converters={'keywords': keywords_converter})
+def get_directory_entries(app, directory_name, keywords, page=0):
+    directory = DirectoryCollection(app.session()).by_name(directory_name)
+
+    if directory:
+        collection = DirectoryEntryCollection(
+            directory=directory,
+            type='extended',
+            keywords=keywords,
+            page=page
+        )
+
+        collection.is_hidden_from_public = directory.is_hidden_from_public
+
+        return collection
+
+
+@OrgApp.path(
+    model=DirectoryEntry,
+    path='/directories/{directory_name}/{name}')
+def get_directory_entry(app, directory_name, name):
+    directory = DirectoryCollection(app.session()).by_name(directory_name)
+
+    if directory:
+        return DirectoryEntryCollection(
+            directory=directory,
+            type='extended'
+        ).by_name(name)

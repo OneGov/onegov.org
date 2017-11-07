@@ -24,6 +24,31 @@ $(function() {
         editor.renderer.setPadding(10);
         editor.renderer.setShowGutter(false);
         editor.renderer.setScrollMargin(10, 10, 10, 10);
+
+        if (mode === 'form') {
+            var watcher = formcodeWatcherRegistry.new();
+
+            editor.on("change", _.debounce(function() {
+                watcher.update(editor.getValue());
+            }, 500));
+
+            var form = textarea.closest('form');
+            form.find('.formcode-format').each(function() {
+                var container = $("<div>").insertBefore(this);
+                initFormcodeFormat(container.get(0), watcher, this);
+            });
+
+            $('.formcode-select').each(function() {
+                var exclude = (this.getAttribute('data-fields-exclude') || '');
+                var include = (this.getAttribute('data-fields-include') || '');
+                var container = $("<div>").insertBefore(this);
+
+                $(this).hide();
+
+                initFormcodeSelect(container.get(0), watcher, this, include.split(','), exclude.split(','));
+            });
+        }
+
         editor.getSession().setValue(textarea.val());
         editor.getSession().setMode("ace/mode/" + mode);
         editor.setTheme("ace/theme/tomorrow");

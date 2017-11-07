@@ -170,7 +170,14 @@
 
 <metal:panel define-macro="events-panel">
     <h2 i18n:translate>Events</h2>
-    <metal:block use-macro="layout.macros['panel-links']" tal:define="panel events_panel"/>
+    <metal:block use-macro="layout.macros['panel-links']" tal:define="panel event_panel"/>
+</metal:panel>
+
+<metal:panel define-macro="directories-panel">
+    <tal:b condition="directory_panel.links">
+        <h2 i18n:translate>Directories</h2>
+        <metal:block use-macro="layout.macros['panel-links']" tal:define="panel directory_panel" />
+    </tal:b>
 </metal:panel>
 
 <metal:form define-macro="form">
@@ -254,7 +261,7 @@
 </metal:homepage-tiles>
 
 <metal:single_field define-macro="field">
-     <!-- render the label after the field if it's a boolean field -->
+     <!--! render the label after the field if it's a boolean field -->
     <tal:block condition="field.type == 'BooleanField'">
         ${field(placeholder=request.translate(field.description))}
         <span class="label-text">${field.label.text}</span>
@@ -386,22 +393,7 @@
     <div tal:condition="form" tal:repeat="fieldset form.fieldsets">
         <tal:block define="fields fieldset.non_empty_fields" condition="fields">
             <h2 tal:condition="fieldset.is_visible">${fieldset.label}</h2>
-            <div class="field-display" tal:repeat="field fields.values()">
-                <div class="field-display-block" tal:define="rendered layout.render_field(field)" tal:condition="rendered">
-                    <div class="field-display-label">${field.label.text}</div>
-                    <div class="field-display-data" tal:define="downloadable request.is_manager and field.type == 'UploadField'">
-                        <tal:block condition="downloadable">
-                            <a href="${layout.field_download_link(field)}">
-                                <tal:block replace="structure rendered" />
-                            </a>
-                        </tal:block>
-                        <tal:block condition="not:downloadable">
-                            <tal:block replace="structure rendered" />
-                        </tal:block>
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-            </div>
+            <metal:b use-macro="layout.macros['display_fields']" tal:define="fields fields.values()">
         </tal:block>
     </div>
     <tal:b condition="price|nothing">
@@ -415,6 +407,28 @@
         </div>
     </tal:b>
 </metal:display_form>
+
+<metal:display_field define-macro="display_fields" i18n:domain="onegov.org">
+    <div class="field-display" tal:repeat="field fields" tal:define="allow_downloads allow_downloads|request.is_manager; allow_views allow_views|False">
+        <div class="field-display-block" tal:define="rendered layout.render_field(field)|nothing" tal:condition="rendered">
+            <div class="field-display-label">${field.label.text}</div>
+            <div class="field-display-data">
+                <tal:b condition="(allow_downloads or allow_views) and field.type == 'UploadField'">
+                    <tal:b define="url layout.field_download_link(field)">
+                        <a href="${url}" tal:condition="not allow_views or not field.is_image">
+                            <tal:block replace="structure rendered" />
+                        </a>
+                        <img src="${url}" tal:condition="allow_views and field.is_image" />
+                    </tal:b>
+                </tal:b>
+                <tal:block condition="not (allow_downloads or allow_views) or field.type != 'UploadField'">
+                    <tal:block replace="structure rendered" />
+                </tal:block>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</metal:display_field>
 
 <metal:price define-macro="price">
     ${layout.format_number(price.net_amount)} ${price.currency}
@@ -561,7 +575,7 @@
 </metal:ticket_callout>
 
 <metal:pagination define-macro="pagination" i18n:domain="onegov.org">
-    <ul class="pagination" role="menubar" aria-label="Pagination">
+    <ul class="pagination" role="menubar" aria-label="Pagination" tal:condition="collection.pages_count > 1">
         <tal:block repeat="page collection.pages">
             <tal:block define="
                 previous current_page.previous;
@@ -968,9 +982,9 @@
 
 <metal:tags define-macro="tags">
     <ul class="tags">
-        <li tal:repeat="link tags">
+        <li tal:repeat="link tags" class="click-through">
             <span tal:content="structure link(layout)"
-                class="${link.active and 'active'} blank-label"
+                class="${link.active and 'active'} blank-label ${link.rounded and 'rounded'}"
             />
         </li>
     </ul>
@@ -1104,3 +1118,19 @@
         </tbody>
     </table>
 </metal:payments>
+
+<metal:directory_error define-macro="directory_error" i18n:domain="onegov.org">
+    <ul class="dense">
+        <li tal:repeat="(field_id, messages) error.errors.items()">
+            <div tal:condition="error.link|nothing">
+                <strong><a href="${error.link}">${error.entry.title}</a></strong>
+            </div>
+            <div tal:condition="not:error.link|nothing">
+                <strong>${error.entry.title}</strong>
+            </div>
+            <div>
+                ${directory.field_by_id(field_id).human_id}: ${error_translate(' '.join(messages))}
+            </div>
+        </li>
+    </ul>
+</metal:directory_error>

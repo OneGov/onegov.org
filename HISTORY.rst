@@ -1,6 +1,9 @@
 Changelog
 ---------
 
+0.17.7 (2017-11-20)
+~~~~~~~~~~~~~~~~~~~
+
 - Moves yubikey/user registration toggles to configuration.
   [href]
 

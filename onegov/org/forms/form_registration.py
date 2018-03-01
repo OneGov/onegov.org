@@ -57,7 +57,7 @@ class FormRegistrationWindowForm(Form):
         self.waitinglist.data = obj.overflow and 'yes' or 'no'
         self.limit_attendees.data = obj.limit and 'yes' or 'no'
         self.limit.data = obj.limit or ''
-        self.stop.data = obj.enabled
+        self.stop.data = not obj.enabled
 
     def populate_obj(self, obj, *args, **kwargs):
         super().populate_obj(obj, *args, **kwargs)

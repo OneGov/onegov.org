@@ -89,11 +89,11 @@ def handle_defined_form(self, request, form):
     collection = FormCollection(request.session)
 
     if not self.current_registration_window:
-        enabled = True
         spots = 0
+        enabled = True
     else:
-        enabled = self.current_registration_window.accepts_submissions
         spots = 1
+        enabled = self.current_registration_window.accepts_submissions(spots)
 
     if enabled and request.POST:
         submission = collection.submissions.add(

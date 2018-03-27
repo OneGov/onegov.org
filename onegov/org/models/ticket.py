@@ -107,64 +107,87 @@ class FormSubmissionHandler(Handler):
         extra = []
 
         # there's a decision to be made about the registration
-        if self.submission.spots and self.submission.claimed is None:
-            links.append(
-                Link(
-                    text=_("Confirm registration"),
-                    url=request.return_here(
-                        layout.csrf_protected_url(
-                            request.link(
-                                self.submission, 'confirm-registration')
-                        )
-                    ),
-                    attrs={'class': 'accept-link'},
-                    traits=(
-                        Intercooler(
-                            request_method='POST',
-                            redirect_after=request.url
-                        ),
-                    )
-                )
-            )
-            extra.append(
-                Link(
-                    text=_("Deny registration"),
-                    url=request.return_here(
-                        layout.csrf_protected_url(
-                            request.link(
-                                self.submission, 'deny-registration')
-                        )
-                    ),
-                    attrs={'class': 'delete-link'},
-                    traits=(
-                        Intercooler(
-                            request_method='POST',
-                            redirect_after=request.url
-                        ),
-                    )
-                )
-            )
+        window = self.submission.registration_window
 
-        # a registration was accepted before, we can issue an uninvite
-        if self.submission.spots and self.submission.claimed:
-            links.append(
-                Link(
-                    text=_("Cancel registration"),
-                    url=request.return_here(
-                        layout.csrf_protected_url(
-                            request.link(
-                                self.submission, 'cancel-registration')
-                        )
-                    ),
-                    attrs={'class': 'delete-link'},
-                    traits=(
-                        Intercooler(
-                            request_method='POST',
-                            redirect_after=request.url
+        if window:
+            if self.submission.spots and self.submission.claimed is None:
+                confirmation_traits = [
+                    Intercooler(
+                        request_method='POST',
+                        redirect_after=request.url
+                    )
+                ]
+
+                next_in_queue = window.next_submission
+
+                if next_in_queue and next_in_queue is not self.submission:
+                    confirmation_traits.append(Confirm(
+                        _(
+                            "This is not the oldest undecided submission of "
+                            "this registration window. Do you really want to "
+                            "confirm this submission?"
                         ),
+                        _(
+                            "By confirming this submission, you will prefer "
+                            "this over a submission that came in earlier."
+                        ),
+                        _(
+                            "Confirm submission"
+                        )
+                    ))
+
+                links.append(
+                    Link(
+                        text=_("Confirm registration"),
+                        url=request.return_here(
+                            layout.csrf_protected_url(
+                                request.link(
+                                    self.submission, 'confirm-registration')
+                            )
+                        ),
+                        attrs={'class': 'accept-link'},
+                        traits=confirmation_traits
                     )
                 )
-            )
+                extra.append(
+                    Link(
+                        text=_("Deny registration"),
+                        url=request.return_here(
+                            layout.csrf_protected_url(
+                                request.link(
+                                    self.submission, 'deny-registration')
+                            )
+                        ),
+                        attrs={'class': 'delete-link'},
+                        traits=(
+                            Intercooler(
+                                request_method='POST',
+                                redirect_after=request.url
+                            ),
+                        )
+                    )
+                )
+
+            # a registration was accepted before, we can issue an uninvite
+            if self.submission.spots and self.submission.claimed:
+                links.append(
+                    Link(
+                        text=_("Cancel registration"),
+                        url=request.return_here(
+                            layout.csrf_protected_url(
+                                request.link(
+                                    self.submission, 'cancel-registration')
+                            )
+                        ),
+                        attrs={'class': 'delete-link'},
+                        traits=(
+                            Intercooler(
+                                request_method='POST',
+                                redirect_after=request.url
+                            ),
+                        )
+                    )
+                )
 
         edit_link = URL(request.link(self.submission))
         edit_link = edit_link.query_param('edit', '').as_string()

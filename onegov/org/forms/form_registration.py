@@ -42,7 +42,7 @@ class FormRegistrationWindowForm(Form):
         depends_on=('limit_attendees', 'yes'),
         choices=[
             ('yes', _("Yes, allow for more submissions than available spots")),
-            ('no', _("No, ensure that all submissions can be accepted"))
+            ('no', _("No, ensure that all submissions can be confirmed"))
         ],
         default='yes'
     )

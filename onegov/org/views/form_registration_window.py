@@ -73,7 +73,7 @@ def handle_edit_registration_form(self, request, form):
     if form.submitted(request):
         form.populate_obj(self)
 
-        request.success("Your changes were saved")
+        request.success(_("Your changes were saved"))
         return request.redirect(request.link(self.form))
 
     elif not request.POST:

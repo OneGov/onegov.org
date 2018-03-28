@@ -44,7 +44,9 @@ def get_hints(layout, window):
     if not window:
         return
 
-    if not window.enabled or window.in_the_past:
+    if window.in_the_past:
+        yield 'stop', _("The registration has ended")
+    elif not window.enabled:
         yield 'stop', _("The registration is closed")
 
     if window.enabled and window.in_the_future:
@@ -241,10 +243,10 @@ def handle_complete_submission(self, request):
             elif payment is not True:
                 self.payment = payment
 
-            if self.registration_window:
-                if not self.registration_window.accepts_submissions:
-                    request.alert(_("Registrations are no longer possible"))
-                    return morepath.redirect(request.link(self))
+            window = self.registration_window
+            if window and not window.accepts_submissions(self.spots):
+                request.alert(_("Registrations are no longer possible"))
+                return morepath.redirect(request.link(self))
 
             show_submission = request.params.get('send_by_email') == 'yes'
 
@@ -285,19 +287,19 @@ def handle_complete_submission(self, request):
 @OrgApp.view(model=CompleteFormSubmission, name='confirm-registration',
              permission=Private, request_method='POST')
 def handle_accept_registration(self, request):
-    handle_submission_action(self, request, 'confirmed')
+    return handle_submission_action(self, request, 'confirmed')
 
 
 @OrgApp.view(model=CompleteFormSubmission, name='deny-registration',
              permission=Private, request_method='POST')
 def handle_deny_registration(self, request):
-    handle_submission_action(self, request, 'denied')
+    return handle_submission_action(self, request, 'denied')
 
 
 @OrgApp.view(model=CompleteFormSubmission, name='cancel-registration',
              permission=Private, request_method='POST')
 def handle_cancel_registration(self, request):
-    handle_submission_action(self, request, 'cancelled')
+    return handle_submission_action(self, request, 'cancelled')
 
 
 def handle_submission_action(self, request, action):
@@ -306,7 +308,7 @@ def handle_submission_action(self, request, action):
     if action == 'confirmed':
         subject = _("Your registration has been confirmed")
         success = _("The registration has been confirmed")
-        failure = _("Your registration could not be confirmed")
+        failure = _("The registration could not be confirmed")
 
         def execute():
             if self.registration_window and self.claimed is None:
@@ -315,7 +317,7 @@ def handle_submission_action(self, request, action):
     elif action == 'denied':
         subject = _("Your registration has been denied")
         success = _("The registration has been denied")
-        failure = _("Your registration could not be denied")
+        failure = _("The registration could not be denied")
 
         def execute():
             if self.registration_window and self.claimed is None:
@@ -324,7 +326,7 @@ def handle_submission_action(self, request, action):
     elif action == 'cancelled':
         subject = _("Your registration has been cancelled")
         success = _("The registration has been cancelled")
-        failure = _("Your registration could not be cancelled")
+        failure = _("The registration could not be cancelled")
 
         def execute():
             if self.registration_window and self.claimed:

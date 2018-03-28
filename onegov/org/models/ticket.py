@@ -132,7 +132,7 @@ class FormSubmissionHandler(Handler):
                             "this over a submission that came in earlier."
                         ),
                         _(
-                            "Confirm submission"
+                            "Confirm registration"
                         )
                     ))
 

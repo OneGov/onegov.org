@@ -17,7 +17,7 @@
             Your registration for "<tal:b i18n:name="title">${model.form.title}</tal:b>" has been cancelled.
         </p>
 
-        <p i18n:translate>
+        <p>
             <hr class="large">
 
             <dl class="field-display">

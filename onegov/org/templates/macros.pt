@@ -1081,7 +1081,7 @@
                                 <tal:b define="ticket get_ticket(link)">
                                     <div>
                                         <a href="${request.link(ticket)}">
-                                            <strong>${ticket.number}</strong>
+                                            <strong>${ticket.number}</strong> - ${ticket.group}
                                         </a>
                                         <div>
                                             ${link.title}
@@ -1093,7 +1093,7 @@
                                 <tal:b define="ticket get_ticket(link)">
                                     <div>
                                         <a href="${request.link(ticket)}">
-                                            <strong>${ticket.number}</strong>
+                                            <strong>${ticket.number}</strong> - ${ticket.group}
                                         </a>
                                         <div>
                                             ${link.title}

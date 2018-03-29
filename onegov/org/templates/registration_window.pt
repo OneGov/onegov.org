@@ -25,7 +25,7 @@
                                         </strong>
                                     </div>
                                     <div>
-                                        ${layout.format_date(submission.created, 'relative')}
+                                        ${layout.format_date(submission.received, 'relative')}
                                     </div>
                                 </li>
                             </ul>

@@ -8,7 +8,6 @@ from onegov.org.forms import FormRegistrationWindowForm
 from onegov.org.layout import FormSubmissionLayout
 from onegov.org.new_elements import Link, Confirm, Intercooler
 from sqlalchemy import desc
-from sqlalchemy.orm import undefer
 
 
 @OrgApp.form(
@@ -84,8 +83,7 @@ def view_registration_window(self, request):
     q = request.session.query(FormSubmission)
     q = q.filter_by(registration_window_id=self.id)
     q = q.filter_by(state='complete')
-    q = q.order_by(desc(FormSubmission.created))
-    q = q.options(undefer(FormSubmission.created))
+    q = q.order_by(desc(FormSubmission.received))
 
     for submission in q:
         if not submission.registration_state:

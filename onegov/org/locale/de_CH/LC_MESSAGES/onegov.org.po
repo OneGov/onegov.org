@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2018-03-28 11:44+0200\n"
+"POT-Creation-Date: 2018-03-28 16:03+0200\n"
 "PO-Revision-Date: 2017-03-02 09:52+0100\n"
 "Last-Translator: Denis Krienbühl <denis.krienbuehl@seantis.ch>\n"
 "Language-Team: German\n"
@@ -2664,6 +2664,12 @@ msgstr "Der Anmeldezeitraum wurde gelöscht"
 
 msgid "The registration window was added successfully"
 msgstr "Der Anmeldezeitraum wurde erfolgreich hinzugefügt"
+
+msgid "Confirmed"
+msgstr "Bestätigt"
+
+msgid "Cancelled"
+msgstr "Storniert"
 
 msgid "Do you really want to delete this registration window?"
 msgstr "Möchten Sie den Anmeldezeitraum wirklich entfernen?"

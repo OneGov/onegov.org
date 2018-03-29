@@ -1,9 +1,14 @@
+from collections import defaultdict
 from onegov.core.security import Private
-from onegov.form import FormDefinition, FormRegistrationWindow
+from onegov.form import FormDefinition
+from onegov.form import FormRegistrationWindow
+from onegov.form import FormSubmission
 from onegov.org import OrgApp, _
 from onegov.org.forms import FormRegistrationWindowForm
 from onegov.org.layout import FormSubmissionLayout
 from onegov.org.new_elements import Link, Confirm, Intercooler
+from sqlalchemy import desc
+from sqlalchemy.orm import undefer
 
 
 @OrgApp.form(
@@ -37,17 +42,22 @@ def handle_new_registration_form(self, request, form):
     }
 
 
-@OrgApp.form(
+@OrgApp.html(
     model=FormRegistrationWindow,
     permission=Private,
-    form=FormRegistrationWindowForm,
-    template='form.pt')
-def handle_edit_registration_form(self, request, form):
-
-    title = _("Edit Registration Window")
+    template='registration_window.pt')
+def view_registration_window(self, request):
 
     layout = FormSubmissionLayout(self.form, request)
+    title = layout.format_date_range(self.start, self.end)
+
+    layout.breadcrumbs.append(Link(title, '#'))
     layout.editbar_links = [
+        Link(
+            text=_("Edit"),
+            url=request.link(self, 'edit'),
+            attrs={'class': 'edit-link'}
+        ),
         Link(
             text=_("Delete"),
             url=layout.csrf_protected_url(request.link(self)),
@@ -68,7 +78,47 @@ def handle_edit_registration_form(self, request, form):
             )
         )
     ]
+
+    registrations = defaultdict(list)
+
+    q = request.session.query(FormSubmission)
+    q = q.filter_by(registration_window_id=self.id)
+    q = q.filter_by(state='complete')
+    q = q.order_by(desc(FormSubmission.created))
+    q = q.options(undefer(FormSubmission.created))
+
+    for submission in q:
+        if not submission.registration_state:
+            continue
+
+        registrations[submission.registration_state].append(submission)
+
+    return {
+        'layout': layout,
+        'title': title,
+        'model': self,
+        'registrations': registrations,
+        'groups': (
+            (_("Open"), 'open'),
+            (_("Confirmed"), 'confirmed'),
+            (_("Cancelled"), 'cancelled'),
+        )
+    }
+
+
+@OrgApp.form(
+    model=FormRegistrationWindow,
+    permission=Private,
+    form=FormRegistrationWindowForm,
+    template='form.pt',
+    name='edit')
+def handle_edit_registration_form(self, request, form):
+
+    title = _("Edit Registration Window")
+
+    layout = FormSubmissionLayout(self.form, request)
     layout.breadcrumbs.append(Link(title, '#'))
+    layout.editbar_links = []
 
     if form.submitted(request):
         form.populate_obj(self)

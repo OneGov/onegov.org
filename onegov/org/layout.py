@@ -661,7 +661,7 @@ class FormSubmissionLayout(DefaultLayout):
                     Link(
                         text=self.format_date_range(w.start, w.end),
                         url=self.request.link(w),
-                        attrs={'class': 'edit-link'}
+                        attrs={'class': 'view-link'}
                     ) for w in self.form.registration_windows
                 )
             ]

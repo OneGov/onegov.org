@@ -284,6 +284,12 @@ def handle_complete_submission(self, request):
             return morepath.redirect(request.link(ticket, 'status'))
 
 
+@OrgApp.view(model=CompleteFormSubmission, name='ticket', permission=Private)
+def view_submission_ticket(self, request):
+    ticket = TicketCollection(request.session).by_handler_id(self.id.hex)
+    return request.redirect(request.link(ticket))
+
+
 @OrgApp.view(model=CompleteFormSubmission, name='confirm-registration',
              permission=Private, request_method='POST')
 def handle_accept_registration(self, request):

@@ -157,28 +157,39 @@ body {
 /*
     Heading sizes
 */
-.h1-size {
-    font-size: $h1-font-size - $h1-font-reduction;
-}
+.h1-size { font-size: $h1-font-size - $h1-font-reduction; }
 
-.h2-size {
-    font-size: $h2-font-size - $h2-font-reduction;
-}
+.h2-size { font-size: $h2-font-size - $h2-font-reduction; }
 
-.h3-size {
-    font-size: $h3-font-size - $h3-font-reduction;
-}
+.h3-size { font-size: $h3-font-size - $h3-font-reduction; }
 
-.h4-size {
-    font-size: $h4-font-size - $h4-font-reduction;
-}
+.h4-size { font-size: $h4-font-size - $h4-font-reduction; }
 
-.h5-size {
-    font-size: $h5-font-size - $h5-font-reduction;
-}
+.h5-size { font-size: $h5-font-size - $h5-font-reduction; }
 
-.h6-size {
-    font-size: $h6-font-size - $h6-font-reduction;
+.h6-size { font-size: $h6-font-size - $h6-font-reduction; }
+
+@media #{$medium-up} {
+    .h1-size,
+    .h2-size,
+    .h3-size,
+    .h4-size,
+    .h5-size,
+    .h6-size {
+        line-height: $header-line-height;
+    }
+
+    .h1-size { font-size: $h1-font-size; }
+
+    .h2-size { font-size: $h2-font-size; }
+
+    .h3-size { font-size: $h3-font-size; }
+
+    .h4-size { font-size: $h4-font-size; }
+
+    .h5-size { font-size: $h5-font-size; }
+
+    .h6-size { font-size: $h6-font-size; }
 }
 
 /*

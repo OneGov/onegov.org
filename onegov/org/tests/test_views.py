@@ -4112,7 +4112,7 @@ def test_registration_form_hints(org_app):
         page = client.get('/form/meetup')
         assert "Die Anmeldung ist nicht mehr möglich" in page
 
-    edit = page.click('01.01.2018 - 31.01.2018')
+    edit = page.click('01.01.2018 - 31.01.2018').click('Bearbeiten')
     edit.form['stop'] = True
     edit.form.submit()
 
@@ -4228,6 +4228,8 @@ def test_registration_change_limit_after_submissions(org_app):
             page.form.submit().follow().form.submit().follow()
 
     page = client.get('/form/meetup').click('01.01.2018 - 31.01.2018')
+    page = page.click('Bearbeiten')
+
     page.form['limit'] = 1
     assert "nicht tiefer sein als die Summe" in page.form.submit()
 
@@ -4254,7 +4256,7 @@ def test_registration_change_limit_after_submissions(org_app):
     submissions[1].disclaim()
     transaction.commit()
 
-    page = page.click('01.01.2018 - 31.01.2018')
+    page = page.click('01.01.2018 - 31.01.2018').click('Bearbeiten')
     page.form['limit'] = 1
     page = page.form.submit().follow()
 

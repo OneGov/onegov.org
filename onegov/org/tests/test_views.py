@@ -2595,6 +2595,7 @@ def test_delete_event(org_app):
     assert "Generalversammlung" not in client.get('/events')
 
 
+@pytest.mark.flaky(reruns=3)
 def test_basic_search(es_org_app):
     client = Client(es_org_app)
     client.login_admin()
@@ -2633,6 +2634,7 @@ def test_basic_search(es_org_app):
     assert "Now supporting" in client.get('/search?q=fulltext')
 
 
+@pytest.mark.flaky(reruns=3)
 def test_view_search_is_limiting(es_org_app):
     # ensures that the search doesn't just return all results
     # a regression that occured for anonymous uses only
@@ -2667,6 +2669,7 @@ def test_view_search_is_limiting(es_org_app):
     assert "1 Resultat" in search_page
 
 
+@pytest.mark.flaky(reruns=3)
 def test_basic_autocomplete(es_org_app):
     client = Client(es_org_app)
 

@@ -35,6 +35,10 @@
              <p>${callout}</p>
         </div>
 
+        <div class="panel" tal:condition="helptext|nothing">
+             <p>${helptext}</p>
+        </div>
+
         <tal:block metal:use-macro="layout.macros.page_content"
                    tal:define="lead lead|nothing;text text|nothing; people people|nothing; contact contact|nothing; coordinates coordinates|nothing">
             <tal:block metal:fill-slot="after-text">

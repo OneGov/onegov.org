@@ -1736,6 +1736,14 @@ class PaymentCollectionLayout(DefaultLayout):
                 )
             )
 
+            links.append(
+                Link(
+                    text=_("Export"),
+                    url=self.request.link(self.model, 'export'),
+                    attrs={'class': 'export-link'}
+                )
+            )
+
         return links
 
 

@@ -37,7 +37,11 @@ def handle_new_registration_form(self, request, form):
     return {
         'layout': layout,
         'title': title,
-        'form': form
+        'form': form,
+        'helptext': _(
+            "Registration windows limit forms to a set number of submissions "
+            "and a specific time-range."
+        )
     }
 
 

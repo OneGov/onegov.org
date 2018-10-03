@@ -371,6 +371,20 @@ def view_upload_file_by_json(self, request):
     }
 
 
+@OrgApp.html(model=File, name='sign', request_method='POST',
+             permission=Private)
+def handle_rename(self, request):
+    request.assert_valid_csrf_token()
+    request.app.sign_file(self, signee=request.current_username)
+
+    layout = DefaultLayout(self, request)
+
+    return render_macro(layout.macros['signature_status'], request, {
+        'layout': layout,
+        'file': self,
+    })
+
+
 @OrgApp.view(model=LegacyFile, permission=Public)
 @OrgApp.view(model=LegacyImage, permission=Public)
 def view_old_files_redirect(self, request):

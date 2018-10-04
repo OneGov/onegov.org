@@ -76,17 +76,20 @@ var showPrompt = function(options) {
     var prompt_el = $(ReactDOM.findDOMNode(prompt));
 
     prompt_el.find('a.cancel').click(function() {
-        prompt_el.foundation('reveal', 'close');
+        dropPrompt(prompt_el);
+        return false;
     });
 
     prompt_el.find('a.ok').click(function() {
         options.success.call(options.target, prompt.state.value.trim());
-        prompt_el.foundation('reveal', 'close');
+        dropPrompt(prompt_el);
+        return false;
     });
 
-    prompt_el.find('input, a.ok').enter(function() {
+    prompt_el.find('input, a.ok').enter(function(e) {
         options.success.call(options.target, prompt.state.value.trim());
-        prompt_el.foundation('reveal', 'close');
+        dropPrompt(prompt_el);
+        return false;
     });
 
     $('body').one('opened.fndtn.reveal', function() {
@@ -94,6 +97,11 @@ var showPrompt = function(options) {
     });
 
     prompt_el.foundation('reveal', 'open');
+};
+
+var dropPrompt = function(el) {
+    el.foundation('reveal', 'close');
+    el.remove();
 };
 
 // sets up a prompt

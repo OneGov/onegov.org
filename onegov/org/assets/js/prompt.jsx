@@ -21,7 +21,7 @@ var Prompt = React.createClass({
 
     getInitialState: function() {
         return {
-            'value': this.props.value.trim()
+            'value': (this.props.value && this.props.value.trim() || '')
         };
     },
 

@@ -35,7 +35,7 @@ var Prompt = React.createClass({
                 <h2>{this.props.question}</h2>
                 <p>{this.props.info}</p>
 
-                <input type="text" value={this.state.value} onChange={this.handleChange} />
+                <input type="text" placeholder={this.props.placeholder} value={this.state.value} onChange={this.handleChange} />
 
                 <a className="button secondary cancel">
                     {this.props.cancel}
@@ -68,6 +68,7 @@ var showPrompt = function(options) {
             ok={options.ok}
             cancel={options.cancel}
             value={options.value}
+            placeholder={options.placeholder}
         />,
         el.get(0)
     );
@@ -107,6 +108,7 @@ jQuery.fn.prompt = function() {
             cancel: $(this).data('prompt-cancel'),
             value: $(this).data('prompt-value'),
             success: eval($(this).data('prompt-success')),
+            placeholder: $(this).data('prompt-placeholder'),
             target: $(this)
         });
     });

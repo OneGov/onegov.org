@@ -1373,6 +1373,7 @@
                 data-prompt="Please enter your yubikey to digitally sign this file"
                 data-prompt-ok="Sign"
                 data-prompt-cancel="Cancel"
+                data-prompt-placeholder="Plug your YubiKey into a USB slot and press it."
                 data-prompt-info="If digitally signed documents are published, they may be discovered through the site-search and in the list of digitally signed documents. This action will be logged and cannot be undone."
                 data-prompt-success="(function(value) {
                     var url = '${request.link(file, 'sign')}?csrf-token=${layout.csrf_token}';
@@ -1386,7 +1387,7 @@
                         elt.toggleClass('signing', false);
                     });
                 })"
-                i18n:attributes="data-prompt;data-prompt-ok;data-prompt-cancel;data-prompt-info"
+                i18n:attributes="data-prompt;data-prompt-ok;data-prompt-cancel;data-prompt-info;data-prompt-placeholder"
             >
                 <i class="fa fa-fw fa-lock" aria-hidden="true"></i>
 

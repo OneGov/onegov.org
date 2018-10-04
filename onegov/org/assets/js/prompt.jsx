@@ -88,8 +88,11 @@ var showPrompt = function(options) {
         prompt_el.foundation('reveal', 'close');
     });
 
+    $('body').one('opened.fndtn.reveal', function() {
+        prompt_el.find('input').focus().select();
+    });
+
     prompt_el.foundation('reveal', 'open');
-    prompt_el.focus();
 };
 
 // sets up a prompt

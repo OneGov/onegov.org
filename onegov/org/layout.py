@@ -381,6 +381,11 @@ class Layout(ChameleonLayout):
     def get_user_color(self, username):
         return utils.get_user_color(username)
 
+    def get_user_title(self, username):
+        return UserCollection(self.request.session)\
+            .by_username(username)\
+            .title
+
     def to_timezone(self, date, timezone):
         return to_timezone(date, timezone)
 

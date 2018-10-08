@@ -13,6 +13,7 @@ from onegov.core.security import Private, Public
 from onegov.core.templates import render_macro
 from onegov.file import File, FileCollection
 from onegov.file.utils import extension_for_content_type
+from onegov.file.errors import AlreadySignedError, InvalidTokenError
 from onegov.org import _, OrgApp
 from onegov.org.new_elements import Link
 from onegov.org.layout import DefaultLayout
@@ -24,8 +25,10 @@ from onegov.org.models import (
     ImageSetCollection,
     LegacyFile,
     LegacyImage,
+    FileSignatureMessage,
 )
 from onegov.org import utils
+from onegov.user import UserCollection
 from sedate import to_timezone, utcnow, standardize_date
 from time import time
 from webob import exc
@@ -375,11 +378,46 @@ def view_upload_file_by_json(self, request):
              permission=Private)
 def handle_rename(self, request):
     request.assert_valid_csrf_token()
-    request.app.sign_file(self, signee=request.current_username)
+    token = request.params.get('token')
+
+    user = UserCollection(request.session).by_username(
+        request.current_username)
+
+    def may_sign():
+        if not token:
+            request.alert(_("Please submit your yubikey when signing"))
+            return False
+
+        if not user.second_factor:
+            request.alert(_("Your account is not linked to a Yubikey"))
+            return False
+
+        if not token.startswith(user.second_factor['data']):
+            request.alert(_("The used Yubikey is not linked to your account"))
+            return False
+
+        return True
+
+    try:
+        if may_sign():
+            request.app.sign_file(
+                file=self,
+                signee=request.current_username,
+                token=token
+            )
+
+            FileSignatureMessage.create(self, request)
+
+    except AlreadySignedError:
+        request.alert(_("This file has already been signed"))
+        return
+    except InvalidTokenError:
+        request.alert(_("Your Yubikey could not be validated"))
+        return
 
     layout = DefaultLayout(self, request)
 
-    return render_macro(layout.macros['signature_status'], request, {
+    return render_macro(layout.macros['sign_result'], request, {
         'layout': layout,
         'file': self,
     })

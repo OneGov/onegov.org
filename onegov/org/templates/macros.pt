@@ -14,6 +14,13 @@
     <!--! To be override by other applications -->
 </metal:b>
 
+<metal:b define-macro="consume_messages" i18n:domain="onegov.org">
+    <div tal:repeat="message request.consume_messages()" data-alert class="alert-box ${message.type}">
+        ${message.text}
+        <a href="#" class="close">&times;</a>
+      </div>
+</metal:b>
+
 <metal:navigation define-macro="top_navigation">
     <div class="main-navigation" tal:define="links top_navigation|layout.top_navigation">
         <nav class="top-bar" data-topbar role="navigation" tal:condition="links">
@@ -1358,6 +1365,11 @@
     </div>
 </metal:file_details>
 
+<metal:sign_result define-macro="sign_result" i18n:domain="onegov.org">
+    <metal:b use-macro="layout.macros['consume_messages']" />
+    <metal:b use-macro="layout.macros['signature_status']" />
+</metal:sign_result>
+
 <metal:signature_status define-macro="signature_status" i18n:domain="onegov.org">
     <tal:b condition="file.reference.content_type == 'application/pdf'" define="may_sign request.app.enable_yubikey and request.is_admin">
         <div tal:condition="file.signed" class="is-signed signature-status">
@@ -1381,8 +1393,10 @@
 
                     elt.toggleClass('signing', true);
 
-                    jQuery.post(url, {'yubikey': value}, function(data) {
-                        elt.closest('.signature-status').parent().html(data);
+                    jQuery.post(url, {'token': value}, function(data) {
+                        var target = elt.closest('.signature-status').parent();
+                        target.html(data);
+                        processCommonNodes(target);
                     }).always(function() {
                         elt.toggleClass('signing', false);
                     });

@@ -3999,6 +3999,11 @@ h2 + div.timeline {
     }
 }
 
+.message-file-signature {
+    $orange-pastel: #fdddb4;
+    background: $orange-pastel;
+}
+
 /*
     Timeline Messages Fly-In
 */
@@ -4634,6 +4639,22 @@ h2 + div.timeline {
     font-size: .875rem;
     line-height: 1rem;
     margin: .3rem 2rem .75rem 0;
+
+    .alert-box {
+        margin-bottom: .5rem;
+        padding: 5px 10px 5px 7px;
+        width: 100%;
+
+        &::before {
+            font-size: .875rem;
+            line-height: 1;
+            margin-right: 2px;
+        }
+
+        .close {
+            padding-right: 2px;
+        }
+    }
 
     .fa {
         @include prefix(transition-duration, .5s);

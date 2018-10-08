@@ -1319,6 +1319,36 @@
                     </form>
                 </div>
             </div>
+
+            <tal:b condition="file.reference['content_type'] == 'application/pdf'">
+                <h3 i18n:translate>Content</h3>
+                <div class="file-content">
+                    <div class="file-status-tag">
+                        <div tal:condition="file.pages <= 1">
+                            <i class="fa fa-fw fa-file-text-o" aria-hidden="true"></i>
+                            <span i18n:translate>1 page</span>
+                        </div>
+                        <div tal:condition="file.pages > 1">
+                            <i class="fa fa-fw fa-file-text-o" aria-hidden="true"></i>
+                            <span i18n:translate><tal:b i18n:name="count">${file.pages}</tal:b> pages</span>
+                        </div>
+                        <div tal:define="word_count file.word_count">
+                            <tal:b condition="word_count == 0">
+                                <i class="fa fa-fw fa-exclamation-triangle" aria-hidden="true"></i>
+                                <span i18n:translate>Contains no readable text</span>
+                            </tal:b>
+                            <tal:b condition="word_count == 1">
+                                <i class="fa fa-fw fa-font" aria-hidden="true"></i>
+                                <span i18n:translate>1 word</span>
+                            </tal:b>
+                            <tal:b condition="word_count > 1">
+                                <i class="fa fa-fw fa-font" aria-hidden="true"></i>
+                                <span i18n:translate><tal:b i18n:name="count">${word_count}</tal:b> words</span>
+                            </tal:b>
+                        </div>
+                    </div>
+                </div>
+            </tal:b>
         </div>
         <div class="columns small-2 file-actions">
             <a class="button secondary confirm delete"

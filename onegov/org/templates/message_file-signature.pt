@@ -4,7 +4,7 @@
             <a href="${model.link(request)}">${model.meta.name}</a>
         </metal:b>
         <metal:b fill-slot="text" i18n:translate>
-            Signed file.
+            File signed.
         </metal:b>
     </metal:b>
 </tal:b>

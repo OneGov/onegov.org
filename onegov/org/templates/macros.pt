@@ -1420,20 +1420,23 @@
                 data-prompt-success="(function(value) {
                     var url = '${request.link(file, 'sign')}?csrf-token=${layout.csrf_token}';
                     var elt = $(this);
+                    var row = elt.closest('tr');
 
                     elt.toggleClass('signing', true);
+                    window.elt = elt;
 
                     jQuery.post(url, {'token': value}, function(data) {
                         var target = elt.closest('.signature-status').parent();
                         target.html(data);
                         processCommonNodes(target);
+                        row.prev().addClass('signed');
                     }).always(function() {
                         elt.toggleClass('signing', false);
                     });
                 })"
                 i18n:attributes="data-prompt;data-prompt-ok;data-prompt-cancel;data-prompt-info;data-prompt-placeholder"
             >
-                <i class="fa fa-fw fa-lock" aria-hidden="true"></i>
+                <i class="fa fa-fw fa-unlock" aria-hidden="true"></i>
 
                 <span i18n:translate class="hide-on-hover">
                     Unsigned
@@ -1465,7 +1468,7 @@
         file_number file.number|file.id;
         file_upload file.upload_date|file.created
     ">
-        <tr class="file-info">
+        <tr class="file-info ${file.signed and 'signed'}">
             <td>
                 ${file.name}
             </td>

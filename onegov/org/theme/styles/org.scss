@@ -4516,6 +4516,11 @@ h2 + div.timeline {
             }
         }
 
+        &.signed td:nth-child(3)::after {
+            @include icon('\f023');
+            display: inline;
+        }
+
         td:nth-child(4) {
             text-align: right;
             white-space: nowrap;
@@ -4720,7 +4725,7 @@ h2 + div.timeline {
 .publication {
     display: flex;
 
-    margin-bottom: .25rem;
+    margin-bottom: .5rem;
 
     .publication-settings {
         display: flex;

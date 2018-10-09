@@ -403,8 +403,7 @@ def handle_rename(self, request):
             request.app.sign_file(
                 file=self,
                 signee=request.current_username,
-                token=token
-            )
+                token=token)
 
             FileSignatureMessage.create(self, request)
 

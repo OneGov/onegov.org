@@ -73,8 +73,8 @@ setup(
             'onegov_testing',
             'pyquery',
             'pytest-localserver',
-            'pyvcr',
-            'requests-mock'
+            'requests-mock',
+            'vcrpy',
         ],
     ),
     entry_points={

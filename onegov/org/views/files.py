@@ -409,10 +409,8 @@ def handle_sign(self, request):
 
     except AlreadySignedError:
         request.alert(_("This file already has a digital signature"))
-        return
     except InvalidTokenError:
         request.alert(_("Your Yubikey could not be validated"))
-        return
 
     layout = DefaultLayout(self, request)
 

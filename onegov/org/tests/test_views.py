@@ -14,19 +14,21 @@ from libres.modules.errors import AffectedReservationError
 from lxml.html import document_fromstring
 from onegov.core.custom import json
 from onegov.core.utils import Bunch
-from onegov.form import FormCollection, FormSubmission
+from onegov.core.utils import module_path
 from onegov.directory import DirectoryEntry
+from onegov.file import FileCollection
+from onegov.form import FormCollection, FormSubmission
 from onegov.gis import Coordinates
 from onegov.newsletter import RecipientCollection, NewsletterCollection
 from onegov.page import PageCollection
 from onegov.pay import PaymentProviderCollection
 from onegov.people import Person
 from onegov.reservation import ResourceCollection, Reservation
-from onegov_testing import utils
 from onegov.ticket import TicketCollection
 from onegov.user import UserCollection
-from sedate import replace_timezone
+from onegov_testing import utils
 from purl import URL
+from sedate import replace_timezone
 from webtest import Upload
 
 
@@ -4362,3 +4364,31 @@ def test_markdown_in_directories(client):
     page.form.submit()
 
     assert "<li>Soccer rules" in client.get('/directories/clubs/soccer-club')
+
+
+def test_search_signed_files(client_with_es):
+    client = client_with_es
+    client.login_admin()
+
+    path = module_path('onegov.org', 'tests/fixtures/sample.pdf')
+    with open(path, 'rb') as f:
+        page = client.get('/files')
+        page.form['file'] = Upload('Sample.pdf', f.read(), 'application/pdf')
+        page.form.submit()
+
+    client.app.es_indexer.process()
+    client.app.es_client.indices.refresh(index='_all')
+
+    assert 'Sample' in client.get('/search?q=Adobe')
+    assert 'Sample' not in client.spawn().get('/search?q=Adobe')
+
+    transaction.begin()
+    pdf = FileCollection(client.app.session()).query().one()
+    pdf.signed = True
+    transaction.commit()
+
+    client.app.es_indexer.process()
+    client.app.es_client.indices.refresh(index='_all')
+
+    assert 'Sample' in client.get('/search?q=Adobe')
+    assert 'Sample' in client.spawn().get('/search?q=Adobe')

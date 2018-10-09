@@ -376,7 +376,7 @@ def view_upload_file_by_json(self, request):
 
 @OrgApp.html(model=File, name='sign', request_method='POST',
              permission=Private)
-def handle_rename(self, request):
+def handle_sign(self, request):
     request.assert_valid_csrf_token()
     token = request.params.get('token')
 
@@ -385,7 +385,7 @@ def handle_rename(self, request):
 
     def may_sign():
         if not token:
-            request.alert(_("Please submit your yubikey when signing"))
+            request.alert(_("Please submit your yubikey"))
             return False
 
         if not user.second_factor:
@@ -408,7 +408,7 @@ def handle_rename(self, request):
             FileSignatureMessage.create(self, request)
 
     except AlreadySignedError:
-        request.alert(_("This file has already been signed"))
+        request.alert(_("This file already has a digital signature"))
         return
     except InvalidTokenError:
         request.alert(_("Your Yubikey could not be validated"))

@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2018-09-27 15:01+0200\n"
+"POT-Creation-Date: 2018-10-09 10:02+0200\n"
 "PO-Revision-Date: 2018-09-24 12:21+0200\n"
 "Last-Translator: Marc Sommerhalder <marc.sommerhalder@seantis.ch>\n"
 "Language-Team: French\n"
@@ -1833,6 +1833,12 @@ msgstr "Créé"
 msgid "Disbursed"
 msgstr "Décaissé"
 
+msgid "Digital Signature"
+msgstr "Signature électronique"
+
+msgid "Publication"
+msgstr "Publication"
+
 msgid "Public"
 msgstr "Public"
 
@@ -1848,6 +1854,21 @@ msgstr "Date de publication :"
 msgid "Reset"
 msgstr "Réinitialiser"
 
+msgid "Content"
+msgstr "Contenu"
+
+msgid "1 page"
+msgstr "1 page"
+
+msgid "Contains no readable text"
+msgstr "Ne contient aucun texte lisible"
+
+msgid "1 word"
+msgstr "1 mot"
+
+msgid "${count} words"
+msgstr "${count} mots"
+
 msgid "Do you really want to delete this file?"
 msgstr "Voulez-vous vraiment supprimer ce fichier ?"
 
@@ -1859,6 +1880,35 @@ msgstr "Veuillez fournir le nouveau nom du fichier "
 
 msgid "Rename"
 msgstr "Renommer"
+
+msgid "Digitally signed by ${signee} on ${date}"
+msgstr "Signé électroniquement par ${signee} le ${date}"
+
+msgid "Please enter your yubikey to digitally sign this file"
+msgstr ""
+"Veuillez saisir votre yubikey pour signer électroniquement ce fichier"
+
+msgid "Sign"
+msgstr "Signer"
+
+msgid ""
+"Published and digitally signed documents can be discovered through the site-"
+"search and in the list of digitally signed documents. This action will be "
+"logged and cannot be undone."
+msgstr ""
+"Les documents publiés et signés électroniquement peuvent être trouvés grâce "
+"au moteur de recherche sur le site et dans la liste des documents signés "
+"électroniquement. Cette action sera enregistrée et ne pourra pas être "
+"annulée."
+
+msgid "Unsigned"
+msgstr "Non signé"
+
+msgid "Sign now"
+msgstr "Signez maintenant"
+
+msgid "You are not authorised to digitally sign documents"
+msgstr "Vous n'êtes pas autorisé à signer électroniquement des documents"
 
 msgid "Click to add a description"
 msgstr "Cliquez pour ajouter une description"
@@ -2312,6 +2362,9 @@ msgstr ""
 "Le formulaire contient des erreurs. Veuillez vérifier les champs marqués en "
 "rouge."
 
+msgid "File signed."
+msgstr "Fichier signé."
+
 msgid "No directories defined yet."
 msgstr "Aucun dossier défini pour l'instant."
 
@@ -2548,6 +2601,21 @@ msgstr "Définir par défaut"
 
 msgid "Manage Photo Albums"
 msgstr "Gérer les albums photos"
+
+msgid "Please submit your yubikey"
+msgstr "Veuillez saisir votre yubikey"
+
+msgid "Your account is not linked to a Yubikey"
+msgstr "Votre compte n'est pas lié à un Yubikey."
+
+msgid "The used Yubikey is not linked to your account"
+msgstr "Le Yubikey utilisé n'est pas lié à votre compte."
+
+msgid "This file already has a digital signature"
+msgstr "Ce fichier a déjà une signature électronique."
+
+msgid "Your Yubikey could not be validated"
+msgstr "Votre Yubikey n'a pas pu être validé."
 
 msgid "This file type is not supported"
 msgstr "Ce type de fichier n'est pas pris en charge"

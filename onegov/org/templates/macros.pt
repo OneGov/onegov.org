@@ -1406,8 +1406,8 @@
             <i class="fa fa-fw fa-lock" aria-hidden="true"></i>
 
             <span i18n:translate>
-                Signed by <tal:b i18n:name="signee">${layout.get_user_title(file.signature_metadata['signee'])}</tal:b>
-                on <tal:b i18n:name="date">${layout.format_date(layout.parse_isodate(file.signature_metadata['timestamp']), 'datetime_long')}
+                Digitally signed by <tal:b i18n:name="signee">${layout.get_user_title(file.signature_metadata['signee'])}</tal:b>
+                on <span class="nowrap" i18n:name="date">${layout.format_date(layout.parse_isodate(file.signature_metadata['timestamp']), 'datetime_long')}</span>
             </span>
         </div>
         <tal:b condition="not file.signed and may_sign">
@@ -1416,7 +1416,7 @@
                 data-prompt-ok="Sign"
                 data-prompt-cancel="Cancel"
                 data-prompt-placeholder="Plug your YubiKey into a USB slot and press it."
-                data-prompt-info="If digitally signed documents are published, they may be discovered through the site-search and in the list of digitally signed documents. This action will be logged and cannot be undone."
+                data-prompt-info="Published and digitally signed documents can be discovered through the site-search and in the list of digitally signed documents. This action will be logged and cannot be undone."
                 data-prompt-success="(function(value) {
                     var url = '${request.link(file, 'sign')}?csrf-token=${layout.csrf_token}';
                     var elt = $(this);
@@ -1456,7 +1456,7 @@
                 </span>
 
                 <span i18n:translate class="show-on-hover">
-                    You are not authorised to sign documents
+                    You are not authorised to digitally sign documents
                 </span>
             </div>
         </tal:b>

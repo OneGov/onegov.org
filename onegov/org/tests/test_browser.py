@@ -287,7 +287,7 @@ def test_publication_workflow(browser, temporary_path, org_app):
     assert 'public' in r.headers['cache-control']
 
     # make sure unpublishing works
-    browser.find_by_css('.publication-tag a').click()
+    browser.find_by_css('.publication .file-status-tag a').click()
     r = requests.get(file_url)
     assert r.status_code == 403
 

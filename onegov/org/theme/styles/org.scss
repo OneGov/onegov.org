@@ -146,6 +146,13 @@ body {
 }
 
 /*
+    Small atomic text particles whose white-space should not be wrapped
+*/
+.nowrap {
+    white-space: nowrap;
+}
+
+/*
     Apply on a row to flip the order of columns on mobile
 */
 @media #{$small-only} {
@@ -4717,6 +4724,23 @@ h2 + div.timeline {
 .signature {
     margin-bottom: 1rem;
     padding-top: .01rem;
+}
+
+.signature-status {
+    display: inline-flex;
+    padding: 3px 5px 3px 3px;
+
+    span {
+        line-height: 1.4;
+    }
+
+    &.is-not-signed span {
+        padding-left: 2px;
+    }
+
+    i {
+        padding: 2px 8px 3px 3px;
+    }
 }
 
 /*

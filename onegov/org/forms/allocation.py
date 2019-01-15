@@ -6,10 +6,11 @@ from dateutil.rrule import rrule, DAILY, MO, TU, WE, TH, FR, SA, SU
 from onegov.form import Form
 from onegov.form.fields import MultiCheckboxField
 from onegov.org import _
-from wtforms.fields import RadioField
+from wtforms.fields import StringField, RadioField
 from wtforms.fields.html5 import DateField, IntegerField
 from wtforms.validators import DataRequired, NumberRange, InputRequired
 from wtforms_components import TimeField
+from uuid import uuid4
 
 
 WEEKDAYS = (
@@ -83,6 +84,53 @@ class AllocationFormHelpers(object):
 
     def is_excluded(self, date):
         return False
+
+
+class AllocationRuleForm(Form):
+    """ Base form form allocation rules. """
+
+    title = StringField(
+        label=_("Title"),
+        validators=[InputRequired()],
+        fieldset=_("Rule"))
+
+    extend = RadioField(
+        label=_("Extend"),
+        validators=[InputRequired()],
+        fieldset=_("Rule"),
+        choices=(
+            ('daily', _("Extend by one day at midnight")),
+            ('monthly', _("Extend by one month at the end of the month")),
+            ('yearly', _("Extend by one year at the end of the year"))
+        ))
+
+    @property
+    def rule(self):
+        return {
+            'id': uuid4().hex,
+            'title': self.title.data,
+            'extend': self.extend.data,
+            'options': self.options,
+        }
+
+    @rule.setter
+    def rule(self, value):
+        self.title.data = value['title']
+        self.extend.data = value['extend']
+
+        for k, v in value['options'].items():
+            if hasattr(self, k):
+                getattr(self, k).data = v
+
+    @property
+    def options(self):
+        return {
+            k: getattr(self, k).data for k in self._fields
+            if k not in ('title', 'extend', 'csrf_token')
+        }
+
+    def apply(self, resource):
+        return 0
 
 
 class AllocationForm(Form, AllocationFormHelpers):

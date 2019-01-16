@@ -1,7 +1,9 @@
 import morepath
 
+from libres.db.models import ReservedSlot
 from libres.modules.errors import LibresError
 from onegov.core.security import Public, Private
+from onegov.core.utils import is_uuid
 from onegov.form import merge_forms
 from onegov.org import OrgApp, utils, _
 from onegov.org.forms import AllocationRuleForm
@@ -13,9 +15,15 @@ from onegov.org.layout import AllocationEditFormLayout
 from onegov.org.layout import AllocationRulesLayout
 from onegov.org.layout import ResourceLayout
 from onegov.org.new_elements import Link, Confirm, Intercooler
-from onegov.reservation import Allocation, Resource, ResourceCollection
+from onegov.reservation import Allocation
+from onegov.reservation import Reservation
+from onegov.reservation import Resource
+from onegov.reservation import ResourceCollection
 from purl import URL
+from sqlalchemy import not_, func
+from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.orm import defer, defaultload
+from webob import exc
 
 
 @OrgApp.json(model=Resource, name='slots', permission=Public)
@@ -59,7 +67,7 @@ def view_allocation_rules(self, request):
     layout = AllocationRulesLayout(self, request)
 
     def link_for_rule(rule, name):
-        url = URL(request.link(self, name='stop-rule'))
+        url = URL(request.link(self, name))
         url = url.query_param('csrf-token', layout.csrf_token)
         url = url.query_param('rule', rule['id'])
 
@@ -267,6 +275,9 @@ def handle_edit_allocation(self, request, form):
         except LibresError as e:
             utils.show_libres_error(e, request)
         else:
+            # when we edit an allocation, we disassociate it from any rules
+            self.data = {k: v for k, v in self.data.items() if k != 'rule'}
+
             request.success(_("Your changes were saved"))
             resource.highlight_allocations([self])
 
@@ -331,14 +342,71 @@ def handle_allocation_rule(self, request, form):
     }
 
 
+def rule_id_from_request(request):
+    rule_id = request.params.get('rule')
+
+    if not is_uuid(rule_id):
+        raise exc.HTTPBadRequest()
+
+    return rule_id
+
+
+def delete_rule(resource, rule_id):
+    resource.content['rules'] = [
+        rule for rule in resource.content.get('rules', ())
+        if rule['id'] != rule_id
+    ]
+
+
 @OrgApp.view(model=Resource, request_method='POST', permission=Private,
              name='stop-rule')
 def handle_stop_rule(self, request):
     request.assert_valid_csrf_token()
 
-    self.content['rules'] = [
-        rule for rule in self.content.get('rules', ())
-        if rule['id'] != request.params.get('rule', None)
-    ]
+    rule_id = rule_id_from_request(request)
+    delete_rule(self, rule_id)
 
     request.success(_("The rule was stopped"))
+
+
+@OrgApp.view(model=Resource, request_method='POST', permission=Private,
+             name='delete-rule')
+def handle_delete_rule(self, request):
+    request.assert_valid_csrf_token()
+
+    rule_id = rule_id_from_request(request)
+
+    # all the slots
+    slots = self.scheduler.managed_reserved_slots()
+    slots = slots.with_entities(ReservedSlot.allocation_id)
+
+    # all the reservations
+    reservations = self.scheduler.managed_reservations()
+    reservations = reservations.with_entities(Reservation.target)
+
+    # include the allocations created by the given rule...
+    candidates = self.scheduler.managed_allocations()
+    candidates = candidates.filter(
+        func.json_extract_path_text(
+            func.cast(Allocation.data, JSON), 'rule'
+        ) == rule_id
+    )
+
+    # .. without the ones with slots
+    candidates = candidates.filter(
+        not_(Allocation.id.in_(slots.subquery())))
+
+    # .. without the ones with reservations
+    candidates = candidates.filter(
+        not_(Allocation.group.in_(reservations.subquery())))
+
+    # delete the allocations
+    count = candidates.delete('fetch')
+
+    delete_rule(self, rule_id)
+
+    request.success(
+        _("The rule was deleted, along with ${n} allocations", mapping={
+            'n': count
+        })
+    )

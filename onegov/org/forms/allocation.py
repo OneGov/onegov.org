@@ -106,10 +106,14 @@ class AllocationRuleForm(Form):
             ('yearly', _("Extend by one year at the end of the year"))
         ))
 
+    @cached_property
+    def rule_id(self):
+        return uuid4().hex
+
     @property
     def rule(self):
         return {
-            'id': uuid4().hex,
+            'id': self.rule_id,
             'title': self.title.data,
             'extend': self.extend.data,
             'options': self.options,
@@ -117,6 +121,7 @@ class AllocationRuleForm(Form):
 
     @rule.setter
     def rule(self, value):
+        self.__dict__['rule_id'] = value['id']
         self.title.data = value['title']
         self.extend.data = value['extend']
 
@@ -132,7 +137,19 @@ class AllocationRuleForm(Form):
         }
 
     def apply(self, resource):
-        return 0
+        data = {**(self.data or {}), 'rule': self.rule_id}
+
+        allocations = resource.scheduler.allocate(
+            dates=self.dates,
+            whole_day=self.whole_day,
+            quota=self.quota,
+            quota_limit=self.quota_limit,
+            data=data,
+            partly_available=self.partly_available,
+            skip_overlapping=True
+        )
+
+        return len(allocations)
 
 
 class AllocationForm(Form, AllocationFormHelpers):

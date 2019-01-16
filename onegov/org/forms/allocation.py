@@ -161,7 +161,7 @@ class AllocationRuleForm(Form):
             }[self.extend.data]
 
             start = self.end.data + timedelta(days=1)
-            end = start + relativedelta(**{unit: self.iteration - 1})
+            end = self.end.data + relativedelta(**{unit: self.iteration})
 
             dates = self.generate_dates(
                 start,

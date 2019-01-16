@@ -3,7 +3,7 @@ import morepath
 from datetime import timedelta
 from libres.db.models import ReservedSlot
 from libres.modules.errors import LibresError
-from onegov.core.security import Public, Private
+from onegov.core.security import Public, Private, Secret
 from onegov.core.utils import is_uuid
 from onegov.form import merge_forms
 from onegov.org import OrgApp, utils, _
@@ -61,6 +61,20 @@ def view_allocations_json(self, request):
             request, self.scheduler, allocations
         )
     )
+
+
+@OrgApp.view(model=Resource, name='process-rules', permission=Secret)
+def process_rules(self, request):
+    """ Manually runs the rules processing cronjobs for testing.
+
+    Not really dangerous, though it should be replaced with something
+    proper instead, cronjobs currently do not run in most tests and that
+    should be remedied.
+
+    """
+
+    if request.current_username == 'admin@example.org':
+        handle_rules_cronjob(self, request)
 
 
 @OrgApp.html(model=Resource, name='rules', permission=Private,
@@ -376,7 +390,7 @@ def handle_rules_cronjob(resource, request):
         # prior - this prevents flaky cronjobs from accidentally processing
         # rules too often
         if rule['last_run']\
-                and rule['last_run'] > (utcnow() + timedelta(hours=12)):
+                and rule['last_run'] > utcnow() - timedelta(hours=12):
             return False
 
         # we assume to be called once a day, so if we are called, a daily

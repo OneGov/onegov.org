@@ -114,7 +114,7 @@ def view_allocation_rules(self, request):
         form_class = get_allocation_rule_form_class(self, request)
 
         for rule in self.content.get('rules', ()):
-            form = form_class()
+            form = request.get_form(form_class, csrf_support=False, model=self)
             form.rule = rule
 
             yield {
@@ -322,7 +322,12 @@ def handle_allocation_rule(self, request, form):
     return {
         'layout': layout,
         'title': _("New Rule"),
-        'form': form
+        'form': form,
+        'helptext': _(
+            "Rules ensure that the allocations between start/end exist and "
+            "that they are extended beyond those dates at the given "
+            "intervals. "
+        )
     }
 
 

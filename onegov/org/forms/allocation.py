@@ -91,6 +91,7 @@ class AllocationRuleForm(Form):
 
     title = StringField(
         label=_("Title"),
+        description=_("General availability"),
         validators=[InputRequired()],
         fieldset=_("Rule"))
 
@@ -98,6 +99,7 @@ class AllocationRuleForm(Form):
         label=_("Extend"),
         validators=[InputRequired()],
         fieldset=_("Rule"),
+        default='daily',
         choices=(
             ('daily', _("Extend by one day at midnight")),
             ('monthly', _("Extend by one month at the end of the month")),
@@ -176,6 +178,12 @@ class AllocationForm(Form, AllocationFormHelpers):
     def on_request(self):
         if not self.request.app.org.holidays:
             self.delete_field('on_holidays')
+
+    def ensure_start_before_end(self):
+        if self.start.data and self.end.data:
+            if self.start.data > self.end.data:
+                self.start.errors.append(_("Start date before end date"))
+                return False
 
     @property
     def weekdays(self):

@@ -276,7 +276,8 @@ def handle_edit_allocation(self, request, form):
             utils.show_libres_error(e, request)
         else:
             # when we edit an allocation, we disassociate it from any rules
-            self.data = {k: v for k, v in self.data.items() if k != 'rule'}
+            if self.data and 'rule' in self.data:
+                self.data = {k: v for k, v in self.data.items() if k != 'rule'}
 
             request.success(_("Your changes were saved"))
             resource.highlight_allocations([self])

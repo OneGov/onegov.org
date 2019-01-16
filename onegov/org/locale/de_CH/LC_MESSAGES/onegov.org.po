@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2019-01-16 10:50+0100\n"
+"POT-Creation-Date: 2019-01-16 14:27+0100\n"
 "PO-Revision-Date: 2018-12-08 11:01+0100\n"
 "Last-Translator: Marc Sommerhalder <marc.sommerhalder@seantis.ch>\n"
 "Language-Team: German\n"
@@ -1129,9 +1129,6 @@ msgstr "Optionen"
 msgid "Until"
 msgstr "Bis zum"
 
-msgid "Start date before end date"
-msgstr "Start Datum vor Ende"
-
 msgid "Extend by one day at midnight"
 msgstr "Mitternachts um einen Tag verlängern"
 
@@ -1140,6 +1137,9 @@ msgstr "Ende Monat um einen Monat verlängern"
 
 msgid "Extend by one year at the end of the year"
 msgstr "Ende Jahr um ein Jahr verlängern"
+
+msgid "Start date before end date"
+msgstr "Start Datum vor Ende"
 
 msgid "New entries"
 msgstr "Neue Einträge"
@@ -3434,10 +3434,16 @@ msgstr "Neue Regel"
 msgid ""
 "Rules ensure that the allocations between start/end exist and that they are "
 "extended beyond those dates at the given intervals. "
-msgstr "Regeln stellen sicher dass die Einteilungen zwischen Start und Ende bestehen und dass sie im gewählten Interval verlängert werden."
+msgstr ""
+"Regeln stellen sicher dass die Einteilungen zwischen Start und Ende bestehen "
+"und dass sie im gewählten Interval verlängert werden."
 
 msgid "The rule was stopped"
 msgstr "Die Regel wurde gestoppt"
+
+#, python-format
+msgid "The rule was deleted, along with ${n} allocations"
+msgstr "Die Regel wurde gelöscht, zusammen mit ${n} Einteilungen"
 
 #, python-format
 msgid "New rule active, ${n} allocations created"

@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2019-01-16 10:50+0100\n"
+"POT-Creation-Date: 2019-01-16 14:27+0100\n"
 "PO-Revision-Date: 2018-12-08 11:02+0100\n"
 "Last-Translator: Marc Sommerhalder <marc.sommerhalder@seantis.ch>\n"
 "Language-Team: French\n"
@@ -1131,9 +1131,6 @@ msgstr "Options"
 msgid "Until"
 msgstr "Jusqu'à"
 
-msgid "Start date before end date"
-msgstr ""
-
 msgid "Extend by one day at midnight"
 msgstr ""
 
@@ -1141,6 +1138,9 @@ msgid "Extend by one month at the end of the month"
 msgstr ""
 
 msgid "Extend by one year at the end of the year"
+msgstr ""
+
+msgid "Start date before end date"
 msgstr ""
 
 msgid "New entries"
@@ -3452,6 +3452,10 @@ msgid ""
 msgstr ""
 
 msgid "The rule was stopped"
+msgstr ""
+
+#, python-format
+msgid "The rule was deleted, along with ${n} allocations"
 msgstr ""
 
 #, python-format

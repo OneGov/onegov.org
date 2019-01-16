@@ -1,5 +1,6 @@
 import morepath
 
+from datetime import timedelta
 from libres.db.models import ReservedSlot
 from libres.modules.errors import LibresError
 from onegov.core.security import Public, Private
@@ -20,6 +21,7 @@ from onegov.reservation import Reservation
 from onegov.reservation import Resource
 from onegov.reservation import ResourceCollection
 from purl import URL
+from sedate import utcnow
 from sqlalchemy import not_, func
 from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.orm import defer, defaultload
@@ -344,6 +346,10 @@ def handle_allocation_rule(self, request, form):
 
 
 def rule_id_from_request(request):
+    """ Returns the rule_id from the request params, ensuring that
+    an actual uuid is returned.
+
+    """
     rule_id = request.params.get('rule')
 
     if not is_uuid(rule_id):
@@ -352,7 +358,67 @@ def rule_id_from_request(request):
     return rule_id
 
 
+def handle_rules_cronjob(resource, request):
+    """ Handles all cronjob duties of the rules stored on the given
+    resource.
+
+    """
+    if not resource.content.get('rules'):
+        return
+
+    targets = []
+
+    now = utcnow()
+    tomorrow = (now + timedelta(days=1)).date()
+
+    def should_process(rule):
+        # do not reprocess rules if they were processed less than 12 hours
+        # prior - this prevents flaky cronjobs from accidentally processing
+        # rules too often
+        if rule['last_run']\
+                and rule['last_run'] > (utcnow() + timedelta(hours=12)):
+            return False
+
+        # we assume to be called once a day, so if we are called, a daily
+        # rule has to be processed
+        if rule['extend'] == 'daily':
+            return True
+
+        if rule['extend'] == 'monthly' and tomorrow.day == 1:
+            return True
+
+        if rule['extend'] == 'yearly'\
+                and tomorrow.month == 1\
+                and tomorrow.day == 1:
+
+            return True
+
+        return False
+
+    def prepare_rule(rule):
+        if should_process(rule):
+            rule['iteration'] += 1
+            rule['last_run'] = now
+
+            targets.append(rule)
+
+        return rule
+
+    resource.content['rules'] = [
+        prepare_rule(r) for r
+        in resource.content.get('rules', ())]
+
+    form_class = get_allocation_rule_form_class(resource, request)
+
+    for rule in targets:
+        form = request.get_form(form_class, csrf_support=False, model=resource)
+        form.rule = rule
+        form.apply(resource)
+
+
 def delete_rule(resource, rule_id):
+    """ Removes the given rule from the resource. """
+
     resource.content['rules'] = [
         rule for rule in resource.content.get('rules', ())
         if rule['id'] != rule_id

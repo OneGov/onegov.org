@@ -2,15 +2,16 @@ import sedate
 
 from cached_property import cached_property
 from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 from dateutil.rrule import rrule, DAILY, MO, TU, WE, TH, FR, SA, SU
 from onegov.form import Form
 from onegov.form.fields import MultiCheckboxField
 from onegov.org import _
+from uuid import uuid4
 from wtforms.fields import StringField, RadioField
 from wtforms.fields.html5 import DateField, IntegerField
 from wtforms.validators import DataRequired, NumberRange, InputRequired
 from wtforms_components import TimeField
-from uuid import uuid4
 
 
 WEEKDAYS = (
@@ -110,6 +111,14 @@ class AllocationRuleForm(Form):
     def rule_id(self):
         return uuid4().hex
 
+    @cached_property
+    def iteration(self):
+        return 0
+
+    @cached_property
+    def last_run(self):
+        None
+
     @property
     def rule(self):
         return {
@@ -117,11 +126,16 @@ class AllocationRuleForm(Form):
             'title': self.title.data,
             'extend': self.extend.data,
             'options': self.options,
+            'iteration': self.iteration,
+            'last_run': self.last_run,
         }
 
     @rule.setter
     def rule(self, value):
         self.__dict__['rule_id'] = value['id']
+        self.__dict__['iteration'] = value['iteration']
+        self.__dict__['last_run'] = value['last_run']
+
         self.title.data = value['title']
         self.extend.data = value['extend']
 
@@ -137,19 +151,35 @@ class AllocationRuleForm(Form):
         }
 
     def apply(self, resource):
+        if self.iteration == 0:
+            dates = self.dates
+        else:
+            unit = {
+                'daily': 'days',
+                'monthly': 'months',
+                'yearly': 'years'
+            }[self.extend.data]
+
+            start = self.end.data + timedelta(days=1)
+            end = start + relativedelta(**{unit: self.iteration - 1})
+
+            dates = self.generate_dates(
+                start,
+                end,
+                weekdays=self.weekdays
+            )
+
         data = {**(self.data or {}), 'rule': self.rule_id}
 
-        allocations = resource.scheduler.allocate(
-            dates=self.dates,
+        return len(resource.scheduler.allocate(
+            dates=dates,
             whole_day=self.whole_day,
             quota=self.quota,
             quota_limit=self.quota_limit,
             data=data,
             partly_available=self.partly_available,
             skip_overlapping=True
-        )
-
-        return len(allocations)
+        ))
 
 
 class AllocationForm(Form, AllocationFormHelpers):

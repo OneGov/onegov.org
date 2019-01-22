@@ -7,13 +7,14 @@ from onegov.core.orm import as_selectable
 from onegov.core.security import Public, Private
 from onegov.org import _, OrgApp
 from onegov.org.new_elements import Link, Intercooler, Confirm
-from onegov.org.forms import TicketNoteForm
+from onegov.org.forms import TicketNoteForm, TicketChatMessageForm
 from onegov.org.layout import DefaultLayout
 from onegov.org.layout import TicketLayout
 from onegov.org.layout import TicketNoteLayout
 from onegov.org.layout import TicketsLayout
+from onegov.org.layout import TicketChatMessageLayout
 from onegov.org.mail import send_transactional_html_mail
-from onegov.org.models import TicketMessage, TicketNote
+from onegov.org.models import TicketChatMessage, TicketMessage, TicketNote
 from onegov.org.views.message import view_messages_feed
 from onegov.ticket import handlers as ticket_handlers
 from onegov.ticket import Ticket, TicketCollection
@@ -341,6 +342,31 @@ def unmute_ticket(self, request):
         }))
 
     return morepath.redirect(request.link(self))
+
+
+@OrgApp.form(model=Ticket, name='message-to-submitter', permission=Private,
+             form=TicketChatMessageForm, template='form.pt')
+def message_to_submitter(self, request, form):
+    recipient = self.handler.email
+
+    if form.submitted(request):
+        TicketChatMessage.create(
+            self, request,
+            text=form.text.data,
+            owner=request.current_username,
+            recipient=recipient)
+
+        request.success(_("Your message has been sent"))
+        return morepath.redirect(request.link(self))
+
+    return {
+        'title': _("New Message"),
+        'layout': TicketChatMessageLayout(self, request),
+        'form': form,
+        'helptext': _("Recipient: ${address}", mapping={
+            'address': recipient
+        })
+    }
 
 
 @OrgApp.html(model=Ticket, name='status', template='ticket_status.pt',

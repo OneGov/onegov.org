@@ -166,6 +166,10 @@ body {
     font-size: .875rem;
 }
 
+.tiny-text {
+    font-size: .8rem;
+}
+
 /*
     Small atomic text particles whose white-space should not be wrapped
 */
@@ -4208,6 +4212,16 @@ h2 + div.timeline {
         overflow: auto;
         text-overflow: clip;
         white-space: normal;
+    }
+}
+
+.message-ticket_chat {
+    background: $blue-pastel;
+
+    .recipient-info {
+        font-size: .875rem;
+        font-style: italic;
+        margin-top: .5rem;
     }
 }
 

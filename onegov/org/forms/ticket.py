@@ -24,3 +24,13 @@ class TicketNoteForm(Form):
             validators.Optional(),
             FileSizeLimit(10 * 1000 * 1000)
         ])
+
+
+class TicketChatMessageForm(Form):
+
+    text = TextAreaField(
+        label=_("Message"),
+        description=_("Your message"),
+        validators=[validators.InputRequired()],
+        filters=(strip_whitespace, ),
+        render_kw={'rows': 10})

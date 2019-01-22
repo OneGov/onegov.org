@@ -24,7 +24,7 @@ class TicketMessageMixin(object):
         )
 
     @classmethod
-    def create(cls, ticket, request, **extra_meta):
+    def create(cls, ticket, request, text=None, owner=None, **extra_meta):
         meta = {
             'id': ticket.id.hex,
             'handler_code': ticket.handler_code,
@@ -35,9 +35,12 @@ class TicketMessageMixin(object):
         # force a change of the ticket to make sure that it gets reindexed
         ticket.force_update()
 
+        owner = owner or request.current_username or ticket.ticket_email
+
         return cls.bound_messages(request.session).add(
             channel_id=ticket.number,
             owner=request.current_username or ticket.ticket_email,
+            text=text,
             meta=meta
         )
 
@@ -49,8 +52,7 @@ class TicketNote(Message, TicketMessageMixin):
 
     @classmethod
     def create(cls, ticket, request, text, file=None):
-        note = super().create(ticket, request)
-        note.text = text
+        note = super().create(ticket, request, text=text)
         note.file = file
 
         return note
@@ -74,6 +76,22 @@ class TicketNote(Message, TicketMessageMixin):
                     redirect_after=layout.request.link(self.ticket)
                 )
             ))
+
+
+class TicketChatMessage(Message, TicketMessageMixin):
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'ticket_chat'
+    }
+
+    @classmethod
+    def create(cls, ticket, request, text, owner, recipient):
+        return super().create(
+            ticket, request, text=text, owner=owner, recipient=recipient)
+
+    @property
+    def formatted_text(self):
+        return linkify(self.text).replace('\n', '<br>')
 
 
 class TicketMessage(Message, TicketMessageMixin):

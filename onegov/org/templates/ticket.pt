@@ -61,6 +61,11 @@
                             <span i18n:translate>Enable E-Mails</span>
                         </a>
                     </div>
+
+                    <a class="button small primary" href="${request.link(ticket, 'message-to-submitter')}">
+                        <i class="fa fa-fw fa-comment-o" aria-hidden="true"></i>
+                        <span i18n:translate>Send Message</span>
+                    </a>
                 </div>
 
                 <div class="ticket-panel" tal:define="payment handler.payment" tal:condition="payment">

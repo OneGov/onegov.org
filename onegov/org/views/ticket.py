@@ -390,9 +390,9 @@ def message_to_submitter(self, request, form):
     }
 
 
-@OrgApp.html(model=Ticket, name='status', template='ticket_status.pt',
-             permission=Public)
-def view_ticket_status(self, request):
+@OrgApp.form(model=Ticket, name='status', template='ticket_status.pt',
+             permission=Public, form=TicketChatMessageForm)
+def view_ticket_status(self, request, form):
 
     if self.state == 'open':
         title = _("Your request has been submitted")
@@ -409,10 +409,36 @@ def view_ticket_status(self, request):
         Link(_("Ticket Status"), '#')
     ]
 
+    if form.submitted(request):
+
+        if self.state == 'closed':
+            request.alert(_("The ticket has already been closed"))
+        else:
+            TicketChatMessage.create(
+                self, request,
+                text=form.text.data,
+                owner=self.handler.email)
+
+            request.success(_("Your message has been received"))
+            return morepath.redirect(request.link(self, 'status'))
+
+    if self.state != 'closed':
+        messages = MessageCollection(
+            request.session,
+            channel_id=self.number,
+            type='ticket_chat'
+        )
+    else:
+        messages = None
+
     return {
         'title': title,
         'layout': layout,
-        'ticket': self
+        'ticket': self,
+        'feed_data': messages and json.dumps(
+            view_messages_feed(messages, request)
+        ) or None,
+        'form': form
     }
 
 

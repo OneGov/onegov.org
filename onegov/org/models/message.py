@@ -35,11 +35,12 @@ class TicketMessageMixin(object):
         # force a change of the ticket to make sure that it gets reindexed
         ticket.force_update()
 
+        # the owner can be forced to a specific value
         owner = owner or request.current_username or ticket.ticket_email
 
         return cls.bound_messages(request.session).add(
             channel_id=ticket.number,
-            owner=request.current_username or ticket.ticket_email,
+            owner=owner,
             text=text,
             meta=meta
         )
@@ -85,7 +86,7 @@ class TicketChatMessage(Message, TicketMessageMixin):
     }
 
     @classmethod
-    def create(cls, ticket, request, text, owner, recipient):
+    def create(cls, ticket, request, text, owner, recipient=None):
         return super().create(
             ticket, request, text=text, owner=owner, recipient=recipient)
 

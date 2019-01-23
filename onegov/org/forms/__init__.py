@@ -29,7 +29,9 @@ from onegov.org.forms.settings import HomepageSettingsForm
 from onegov.org.forms.settings import MapSettingsForm
 from onegov.org.forms.settings import ModuleSettingsForm
 from onegov.org.forms.signup import SignupForm
-from onegov.org.forms.ticket import TicketNoteForm, TicketChatMessageForm
+from onegov.org.forms.ticket import TicketNoteForm
+from onegov.org.forms.ticket import TicketChatMessageForm
+from onegov.org.forms.ticket import InternalTicketChatMessageForm
 from onegov.org.forms.user import ManageUserForm, NewUserForm
 from onegov.org.forms.userprofile import UserProfileForm
 
@@ -52,6 +54,7 @@ __all__ = [
     'HolidaySettingsForm',
     'HomepageSettingsForm',
     'ImageSetForm',
+    'InternalTicketChatMessageForm',
     'LinkForm',
     'ManageUserForm',
     'MapSettingsForm',

@@ -115,6 +115,10 @@
         margin-bottom: 10px;
     }
 
+    .previous-message {
+        border-color: #ddd;
+    }
+
     .inline-message p:last-child {
         margin-bottom: 0;
     }

@@ -7,7 +7,9 @@ from onegov.core.orm import as_selectable
 from onegov.core.security import Public, Private
 from onegov.org import _, OrgApp
 from onegov.org.new_elements import Link, Intercooler, Confirm
-from onegov.org.forms import TicketNoteForm, TicketChatMessageForm
+from onegov.org.forms import TicketNoteForm
+from onegov.org.forms import TicketChatMessageForm
+from onegov.org.forms import InternalTicketChatMessageForm
 from onegov.org.layout import DefaultLayout
 from onegov.org.layout import TicketLayout
 from onegov.org.layout import TicketNoteLayout
@@ -20,7 +22,7 @@ from onegov.ticket import handlers as ticket_handlers
 from onegov.ticket import Ticket, TicketCollection
 from onegov.ticket.errors import InvalidStateChange
 from onegov.user import User, UserCollection
-from sqlalchemy import select
+from sqlalchemy import select, desc
 
 
 @OrgApp.html(model=Ticket, template='ticket.pt', permission=Private)
@@ -174,6 +176,62 @@ def send_email_if_enabled(ticket, request, template, subject):
         content={
             'model': ticket
         }
+    )
+
+
+def send_chat_message_email_if_enabled(ticket, request, message, origin):
+    assert origin in ('internal', 'external')
+
+    messages = MessageCollection(
+        request.session,
+        channel_id=ticket.number,
+        type='ticket_chat')
+
+    if origin == 'internal':
+
+        # if the messages is sent to the outside, we always send an e-mail
+        receivers = (ticket.handler.email, )
+        reply_to = request.current_username
+
+    else:
+
+        # if the message is sent to the inside, we check the setting on the
+        # last message sent to the outside in this ticket - if none exists,
+        # we do not notify
+        last_internal = (
+            messages.query()
+            .filter(TicketChatMessage.meta['origin'].astext == 'internal')
+            .order_by(desc(TicketChatMessage.created))
+            .first()
+        )
+
+        if not last_internal or not last_internal.meta.get('notify'):
+            return
+
+        receivers = (last_internal.owner, )
+        reply_to = None  # default reply-to given by the application
+
+    # we include the previous message of the thread for context
+    messages.older_than = message.id
+    messages.load = 'newer-first'
+
+    previous = messages.query().first()
+
+    send_transactional_html_mail(
+        request=request,
+        template='mail_ticket_chat_message.pt',
+        subject=_(
+            "New message for ticket ${number}", mapping={
+                'number': ticket.number
+            }
+        ),
+        content={
+            'model': ticket,
+            'message': message,
+            'previous': previous,
+        },
+        receivers=receivers,
+        reply_to=reply_to,
     )
 
 
@@ -345,7 +403,7 @@ def unmute_ticket(self, request):
 
 
 @OrgApp.form(model=Ticket, name='message-to-submitter', permission=Private,
-             form=TicketChatMessageForm, template='form.pt')
+             form=InternalTicketChatMessageForm, template='form.pt')
 def message_to_submitter(self, request, form):
     recipient = self.handler.email
 
@@ -354,25 +412,12 @@ def message_to_submitter(self, request, form):
             self, request,
             text=form.text.data,
             owner=request.current_username,
-            recipient=recipient)
+            recipient=recipient,
+            notify=form.notify.data,
+            origin='internal')
 
-        # submitter messages are always sent, independent of e-mail
-        # notification settings
-        send_transactional_html_mail(
-            request=request,
-            template='mail_ticket_chat_message.pt',
-            subject=_(
-                "New message for ticket ${number}", mapping={
-                    'number': self.number
-                }
-            ),
-            receivers=(recipient, ),
-            reply_to=request.current_username,
-            content={
-                'model': self,
-                'message': message
-            },
-        )
+        send_chat_message_email_if_enabled(
+            self, request, message, origin='internal')
 
         request.success(_("Your message has been sent"))
         return morepath.redirect(request.link(self))
@@ -409,19 +454,6 @@ def view_ticket_status(self, request, form):
         Link(_("Ticket Status"), '#')
     ]
 
-    if form.submitted(request):
-
-        if self.state == 'closed':
-            request.alert(_("The ticket has already been closed"))
-        else:
-            TicketChatMessage.create(
-                self, request,
-                text=form.text.data,
-                owner=self.handler.email)
-
-            request.success(_("Your message has been received"))
-            return morepath.redirect(request.link(self, 'status'))
-
     if self.state != 'closed':
         messages = MessageCollection(
             request.session,
@@ -430,6 +462,23 @@ def view_ticket_status(self, request, form):
         )
     else:
         messages = None
+
+    if form.submitted(request):
+
+        if self.state == 'closed':
+            request.alert(_("The ticket has already been closed"))
+        else:
+            message = TicketChatMessage.create(
+                self, request,
+                text=form.text.data,
+                owner=self.handler.email,
+                origin='external')
+
+            send_chat_message_email_if_enabled(
+                self, request, message, origin='external')
+
+            request.success(_("Your message has been received"))
+            return morepath.redirect(request.link(self, 'status'))
 
     return {
         'title': title,

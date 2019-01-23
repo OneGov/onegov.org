@@ -80,15 +80,33 @@ class TicketNote(Message, TicketMessageMixin):
 
 
 class TicketChatMessage(Message, TicketMessageMixin):
+    """ Chat messages sent between the person in charge of the ticket and
+    the submitter of the ticket.
+
+    Paramters of note:
+
+    - origin: 'external' or 'internal', to differentiate between the
+              messages sent from the organisation to someone outside or
+              from someone outside to someone inside.
+
+    - notify: only relevant for messages originating from 'internal' - if the
+              last sent message with origin 'internal' has this flag, a
+              notification is sent to the owner of that message, whenever
+              a new external reply comes in.
+
+    """
 
     __mapper_args__ = {
         'polymorphic_identity': 'ticket_chat'
     }
 
     @classmethod
-    def create(cls, ticket, request, text, owner, recipient=None):
+    def create(cls, ticket, request, text, owner, origin,
+               notify=False, recipient=None):
+
         return super().create(
-            ticket, request, text=text, owner=owner, recipient=recipient)
+            ticket, request, text=text, owner=owner, origin=origin,
+            notify=notify, recipient=recipient)
 
     @property
     def formatted_text(self):

@@ -4,7 +4,7 @@ from onegov.form.fields import UploadFileWithORMSupport
 from onegov.form.filters import strip_whitespace
 from onegov.form.validators import FileSizeLimit
 from onegov.org import _
-from wtforms import TextAreaField
+from wtforms import BooleanField, TextAreaField
 from wtforms import validators
 
 
@@ -34,3 +34,8 @@ class TicketChatMessageForm(Form):
         validators=[validators.InputRequired()],
         filters=(strip_whitespace, ),
         render_kw={'rows': 10})
+
+
+class InternalTicketChatMessageForm(TicketChatMessageForm):
+
+    notify = BooleanField(label=_("Notify me about replies"))

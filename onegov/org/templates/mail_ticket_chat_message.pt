@@ -6,6 +6,7 @@
         <p i18n:translate>Dear Sir or Madam,</p>
         <p i18n:translate>A message has been send regarding your ticket:</p>
 
+        <div class="inline-message previous-message" tal:content="structure previous.formatted_text" tal:condition="previous"/>
         <div class="inline-message" tal:content="structure message.formatted_text" />
 
         <p i18n:translate>

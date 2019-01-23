@@ -108,6 +108,21 @@
         font-weight: bold;
     }
 
+    .inline-message {
+        padding: 10px;
+        background: #f5f5f5;
+        border-left: 4px solid <tal:b replace="primary_color" />;
+        margin-bottom: 10px;
+    }
+
+    .inline-message p:last-child {
+        margin-bottom: 0;
+    }
+
+    .inline-message br {
+        line-height: 0.5;
+    }
+
     /*
         Body
     */

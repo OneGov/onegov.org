@@ -152,7 +152,7 @@ class OrgApp(Framework, LibresIntegration, ElasticsearchApp, MapboxApp,
         """
         category = kwargs.get('category', 'marketing')
 
-        reply_to = self.org.meta.get('reply_to', kwargs.pop('reply_to', None))
+        reply_to = kwargs.pop('reply_to', self.org.meta.get('reply_to', None))
         reply_to = reply_to or self.mail[category]['sender']
         reply_to = "{} <{}>".format(self.org.title, reply_to)
 

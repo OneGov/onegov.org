@@ -4141,8 +4141,8 @@ h2 + div.timeline {
     box-shadow: 2px 2px 2px rgba(150, 150, 150, .25);
     display: inline-block;
     font-size: .875rem;
-    position: relative;
     margin-bottom: 1.5rem;
+    position: relative;
     width: 100%;
 
     .identicon {
@@ -4157,8 +4157,16 @@ h2 + div.timeline {
         padding: .25rem .5rem;
     }
 
+    .text p {
+        font-size: .875rem;
+        margin-bottom: 0;
+
+        + p {
+            margin-top: .5rem;
+        }
+    }
+
     .title,
-    .text,
     .timestamp,
     .file {
         overflow: hidden;

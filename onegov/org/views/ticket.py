@@ -350,11 +350,29 @@ def message_to_submitter(self, request, form):
     recipient = self.handler.email
 
     if form.submitted(request):
-        TicketChatMessage.create(
+        message = TicketChatMessage.create(
             self, request,
             text=form.text.data,
             owner=request.current_username,
             recipient=recipient)
+
+        # submitter messages are always sent, independent of e-mail
+        # notification settings
+        send_transactional_html_mail(
+            request=request,
+            template='mail_ticket_chat_message.pt',
+            subject=_(
+                "New message for ticket ${number}", mapping={
+                    'number': self.number
+                }
+            ),
+            receivers=(recipient, ),
+            reply_to=request.current_username,
+            content={
+                'model': self,
+                'message': message
+            },
+        )
 
         request.success(_("Your message has been sent"))
         return morepath.redirect(request.link(self))
@@ -363,9 +381,12 @@ def message_to_submitter(self, request, form):
         'title': _("New Message"),
         'layout': TicketChatMessageLayout(self, request),
         'form': form,
-        'helptext': _("Recipient: ${address}", mapping={
-            'address': recipient
-        })
+        'helptext': _(
+            "The following message will be sent to: ${address} and it will be "
+            "recorded for future reference.", mapping={
+                'address': recipient
+            }
+        )
     }
 
 

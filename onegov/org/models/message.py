@@ -1,6 +1,6 @@
 from cached_property import cached_property
 from onegov.chat import Message
-from onegov.core.utils import linkify
+from onegov.core.utils import paragraphify, linkify
 from onegov.event import Event
 from onegov.org import _
 from onegov.org.new_elements import Link, Confirm, Intercooler
@@ -59,7 +59,7 @@ class TicketNote(Message, TicketMessageMixin):
 
     @property
     def formatted_text(self):
-        return linkify(self.text).replace('\n', '<br>')
+        return paragraphify(linkify(self.text))
 
     def links(self, layout):
         yield Link(_("Edit"), layout.request.link(self, 'edit'))
@@ -91,7 +91,7 @@ class TicketChatMessage(Message, TicketMessageMixin):
 
     @property
     def formatted_text(self):
-        return linkify(self.text).replace('\n', '<br>')
+        return paragraphify(linkify(self.text))
 
 
 class TicketMessage(Message, TicketMessageMixin):

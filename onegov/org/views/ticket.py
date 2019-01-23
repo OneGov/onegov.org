@@ -22,7 +22,7 @@ from onegov.ticket import handlers as ticket_handlers
 from onegov.ticket import Ticket, TicketCollection
 from onegov.ticket.errors import InvalidStateChange
 from onegov.user import User, UserCollection
-from sqlalchemy import select, desc
+from sqlalchemy import select
 
 
 @OrgApp.html(model=Ticket, template='ticket.pt', permission=Private)
@@ -179,6 +179,19 @@ def send_email_if_enabled(ticket, request, template, subject):
     )
 
 
+def get_last_internal_message(session, ticket_number):
+    messages = MessageCollection(
+        session,
+        type='ticket_chat',
+        channel_id=ticket_number,
+        load='newer-first'
+    )
+
+    return messages.query()\
+        .filter(TicketChatMessage.meta['origin'].astext == 'internal')\
+        .first()
+
+
 def send_chat_message_email_if_enabled(ticket, request, message, origin):
     assert origin in ('internal', 'external')
 
@@ -194,16 +207,11 @@ def send_chat_message_email_if_enabled(ticket, request, message, origin):
         reply_to = request.current_username
 
     else:
-
         # if the message is sent to the inside, we check the setting on the
         # last message sent to the outside in this ticket - if none exists,
         # we do not notify
-        last_internal = (
-            messages.query()
-            .filter(TicketChatMessage.meta['origin'].astext == 'internal')
-            .order_by(desc(TicketChatMessage.created))
-            .first()
-        )
+        last_internal = get_last_internal_message(
+            request.session, ticket.number)
 
         if not last_internal or not last_internal.meta.get('notify'):
             return
@@ -421,6 +429,15 @@ def message_to_submitter(self, request, form):
 
         request.success(_("Your message has been sent"))
         return morepath.redirect(request.link(self))
+    elif not request.POST:
+        # show the same notification setting as was selected with the
+        # last internal message - otherwise default to False
+        last_internal = get_last_internal_message(request.session, self.number)
+
+        if last_internal:
+            form.notify.data = last_internal.meta.get('notify', False)
+        else:
+            form.notify.data = False
 
     return {
         'title': _("New Message"),

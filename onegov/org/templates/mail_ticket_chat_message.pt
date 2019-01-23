@@ -13,6 +13,6 @@
             Please visit <a href="${request.link(model, 'status')}" i18n:name="link" i18n:translate>the ticket status page</a> to reply.
         </p>
 
-        <p><span i18n:translate>The ticket number is</span>: <span class="ticket-number">${model.number}</span></p>
+        <p><span i18n:translate>The ticket number is</span>: <span class="ticket-number">${model.number}</span> (${model.group})</p>
     </tal:b>
 </div>

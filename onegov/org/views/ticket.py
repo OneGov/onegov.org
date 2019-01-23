@@ -229,8 +229,9 @@ def send_chat_message_email_if_enabled(ticket, request, message, origin):
         request=request,
         template='mail_ticket_chat_message.pt',
         subject=_(
-            "New message for ticket ${number}", mapping={
-                'number': ticket.number
+            "Your ticket has a new message: ${number} (${subject})", mapping={
+                'number': ticket.number,
+                'subject': ticket.group,
             }
         ),
         content={
@@ -347,7 +348,13 @@ def close_ticket(self, request):
                 ticket=self,
                 request=request,
                 template='mail_ticket_closed.pt',
-                subject=_("Your ticket has been closed")
+                subject=_(
+                    "Your ticket has been closed: ${number} (${subject})",
+                    mapping={
+                        'number': self.number,
+                        'subject': self.group,
+                    }
+                )
             )
 
     return morepath.redirect(
@@ -378,7 +385,13 @@ def reopen_ticket(self, request):
                 ticket=self,
                 request=request,
                 template='mail_ticket_reopened.pt',
-                subject=_("Your ticket has been repoened")
+                subject=_(
+                    "Your ticket has been reopened: ${number} (${subject})",
+                    mapping={
+                        'number': self.number,
+                        'subject': self.group,
+                    }
+                )
             )
 
     return morepath.redirect(request.link(self))

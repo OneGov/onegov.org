@@ -270,7 +270,13 @@ def handle_complete_submission(self, request):
                 send_transactional_html_mail(
                     request=request,
                     template='mail_ticket_opened.pt',
-                    subject=_("A ticket has been opened"),
+                    subject=_(
+                        "A ticket has been opened: ${number} (${subject})",
+                        mapping={
+                            'number': ticket.number,
+                            'subject': ticket.group,
+                        }
+                    ),
                     receivers=(self.email, ),
                     content={
                         'model': ticket,

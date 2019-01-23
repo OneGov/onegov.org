@@ -6,7 +6,7 @@
         <p i18n:translate>Dear Sir or Madam,</p>
         <p i18n:translate>A new ticket has been opened</p>
 
-        <p><span i18n:translate>The ticket number is</span>: <span class="ticket-number">${model.number}</span></p>
+        <p><span i18n:translate>The ticket number is</span>: <span class="ticket-number">${model.number}</span> (${model.group})</p>
 
         <p i18n:translate>We will send another e-mail once your ticket has
         been completed. In the meantime you can check the status of your
@@ -17,5 +17,6 @@
             <hr class="large">
             <metal:b use-macro="layout.macros['display_form']" />
         </tal:b>
+
     </tal:b>
 </div>

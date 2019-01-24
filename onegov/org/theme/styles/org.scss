@@ -5454,3 +5454,17 @@ h2 + div.timeline {
         margin-bottom: .5rem;
     }
 }
+
+/*
+    Ticket status page message adjustments
+*/
+.status-chat {
+    .title,
+    .recipient-info {
+        display: none;
+    }
+
+    .message {
+        padding-top: .5rem;
+    }
+}

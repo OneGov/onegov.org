@@ -5,10 +5,6 @@
         </metal:b>
         <metal:b fill-slot="text">
             <tal:b tal:content="structure model.formatted_text" />
-            <div class="recipient-info" tal:condition="model.meta.recipient|nothing">
-                <tal:b i18n:translate>Sent to</tal:b>
-                <a href="mailto:${model.meta.recipient}">${model.meta.recipient}</a>
-            </div>
         </metal:b>
     </metal:b>
 </tal:b>

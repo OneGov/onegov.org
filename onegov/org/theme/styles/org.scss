@@ -4225,12 +4225,6 @@ h2 + div.timeline {
 
 .message-ticket_chat {
     background: $blue-pastel;
-
-    .recipient-info {
-        font-size: .875rem;
-        font-style: italic;
-        margin-top: .5rem;
-    }
 }
 
 .message-file {
@@ -5467,9 +5461,5 @@ h2 + div.timeline {
         height: 0;
         padding: 0;
         width: 0;
-    }
-
-    .recipient-info {
-        display: none;
     }
 }

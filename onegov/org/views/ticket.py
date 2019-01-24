@@ -15,7 +15,7 @@ from onegov.org.layout import TicketLayout
 from onegov.org.layout import TicketNoteLayout
 from onegov.org.layout import TicketsLayout
 from onegov.org.layout import TicketChatMessageLayout
-from onegov.org.mail import send_transactional_html_mail
+from onegov.org.mail import send_ticket_mail
 from onegov.org.models import TicketChatMessage, TicketMessage, TicketNote
 from onegov.org.views.message import view_messages_feed
 from onegov.ticket import handlers as ticket_handlers
@@ -160,22 +160,12 @@ def get_stripe_payment_button(payment, layout):
 def send_email_if_enabled(ticket, request, template, subject):
     email = ticket.snapshot.get('email') or ticket.handler.email
 
-    # do not send an e-mail if the recipient is the current logged in user
-    if email == request.current_username:
-        return
-
-    # do not send an e-mail if the ticket is muted
-    if ticket.muted:
-        return
-
-    send_transactional_html_mail(
+    send_ticket_mail(
         request=request,
         template=template,
         subject=subject,
         receivers=(email, ),
-        content={
-            'model': ticket
-        }
+        ticket=ticket
     )
 
 
@@ -225,22 +215,19 @@ def send_chat_message_email_if_enabled(ticket, request, message, origin):
 
     previous = messages.query().first()
 
-    send_transactional_html_mail(
+    send_ticket_mail(
         request=request,
         template='mail_ticket_chat_message.pt',
-        subject=_(
-            "Your ticket has a new message: ${number} (${subject})", mapping={
-                'number': ticket.number,
-                'subject': ticket.group,
-            }
-        ),
+        subject=_("Your ticket has a new message"),
         content={
             'model': ticket,
             'message': message,
             'previous': previous,
         },
+        ticket=ticket,
         receivers=receivers,
         reply_to=reply_to,
+        force=True
     )
 
 
@@ -348,13 +335,7 @@ def close_ticket(self, request):
                 ticket=self,
                 request=request,
                 template='mail_ticket_closed.pt',
-                subject=_(
-                    "Your ticket has been closed: ${number} (${subject})",
-                    mapping={
-                        'number': self.number,
-                        'subject': self.group,
-                    }
-                )
+                subject=_("Your ticket has been closed")
             )
 
     return morepath.redirect(
@@ -385,13 +366,7 @@ def reopen_ticket(self, request):
                 ticket=self,
                 request=request,
                 template='mail_ticket_reopened.pt',
-                subject=_(
-                    "Your ticket has been reopened: ${number} (${subject})",
-                    mapping={
-                        'number': self.number,
-                        'subject': self.group,
-                    }
-                )
+                subject=_("Your ticket has been reopened")
             )
 
     return morepath.redirect(request.link(self))
@@ -457,7 +432,7 @@ def message_to_submitter(self, request, form):
         'layout': TicketChatMessageLayout(self, request),
         'form': form,
         'helptext': _(
-            "The following message will be sent to: ${address} and it will be "
+            "The following message will be sent to ${address} and it will be "
             "recorded for future reference.", mapping={
                 'address': recipient
             }

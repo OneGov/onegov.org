@@ -950,8 +950,8 @@ def test_tickets(client):
     message = message.get_payload(0).get_payload(decode=True)
     message = message.decode('iso-8859-1')
 
-    assert 'FRM-' in message
-    assert '/status' not in message
+    assert "Ihr Ticket wurde geschlossen" in message
+    assert '/status' in message
 
     assert 'FRM-' in status_page
     assert 'Offen' in status_page
@@ -975,7 +975,7 @@ def test_tickets(client):
     message = message.get_payload(0).get_payload(decode=True)
     message = message.decode('iso-8859-1')
 
-    assert 'FRM-' in message
+    assert "Ihr Ticket wurde wieder ge" in message
     assert '/status' in message
 
 
@@ -2505,7 +2505,6 @@ def test_submit_event(client):
         assert (start_date + timedelta(days=days)).strftime('%d.%m.%Y') in \
             message
     assert "Ihre Veranstaltung wurde angenommen" in message
-    assert ticket_nr in message
 
     # Close ticket
     ticket_page.click("Ticket abschliessen").follow()
@@ -2515,7 +2514,8 @@ def test_submit_event(client):
     assert message.get('to') == "test@example.org"
     message = message.get_payload(0).get_payload(decode=True)
     message = message.decode('utf-8')
-    assert ticket_nr in message
+
+    assert "Ihr Ticket wurde geschlossen" in message
 
 
 def test_edit_event(client):

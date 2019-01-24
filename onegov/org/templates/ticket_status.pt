@@ -18,7 +18,7 @@
             </div>
             <div class="field-display-label" i18n:translate>Subject</div>
             <div class="field-display-data ticket-title">
-                ${ticket.group}
+                ${ticket.reference_group(request)}
             </div>
             <div class="field-display-label" i18n:translate>State</div>
             <div class="field-display-data ticket-state">

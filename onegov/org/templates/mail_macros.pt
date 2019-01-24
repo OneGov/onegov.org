@@ -31,16 +31,16 @@
 </metal:reservations>
 
 <metal:event define-macro="event" i18n:domain="onegov.org">
-    <p>${model.title}</p>
+    <p><b>${model.title}</b></p>
     <p>${model.location}</p>
     <p>${model.organizer}</p>
-    <p tal:content="structure model.description.replace('\n', '<br />')" />
+    <p tal:condition="model.description" tal:content="structure model.description.replace('\n', '<br />')" />
     <p>
         <ul tal:define="occurrences model.occurrence_dates(localize=True)">
             <li tal:repeat="occurrence occurrences">${layout.format_date(occurrence, 'datetime')} - ${layout.format_date(model.localized_end, 'time')}</li>
         </ul>
     </p>
-    <p>
+    <p tal:condition="model.tags">
         <ul><li tal:repeat="tag model.tags" i18n:translate="">${tag}</li></ul>
     </p>
 </metal:event>

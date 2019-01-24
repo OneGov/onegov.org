@@ -26,20 +26,21 @@
             </div>
 
             <div class="status-chat">
-                <h2>Messages</h2>
-                <div tal:condition="ticket.state != 'closed'">
-                    <div tal:condition="feed_data"
-                        class="timeline"
-                            data-feed-data="${feed_data}"
-                            data-feed-order="asc"
-                            data-feed='static'>
-                    </div>
+                <h2>Timeline</h2>
 
-                    <div metal:use-macro="layout.macros['form']" />
+                <div tal:condition="feed_data"
+                    class="timeline"
+                        data-feed-data="${feed_data}"
+                        data-feed-order="asc"
+                        data-feed='static'>
                 </div>
-                <div tal:condition="ticket.state == 'closed'" i18n:translate>
-                    Messages have been disabled because the ticket has been closed.
-                </div>
+
+                <div tal:condition="ticket.state != 'closed'" metal:use-macro="layout.macros['form']" />
+
+                <p class="panel" tal:condition="ticket.state == 'closed'" i18n:translate style="text-align: center;">
+                    New messages have been disabled because the ticket has been closed
+                </p>
+
             </div>
         </div>
     </tal:b>

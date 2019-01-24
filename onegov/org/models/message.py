@@ -7,6 +7,10 @@ from onegov.org.new_elements import Link, Confirm, Intercooler
 from onegov.ticket import Ticket, TicketCollection
 from sqlalchemy.orm import object_session
 
+# 👉 when adding new ticket messages be sure to evaluate if they should
+# be added to the ticket status page through the org.public_ticket_messages
+# setting
+
 
 class TicketMessageMixin(object):
 

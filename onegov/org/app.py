@@ -291,6 +291,25 @@ def get_default_directory_search_widget():
     return None
 
 
+@OrgApp.setting(section='org', name='public_ticket_messages')
+def get_public_ticket_messages():
+    """ Returns a list of message types which are availble on the ticket
+    status page, visible to anyone that knows the unguessable url.
+
+    """
+
+    # do *not* add ticket_note here, those are private!
+    return (
+        'directory',
+        'event',
+        'payment',
+        'reservation',
+        'submission',
+        'ticket',
+        'ticket_chat',
+    )
+
+
 @OrgApp.webasset_path()
 def get_js_path():
     return 'assets/js'

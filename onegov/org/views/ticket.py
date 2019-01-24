@@ -484,15 +484,6 @@ def view_ticket_status(self, request, form):
         Link(_("Ticket Status"), '#')
     ]
 
-    if self.state != 'closed':
-        messages = MessageCollection(
-            request.session,
-            channel_id=self.number,
-            type='ticket_chat'
-        )
-    else:
-        messages = None
-
     if form.submitted(request):
 
         if self.state == 'closed':
@@ -509,6 +500,12 @@ def view_ticket_status(self, request, form):
 
             request.success(_("Your message has been received"))
             return morepath.redirect(request.link(self, 'status'))
+
+    messages = MessageCollection(
+        request.session,
+        channel_id=self.number,
+        type=request.app.settings.org.public_ticket_messages
+    )
 
     return {
         'title': title,

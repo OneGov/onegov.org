@@ -35,7 +35,12 @@
                         data-feed='static'>
                 </div>
 
-                <div tal:condition="ticket.state != 'closed'" metal:use-macro="layout.macros['form']" />
+                <tal:b condition="ticket.state != 'closed'">
+                    <div class="panel" i18n:translate>
+                        Forgot something or have a special request? Add a message to the ticket.
+                    </div>
+                    <div metal:use-macro="layout.macros['form']" />
+                </tal:b>
 
                 <p class="panel" tal:condition="ticket.state == 'closed'" i18n:translate style="text-align: center;">
                     New messages have been disabled because the ticket has been closed

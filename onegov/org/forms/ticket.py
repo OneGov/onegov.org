@@ -33,7 +33,7 @@ class TicketChatMessageForm(Form):
         description=_("Your message"),
         validators=[validators.InputRequired()],
         filters=(strip_whitespace, ),
-        render_kw={'rows': 10})
+        render_kw={'rows': 5})
 
 
 class InternalTicketChatMessageForm(TicketChatMessageForm):

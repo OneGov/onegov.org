@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2019-01-25 16:14+0100\n"
+"POT-Creation-Date: 2019-01-25 16:28+0100\n"
 "PO-Revision-Date: 2019-01-25 13:43+0100\n"
 "Last-Translator: Marc Sommerhalder <marc.sommerhalder@seantis.ch>\n"
 "Language-Team: German\n"
@@ -2749,6 +2749,10 @@ msgstr "Ticket Nummer"
 
 msgid "Subject"
 msgstr "Betreff"
+
+msgid ""
+"Forgot something or have a special request? Add a message to the ticket."
+msgstr "Haben Sie ein besonderes Anliegen oder haben Sie etwas vergessen? Dann fügen Sie dem Ticket eine Nachricht hinzu."
 
 msgid "New messages have been disabled because the ticket has been closed"
 msgstr "Nachrichten wurden deaktiviert, da das Ticket geschlossen wurde"

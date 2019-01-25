@@ -209,11 +209,21 @@ def send_chat_message_email_if_enabled(ticket, request, message, origin):
         receivers = (last_internal.owner, )
         reply_to = None  # default reply-to given by the application
 
-    # we include the previous message of the thread for context
-    messages.older_than = message.id
-    messages.load = 'newer-first'
+    # we show the previous messages by going back until we find a message
+    # that is not from the same author as the new message (this should usually
+    # be the next message, but might include multiple, if someone sent a bunch
+    # of messages in succession without getting a reply)
+    #
+    # note that the resulting thread has to be reversed for the mail template
+    def thread():
+        messages.older_than = message.id
+        messages.load = 'newer-first'
 
-    previous = messages.query().first()
+        for m in messages.query():
+            yield m
+
+            if m.owner != message.owner:
+                break
 
     send_ticket_mail(
         request=request,
@@ -222,7 +232,7 @@ def send_chat_message_email_if_enabled(ticket, request, message, origin):
         content={
             'model': ticket,
             'message': message,
-            'previous': previous,
+            'thread': tuple(reversed(list(thread()))),
         },
         ticket=ticket,
         receivers=receivers,

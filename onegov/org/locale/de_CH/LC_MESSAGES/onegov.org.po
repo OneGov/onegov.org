@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2019-01-25 13:49+0100\n"
+"POT-Creation-Date: 2019-01-25 15:42+0100\n"
 "PO-Revision-Date: 2019-01-25 13:43+0100\n"
 "Last-Translator: Marc Sommerhalder <marc.sommerhalder@seantis.ch>\n"
 "Language-Team: German\n"
@@ -1784,6 +1784,9 @@ msgstr "Guten Tag"
 
 msgid "A message has been sent regarding ${ref}:"
 msgstr "Sie haben zu ${ref} eine Nachricht erhalten:"
+
+msgid "${author} wrote"
+msgstr "${author} schrieb"
 
 #. Used in sentence: "Please ${link} to reply."
 msgid "visit the ticket status page"

@@ -6,8 +6,23 @@
         <p i18n:translate>Dear Sir or Madam,</p>
         <p i18n:translate>A message has been sent regarding <span class="ticket-number" i18n:name="ref">${model.reference(request)}</span>:</p>
 
-        <div class="inline-message previous-message" tal:content="structure previous.formatted_text" tal:condition="previous"/>
-        <div class="inline-message" tal:content="structure message.formatted_text" />
+        <tal:b repeat="previous thread">
+            <div class="inline-message previous-message ${repeat.previous.index > 1 and 'merged-message'}">
+                <span class="message-owner" i18n:translate tal:condition="repeat.previous.index in (0, 1)">
+                    <a href="mailto:${previous.owner}" i18n:name="author">${previous.owner}</a> wrote
+                </span>
+
+                <tal:b content="structure previous.formatted_text" />
+            </div>
+        </tal:b>
+
+        <div class="inline-message ${len(thread) > 1 and 'merged-message'}">
+            <span class="message-owner" i18n:translate tal:condition="len(thread) <= 1">
+                <a href="mailto:${message.owner}" i18n:name="author">${message.owner}</a> wrote
+            </span>
+
+            <tal:b content="structure message.formatted_text" />
+        </div>
 
         <p i18n:translate tal:condition="message.meta.origin == 'internal'">
             Please <a href="${request.link(model, 'status')}" i18n:name="link" i18n:translate>visit the ticket status page</a> to reply.

@@ -3,7 +3,7 @@
         ${title}
     </tal:b>
     <tal:b metal:fill-slot="body">
-        <p i18n:translate>Dear Sir or Madam,</p>
+        <p i18n:translate>Hello!</p>
         <p><span i18n:translate>A new ticket has been opened:</span></p>
 
         <p><span class="ticket-number">${model.reference(request)}</span></p>

@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2019-01-25 15:42+0100\n"
+"POT-Creation-Date: 2019-01-25 16:14+0100\n"
 "PO-Revision-Date: 2018-12-08 11:02+0100\n"
 "Last-Translator: Marc Sommerhalder <marc.sommerhalder@seantis.ch>\n"
 "Language-Team: French\n"
@@ -1783,8 +1783,8 @@ msgstr "Changé :"
 msgid "Confirm"
 msgstr "Confirmer"
 
-msgid "Dear Sir or Madam,"
-msgstr "Cher Monsieur, chère Madame,"
+msgid "Hello!"
+msgstr "Bonjour!"
 
 msgid "A message has been sent regarding ${ref}:"
 msgstr ""
@@ -2341,6 +2341,9 @@ msgstr "Cliquer ici pour vous désabonner."
 
 msgid "This album does not contain any images yet."
 msgstr "Cet album ne contient pas encore d'images."
+
+msgid "Hi!"
+msgstr ""
 
 msgid "Your directory submission has unfortunately been rejected:"
 msgstr "Votre proposition de répertoire a malheureusement été rejetée :"
@@ -3671,6 +3674,9 @@ msgstr "Le paiement a été saisi"
 
 msgid "The payment was refunded"
 msgstr "Le paiement a été remboursé"
+
+#~ msgid "Dear Sir or Madam,"
+#~ msgstr "Cher Monsieur, chère Madame,"
 
 #~ msgid "The payment amount is"
 #~ msgstr "Le montant du paiement est"

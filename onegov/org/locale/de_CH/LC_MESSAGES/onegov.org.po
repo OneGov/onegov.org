@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2019-01-25 15:42+0100\n"
+"POT-Creation-Date: 2019-01-25 16:14+0100\n"
 "PO-Revision-Date: 2019-01-25 13:43+0100\n"
 "Last-Translator: Marc Sommerhalder <marc.sommerhalder@seantis.ch>\n"
 "Language-Team: German\n"
@@ -1779,7 +1779,7 @@ msgstr "Verändert:"
 msgid "Confirm"
 msgstr "Bestätigen"
 
-msgid "Dear Sir or Madam,"
+msgid "Hello!"
 msgstr "Guten Tag"
 
 msgid "A message has been sent regarding ${ref}:"
@@ -2335,6 +2335,9 @@ msgstr "Klicken Sie hier um sich abzumelden."
 
 msgid "This album does not contain any images yet."
 msgstr "Dieses Fotoalbum enthält noch keine Bilder."
+
+msgid "Hi!"
+msgstr ""
 
 msgid "Your directory submission has unfortunately been rejected:"
 msgstr "Ihre Verzeichniseintrag Eingabe wurde leider abgelehnt:"
@@ -3655,6 +3658,9 @@ msgstr "Die Zahlung wurde eingenommen"
 
 msgid "The payment was refunded"
 msgstr "Die Zahlung wurde rückerstattet"
+
+#~ msgid "Dear Sir or Madam,"
+#~ msgstr "Guten Tag"
 
 #~ msgid "Your ticket has been repoened"
 #~ msgstr "Das Ticket wurde wieder geöffnet"

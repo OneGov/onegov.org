@@ -3,7 +3,7 @@
         ${title}
     </tal:b>
     <tal:b metal:fill-slot="body">
-        <p i18n:translate>Dear Sir or Madam,</p>
+        <p i18n:translate>Hello!</p>
         <p i18n:translate>A message has been sent regarding <span class="ticket-number" i18n:name="ref">${model.reference(request)}</span>:</p>
 
         <tal:b repeat="previous thread">

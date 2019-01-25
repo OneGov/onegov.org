@@ -1780,7 +1780,7 @@ msgid "Confirm"
 msgstr "Bestätigen"
 
 msgid "Hello!"
-msgstr "Guten Tag"
+msgstr "Guten Tag!"
 
 msgid "A message has been sent regarding ${ref}:"
 msgstr "Sie haben zu ${ref} eine Nachricht erhalten:"

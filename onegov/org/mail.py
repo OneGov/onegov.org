@@ -58,7 +58,7 @@ def send_ticket_mail(request, template, subject, receivers, ticket,
                 r for r in receivers if r != request.current_username
             )
 
-    subject = ticket.reference(request) + ': ' + subject
+    subject = ticket.reference(request) + ': ' + request.translate(subject)
 
     content = content or {}
 

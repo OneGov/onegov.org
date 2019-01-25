@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2019-01-24 16:44+0100\n"
+"POT-Creation-Date: 2019-01-25 13:49+0100\n"
 "PO-Revision-Date: 2018-12-08 11:02+0100\n"
 "Last-Translator: Marc Sommerhalder <marc.sommerhalder@seantis.ch>\n"
 "Language-Team: French\n"
@@ -1786,7 +1786,7 @@ msgstr "Confirmer"
 msgid "Dear Sir or Madam,"
 msgstr "Cher Monsieur, chère Madame,"
 
-msgid "A message has been send regarding ${ref}:"
+msgid "A message has been sent regarding ${ref}:"
 msgstr ""
 
 #. Used in sentence: "Please ${link} to reply."
@@ -3103,8 +3103,8 @@ msgstr "Vous avez activé les e-mails pour le ticket ${number}"
 
 #, python-format
 msgid ""
-"The following message will be sent to: ${address} and it will be recorded "
-"for future reference."
+"The following message will be sent to ${address} and it will be recorded for "
+"future reference."
 msgstr ""
 
 msgid "Your request has been submitted"

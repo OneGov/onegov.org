@@ -116,6 +116,10 @@ class TicketChatMessage(Message, TicketMessageMixin):
     def formatted_text(self):
         return paragraphify(linkify(self.text))
 
+    @property
+    def subtype(self):
+        return self.meta.get('origin', None)
+
 
 class TicketMessage(Message, TicketMessageMixin):
 

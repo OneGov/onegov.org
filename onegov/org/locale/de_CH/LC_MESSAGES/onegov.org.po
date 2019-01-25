@@ -2895,7 +2895,7 @@ msgstr ""
 "Sie weiterfahren."
 
 msgid "You have been logged in."
-msgstr "Sie haben sich angemeldet."
+msgstr "Sie wurden angemeldet."
 
 msgid "A user with this address already exists"
 msgstr "Ein Benutzer mit dieser E-Mail Adresse existiert bereits"

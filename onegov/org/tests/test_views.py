@@ -141,7 +141,7 @@ def test_login(client):
     login_page.form['password'] = 'hunter2'
 
     index_page = login_page.form.submit().follow()
-    assert "Sie wurden eingeloggt" in index_page.text
+    assert "Sie wurden angemeldet" in index_page.text
 
     links = index_page.pyquery('.globals a.logout')
     assert links.text() == 'Logout'
@@ -207,7 +207,7 @@ def test_reset_password(client):
 
     login_page.form['username'] = 'admin@example.org'
     login_page.form['password'] = 'new_password'
-    assert "Sie wurden eingeloggt" in login_page.form.submit().follow().text
+    assert "Sie wurden angemeldet" in login_page.form.submit().follow().text
 
 
 def test_unauthorized(client):
@@ -3212,7 +3212,7 @@ def test_registration(client):
     assert "Konto wurde bereits aktiviert" in client.get(url).follow()
 
     logged_in = client.login('user@example.org', 'p@ssw0rd').follow()
-    assert "eingeloggt" in logged_in
+    assert "angemeldet" in logged_in
 
 
 def test_registration_disabled(client):

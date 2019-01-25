@@ -62,8 +62,12 @@ def send_ticket_mail(request, template, subject, receivers, ticket,
 
     content = content or {}
 
+    # legacy behavior
     if 'model' not in content:
         content['model'] = ticket
+
+    if 'ticket' not in content:
+        content['ticket'] = ticket
 
     return send_transactional_html_mail(
         request=request,

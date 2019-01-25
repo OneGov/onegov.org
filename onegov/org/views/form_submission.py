@@ -269,7 +269,7 @@ def handle_complete_submission(self, request):
             send_ticket_mail(
                 request=request,
                 template='mail_ticket_opened.pt',
-                subject=_("A ticket has been opened"),
+                subject=_("Your ticket has been opened"),
                 ticket=ticket,
                 receivers=(self.email, ),
                 content={

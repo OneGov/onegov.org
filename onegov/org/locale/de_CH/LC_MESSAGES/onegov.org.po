@@ -3023,8 +3023,8 @@ msgstr "Stunde"
 msgid "Your payment could not be processed"
 msgstr "Ihre Zahlung konnte nicht verarbeitet werden"
 
-msgid "A ticket has been opened"
-msgstr "Ein neues Ticket wurde für Sie eröffnet"
+msgid "Your ticket has been opened"
+msgstr "Ihr Ticket wurde eröffnet"
 
 msgid "Your reservations were accepted"
 msgstr "Ihre Reservationen wurden angenommen"

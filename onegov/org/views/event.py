@@ -179,7 +179,7 @@ def view_event(self, request):
         send_ticket_mail(
             request=request,
             template='mail_ticket_opened.pt',
-            subject=_("A ticket has been opened"),
+            subject=_("Your ticket has been opened"),
             receivers=(self.meta['submitter_email'], ),
             ticket=ticket,
         )

@@ -56,10 +56,10 @@ def view_ticket(self, request):
         payment = handler.payment
 
         if payment and payment.source == 'manual':
-            payment_button = get_manual_payment_button(payment, layout)
+            payment_button = manual_payment_button(payment, layout)
 
         if payment and payment.source == 'stripe_connect':
-            payment_button = get_stripe_payment_button(payment, layout)
+            payment_button = stripe_payment_button(payment, layout)
 
     return {
         'title': self.number,
@@ -75,7 +75,7 @@ def view_ticket(self, request):
     }
 
 
-def get_manual_payment_button(payment, layout):
+def manual_payment_button(payment, layout):
     if payment.state == 'open':
         return Link(
             text=_("Mark as paid"),
@@ -106,7 +106,7 @@ def get_manual_payment_button(payment, layout):
     )
 
 
-def get_stripe_payment_button(payment, layout):
+def stripe_payment_button(payment, layout):
     if payment.state == 'open':
         return Link(
             text=_("Capture Payment"),
@@ -169,7 +169,7 @@ def send_email_if_enabled(ticket, request, template, subject):
     )
 
 
-def get_last_internal_message(session, ticket_number):
+def last_internal_message(session, ticket_number):
     messages = MessageCollection(
         session,
         type='ticket_chat',
@@ -200,8 +200,7 @@ def send_chat_message_email_if_enabled(ticket, request, message, origin):
         # if the message is sent to the inside, we check the setting on the
         # last message sent to the outside in this ticket - if none exists,
         # we do not notify
-        last_internal = get_last_internal_message(
-            request.session, ticket.number)
+        last_internal = last_internal_message(request.session, ticket.number)
 
         if not last_internal or not last_internal.meta.get('notify'):
             return
@@ -430,7 +429,7 @@ def message_to_submitter(self, request, form):
     elif not request.POST:
         # show the same notification setting as was selected with the
         # last internal message - otherwise default to False
-        last_internal = get_last_internal_message(request.session, self.number)
+        last_internal = last_internal_message(request.session, self.number)
 
         if last_internal:
             form.notify.data = last_internal.meta.get('notify', False)

@@ -4138,7 +4138,7 @@ h2 + div.timeline {
 .message {
     background-color: $gray-pastel;
     border: 1px solid rgba(175, 150, 150, .25);
-    box-shadow: 2px 2px 2px rgba(150, 150, 150, .25);
+    box-shadow: 3px 3px 3px rgba(220, 220, 220, .2);
     display: inline-block;
     font-size: .875rem;
     margin-bottom: 1.5rem;
@@ -4209,11 +4209,11 @@ h2 + div.timeline {
 .message-event,
 .message-directory,
 .message-submission {
-    background: $green-pastel;
+    background: lighten($green-pastel, 2.5%);
 }
 
 .message-ticket_note {
-    background: $yellow-pastel;
+    background: lighten($yellow-pastel, 2.5%);
 
     .text {
         max-width: $max-line-width;
@@ -4223,13 +4223,16 @@ h2 + div.timeline {
     }
 }
 
-.message-ticket_chat {
-    background: $blue-pastel;
+.message-ticket_chat-internal {
+    background: lighten($blue-pastel, 3%);
+}
+
+.message-ticket_chat-external {
+    background: darken($blue-pastel, 3%);
 }
 
 .message-file {
-    $orange-pastel: #fdf6f1;
-    background: $orange-pastel;
+    background: lighten($red-pastel, 2.5%);
 }
 
 /*

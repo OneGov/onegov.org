@@ -59,14 +59,15 @@
 </metal:display_form>
 
 <metal:display_field define-macro="display_fields" i18n:domain="onegov.org">
-    <dl class="field-display" tal:repeat="field fields">
-        <tal:b define="rendered layout.render_field(field)|nothing" condition="rendered">
-            <dt>${field.label.text}</dt>
-            <dd>
-                <tal:b replace="structure rendered" />
-            </dd>
+    <table class="field-display">
+        <tal:b repeat="field fields">
+            <tal:b define="rendered layout.render_field(field)|nothing" condition="rendered">
+                <tr><td><b>${field.label.text}</b></td></tr>
+                <tr><td><tal:b replace="structure rendered" /></td></tr>
+                <tr><td height="5"></td></tr>
+            </tal:b>
         </tal:b>
-    </dl>
+    </table>
 </metal:display_field>
 
 </body>

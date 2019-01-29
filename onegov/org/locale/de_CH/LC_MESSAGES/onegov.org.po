@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2019-01-29 09:15+0100\n"
+"POT-Creation-Date: 2019-01-29 10:33+0100\n"
 "PO-Revision-Date: 2019-01-25 13:43+0100\n"
 "Last-Translator: Marc Sommerhalder <marc.sommerhalder@seantis.ch>\n"
 "Language-Team: German\n"
@@ -2545,6 +2545,18 @@ msgstr "Zu geschlossenen Tickets können keine Nachrichten versendet werden"
 msgid "Please reopen the ticket to send a message"
 msgstr "Bitte öffnen Sie das Ticket wieder um eine Nachricht zu senden"
 
+msgid "${count} received"
+msgstr "${count} Empfangen"
+
+msgid "${count} sent"
+msgstr "${count} Gesendet"
+
+msgid "${count} note"
+msgstr "${count} Notiz"
+
+msgid "${count} notes"
+msgstr "${count} Notizen"
+
 msgid "Amount"
 msgstr "Betrag"
 
@@ -3670,6 +3682,15 @@ msgstr "Die Zahlung wurde eingenommen"
 
 msgid "The payment was refunded"
 msgstr "Die Zahlung wurde rückerstattet"
+
+#~ msgid "${count} notes created"
+#~ msgstr "${count} Notizen erstellt"
+
+#~ msgid "${count} messages sent"
+#~ msgstr "${count} Nachrichten gesendet"
+
+#~ msgid "${count} messages received"
+#~ msgstr "${count} Nachrichten empfangen"
 
 #~ msgid "Dear Sir or Madam,"
 #~ msgstr "Guten Tag"

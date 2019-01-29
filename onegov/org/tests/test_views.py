@@ -4841,6 +4841,9 @@ def test_ticket_notes(client):
 
     assert "Looks like example input to me" in page
 
+    # make sure we have a badge with the number of notes
+    assert page.pyquery('.counts-note .counts-value').text() == '1'
+
     # edit the note
     note_url_ex = re.compile(r'http://localhost/ticket-notes/[A-Z0-9]+')
     note_url = note_url_ex.search(str(page)).group()
@@ -4943,6 +4946,8 @@ def test_ticket_chat(client):
     assert "I spelt my name wrong" in msgs[1]['html']
     assert "Ticket angenommen" in msgs[2]['html']
 
+    assert page.pyquery('.counts-external .counts-value').text() == '1'
+
     # no e-mail will have been created for this message, as there's no
     # recipient we could send it to
     assert len(client.app.smtp.outbox) == 1
@@ -4989,6 +4994,9 @@ def test_ticket_chat(client):
 
     assert len(msgs) == 5
     assert "I will correct your name" in msgs[-1]['html']
+
+    page = client.get(ticket_url)
+    assert page.pyquery('.counts-internal .counts-value').text() == '1'
 
     # answer the editor
     page = client.get(status_url)
@@ -5042,7 +5050,7 @@ def test_ticket_chat(client):
 
     # verify the same for the editor
     page = client.get(ticket_url)
-    assert "Messages cannot be sent when the ticket is closed" in page
+    assert "Zu geschlossenen Tickets können keine Nachrichten" in page
 
     page = client.get(ticket_url + '/message-to-submitter')
     page.form['text'] = 'One more thing'

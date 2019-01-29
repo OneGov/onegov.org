@@ -48,6 +48,34 @@ def view_ticket(self, request):
         channel_id=self.number
     )
 
+    stmt = as_selectable("""
+        SELECT
+            channel_id,    -- Text
+            SUM(
+                CASE WHEN type = 'ticket_note' THEN
+                    1 ELSE 0 END
+            ) AS notes,    -- Integer
+
+            SUM(CASE WHEN type = 'ticket_chat' THEN
+                    CASE WHEN meta->>'origin' = 'internal' THEN 1
+                    ELSE 0
+                END ELSE 0 END
+            ) AS internal, -- Integer
+
+            SUM(CASE WHEN type = 'ticket_chat' THEN
+                    CASE WHEN meta->>'origin' = 'external' THEN 1
+                    ELSE 0
+                END ELSE 0 END
+            ) AS external  -- Integer
+
+        FROM messages
+        WHERE type IN ('ticket_note', 'ticket_chat')
+        GROUP BY channel_id
+    """)
+
+    counts = request.session.execute(
+        select(stmt.c).where(stmt.c.channel_id == self.number)).first()
+
     # if we have a payment, show the payment button
     layout = TicketLayout(self, request)
     payment_button = None
@@ -69,6 +97,7 @@ def view_ticket(self, request):
         'deleted': handler.deleted,
         'handler': handler,
         'payment_button': payment_button,
+        'counts': counts,
         'feed_data': json.dumps(
             view_messages_feed(messages, request)
         ),

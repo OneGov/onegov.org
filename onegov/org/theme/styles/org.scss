@@ -4138,6 +4138,7 @@ h2 + div.timeline {
 .message {
     background-color: $gray-pastel;
     border: 1px solid rgba(175, 150, 150, .25);
+    border-radius: 2px;
     box-shadow: 3px 3px 3px rgba(220, 220, 220, .2);
     display: inline-block;
     font-size: .875rem;

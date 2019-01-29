@@ -4884,3 +4884,168 @@ def test_ticket_notes(client):
     page = client.get('/timeline')
     assert "The profile is actually okay" in page
     assert "Test.txt" in page
+
+
+def test_ticket_chat(client):
+    collection = FormCollection(client.app.session())
+    collection.definitions.add('Profile', definition=textwrap.dedent("""
+        First name * = ___
+        Last name * = ___
+        E-Mail * = @@@
+    """), type='custom')
+
+    transaction.commit()
+
+    # submit a form
+    client.login_admin()
+
+    page = client.get('/forms').click('Profile')
+    page.form['first_name'] = 'Foo'
+    page.form['last_name'] = 'Bar'
+    page.form['e_mail'] = 'foo@bar.baz'
+    page = page.form.submit().follow().form.submit().follow()
+
+    # make sure a ticket has been created
+    assert 'FRM-' in page
+    assert 'ticket-state-open' in page
+
+    # to extract the messages from the page
+    def extract_messages(page):
+        text = page.pyquery('[data-feed-data]').attr('data-feed-data')
+        data = json.loads(text)
+
+        return data['messages']
+
+    # we should see the initial ticket state in the messages
+    msgs = extract_messages(page)
+    assert len(msgs) == 1
+    assert "Ticket eröffnet" in msgs[0]['html']
+
+    # we should also see one e-mail at this point
+    assert len(client.app.smtp.outbox) == 1
+
+    # at this point we have the option to send an initial message
+    page.form['text'] = "I spelt my name wrong: it's Baz, not Bar"
+    page = page.form.submit().follow()
+
+    # which should show up in the status page and the ticket page
+    status_url = page.request.url
+
+    msgs = extract_messages(page)
+    assert len(msgs) == 2
+    assert "I spelt my name wrong" in msgs[1]['html']
+
+    # we should see the same infos on the ticket page
+    page = client.get('/tickets/ALL/open').click("Annehmen").follow()
+
+    msgs = extract_messages(page)
+    assert len(msgs) == 3
+    assert "I spelt my name wrong" in msgs[1]['html']
+    assert "Ticket angenommen" in msgs[2]['html']
+
+    # no e-mail will have been created for this message, as there's no
+    # recipient we could send it to
+    assert len(client.app.smtp.outbox) == 1
+
+    # add a note and let's ensure that the status page does not contain it
+    page = page.click("Neue Notiz")
+    page.form['text'] = "Contacting the user"
+    page = page.form.submit().follow()
+
+    msgs = extract_messages(page)
+    assert len(msgs) == 4
+    assert "Contacting the user" in msgs[3]['html']
+
+    msgs = extract_messages(client.get(status_url))
+    assert len(msgs) == 3
+    assert "Contacting the user" not in json.dumps(msgs)
+
+    # answer the user, enable notifications to the editor
+    ticket_url = page.request.url
+
+    page = page.click("Nachricht senden")
+    page.form['text'] = "I will correct your name"
+    page.form.get('notify').checked = True
+    page.form.submit()
+
+    # ensure the user sees the message on the status page
+    msgs = extract_messages(client.get(status_url))
+
+    assert len(msgs) == 4
+    assert "I will correct your name" in msgs[-1]['html']
+
+    # ensure the user sees the message in an e-mail
+    assert len(client.app.smtp.outbox) == 2
+    assert "I will correct your name" in client.get_email(1)
+
+    # make sure the reply-to story is good
+    mail = client.app.smtp.outbox[1]
+    assert mail['To'] == 'foo@bar.baz'
+    assert mail['From'] == 'Govikon <mails@govikon.ch>'
+    assert mail['Reply-To'] == 'Govikon <admin@example.org>'
+
+    # ensure the editor sees the messages in the ticket view
+    msgs = extract_messages(client.get(ticket_url))
+
+    assert len(msgs) == 5
+    assert "I will correct your name" in msgs[-1]['html']
+
+    # answer the editor
+    page = client.get(status_url)
+    page.form['text'] = 'Great, thanks!'
+    page.form.submit()
+
+    # the editor should get a notification with the last message
+    assert len(client.app.smtp.outbox) == 3
+
+    mail = client.get_email(2)
+    assert "I will correct your name" in mail
+    assert "Great, thanks!" in mail
+
+    # send a final message from the editor, with no notification
+    page = client.get(ticket_url).click("Nachricht senden")
+    page.form['text'] = "You're welcome"
+    page.form.get('notify').checked = False
+    page.form.submit()
+
+    # the user always gets a notification
+    assert len(client.app.smtp.outbox) == 4
+
+    # but now, the answering wont create one
+    page = client.get(status_url)
+    page.form['text'] = 'Can I ask you something else?'
+    page.form.submit()
+
+    assert len(client.app.smtp.outbox) == 4
+
+    # though it will still show up in the list
+    msgs = extract_messages(client.get(ticket_url))
+
+    assert len(msgs) == 8
+    assert "Can I ask you something else?" in msgs[-1]['html']
+
+    # close the ticket
+    status_before = client.get(status_url)
+    assert "Ticket wurde bereits geschlossen" not in status_before
+
+    page = client.get(ticket_url)
+    page.click("Ticket abschliessen")
+
+    # we should no longer be able to send messages
+    page = client.get(status_url)
+    len(page.forms) == 1
+
+    status_before.form['text'] = 'Foo'
+    page = status_before.form.submit()
+
+    assert "Ticket wurde bereits geschlossen" in page
+
+    # verify the same for the editor
+    page = client.get(ticket_url)
+    assert "Messages cannot be sent when the ticket is closed" in page
+
+    page = client.get(ticket_url + '/message-to-submitter')
+    page.form['text'] = 'One more thing'
+    page = page.form.submit()
+
+    assert "Ticket wurde bereits geschlossen" in page

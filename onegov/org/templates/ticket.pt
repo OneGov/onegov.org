@@ -62,10 +62,24 @@
                         </a>
                     </div>
 
-                    <a class="button small primary" href="${request.link(ticket, 'message-to-submitter')}">
-                        <i class="fa fa-fw fa-comment-o" aria-hidden="true"></i>
-                        <span i18n:translate>Send Message</span>
-                    </a>
+                    <tal:b condition="ticket.state != 'closed'">
+                        <a class="button small primary" href="${request.link(ticket, 'message-to-submitter')}">
+                            <i class="fa fa-fw fa-comment-o" aria-hidden="true"></i>
+                            <span i18n:translate>Send Message</span>
+                        </a>
+                    </tal:b>
+
+                    <tal:b condition="ticket.state == 'closed'">
+                        <a class="button small disabled confirm"
+                            data-confirm="Messages cannot be sent when the ticket is closed"
+                            data-confirm-extra="Please reopen the ticket to send a message"
+                            data-confirm-no="Cancel"
+                            i18n:attributes="data-confirm;data-confirm-extra;data-confirm-no">
+
+                            <i class="fa fa-fw fa-comment-o" aria-hidden="true"></i>
+                            <span i18n:translate>Send Message</span>
+                        </a>
+                    </tal:b>
                 </div>
 
                 <div class="ticket-panel" tal:define="payment handler.payment" tal:condition="payment">

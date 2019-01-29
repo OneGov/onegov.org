@@ -413,19 +413,22 @@ def message_to_submitter(self, request, form):
     recipient = self.handler.email
 
     if form.submitted(request):
-        message = TicketChatMessage.create(
-            self, request,
-            text=form.text.data,
-            owner=request.current_username,
-            recipient=recipient,
-            notify=form.notify.data,
-            origin='internal')
+        if self.state == 'closed':
+            request.alert(_("The ticket has already been closed"))
+        else:
+            message = TicketChatMessage.create(
+                self, request,
+                text=form.text.data,
+                owner=request.current_username,
+                recipient=recipient,
+                notify=form.notify.data,
+                origin='internal')
 
-        send_chat_message_email_if_enabled(
-            self, request, message, origin='internal')
+            send_chat_message_email_if_enabled(
+                self, request, message, origin='internal')
 
-        request.success(_("Your message has been sent"))
-        return morepath.redirect(request.link(self))
+            request.success(_("Your message has been sent"))
+            return morepath.redirect(request.link(self))
     elif not request.POST:
         # show the same notification setting as was selected with the
         # last internal message - otherwise default to False

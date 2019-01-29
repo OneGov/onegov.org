@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2019-01-25 16:28+0100\n"
+"POT-Creation-Date: 2019-01-29 09:15+0100\n"
 "PO-Revision-Date: 2019-01-25 13:43+0100\n"
 "Last-Translator: Marc Sommerhalder <marc.sommerhalder@seantis.ch>\n"
 "Language-Team: German\n"
@@ -2539,6 +2539,12 @@ msgstr "E-Mails aktivieren"
 msgid "Send Message"
 msgstr "Nachricht senden"
 
+msgid "Messages cannot be sent when the ticket is closed"
+msgstr "Zu geschlossenen Tickets können keine Nachrichten versendet werden"
+
+msgid "Please reopen the ticket to send a message"
+msgstr "Bitte öffnen Sie das Ticket wieder um eine Nachricht zu senden"
+
 msgid "Amount"
 msgstr "Betrag"
 
@@ -2752,7 +2758,9 @@ msgstr "Betreff"
 
 msgid ""
 "Forgot something or have a special request? Add a message to the ticket."
-msgstr "Haben Sie ein besonderes Anliegen oder haben Sie etwas vergessen? Dann fügen Sie dem Ticket eine Nachricht hinzu."
+msgstr ""
+"Haben Sie ein besonderes Anliegen oder haben Sie etwas vergessen? Dann fügen "
+"Sie dem Ticket eine Nachricht hinzu."
 
 msgid "New messages have been disabled because the ticket has been closed"
 msgstr "Nachrichten wurden deaktiviert, da das Ticket geschlossen wurde"
@@ -3116,9 +3124,6 @@ msgstr "Ihr Ticket hat eine neue Nachricht"
 msgid "Your note was added"
 msgstr "Ihre Notiz wurde hinzugefügt"
 
-msgid "Your message has been sent"
-msgstr "Ihre Nachricht wurde gesendet"
-
 msgid "Your request is currently pending"
 msgstr "Ihr Anliegen wird zur Zeit bearbeitet"
 
@@ -3154,11 +3159,14 @@ msgstr ""
 msgid "You have reopened ticket ${number}"
 msgstr "Sie haben das Ticket ${number} wieder geöffnet"
 
-msgid "Your request has been processed"
-msgstr "Ihr Anliegen wurde abgeschlossen"
-
 msgid "The ticket has already been closed"
 msgstr "Das Ticket wurde bereits geschlossen"
+
+msgid "Your message has been sent"
+msgstr "Ihre Nachricht wurde gesendet"
+
+msgid "Your request has been processed"
+msgstr "Ihr Anliegen wurde abgeschlossen"
 
 msgid "Your message has been received"
 msgstr "Ihre Nachricht wurde übermittelt"

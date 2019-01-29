@@ -5049,3 +5049,39 @@ def test_ticket_chat(client):
     page = page.form.submit()
 
     assert "Ticket wurde bereits geschlossen" in page
+
+
+def test_ticket_chat_search(client_with_es):
+    client = client_with_es
+
+    collection = FormCollection(client.app.session())
+    collection.definitions.add('Profile', definition=textwrap.dedent("""
+        First name * = ___
+        Last name * = ___
+        E-Mail * = @@@
+    """), type='custom')
+
+    transaction.commit()
+
+    # submit a form
+    client.login_admin()
+
+    page = client.get('/forms').click('Profile')
+    page.form['first_name'] = 'Foo'
+    page.form['last_name'] = 'Bar'
+    page.form['e_mail'] = 'foo@bar.baz'
+    page = page.form.submit().follow().form.submit().follow()
+
+    # send a message that should be findable through the search
+    page.form['text'] = "I spelt my name wrong: it's deadbeef"
+    page = page.form.submit().follow()
+
+    # at this point logged in users should find the ticket by 'deadbeef'
+    client.app.es_client.indices.refresh(index='_all')
+
+    page = client.get('/search?q=deadbeef')
+    assert 'Foo' in page
+
+    # but anonymous users should not
+    page = client.spawn().get('/search?q=deadbeef')
+    assert 'Foo' not in page

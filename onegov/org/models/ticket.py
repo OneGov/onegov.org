@@ -5,7 +5,7 @@ from onegov.event import EventCollection
 from onegov.form import FormSubmissionCollection
 from onegov.org import _
 from onegov.org.layout import DefaultLayout, EventLayout
-from onegov.org.models.message import TicketNote
+from onegov.chat import Message
 from onegov.org.new_elements import Link, LinkGroup, Confirm, Intercooler
 from onegov.reservation import Allocation, Resource, Reservation
 from onegov.ticket import Ticket, Handler, handlers
@@ -51,10 +51,10 @@ class OrgTicketMixin(object):
         # we should advise them to enter a meaningful note with the file
         # instead.
         #
-        q = object_session(self).query(TicketNote)
+        q = object_session(self).query(Message)
         q = q.filter_by(channel_id=self.number)
-        q = q.filter_by(type='ticket_note')
-        q = q.with_entities(TicketNote.text)
+        q = q.filter(Message.type.in_(('ticket_note', 'ticket_chat')))
+        q = q.with_entities(Message.text)
 
         return ' '.join(n.text for n in q if n.text)
 

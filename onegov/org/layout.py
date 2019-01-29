@@ -33,8 +33,8 @@ from onegov.org.models import ResourceRecipientCollection
 from onegov.org.models import Search
 from onegov.org.models import SiteCollection
 from onegov.org.models.extensions import PersonLinkExtension
-from onegov.org.new_elements import Block, Confirm, Intercooler
-from onegov.org.new_elements import Link, LinkGroup
+from onegov.core.elements import Block, Confirm, Intercooler
+from onegov.core.elements import Link, LinkGroup
 from onegov.org.theme.org_theme import user_options
 from onegov.pay import PaymentCollection, PaymentProviderCollection
 from onegov.people import PersonCollection
@@ -481,10 +481,6 @@ class DefaultLayout(Layout):
             Link(r.title, self.request.link(r)) for r in self.root_pages
         )
 
-    @cached_property
-    def elements(self):
-        return self.template_loader['elements.pt']
-
 
 class DefaultMailLayout(Layout):
     """ A special layout for creating HTML E-Mails. """
@@ -682,7 +678,8 @@ class FormSubmissionLayout(DefaultLayout):
                         _(
                             "There are submissions associated with the form. "
                             "Those need to be removed first."
-                        )
+                        ),
+                        _("Cancel")
                     )
                 )
             )
@@ -698,7 +695,8 @@ class FormSubmissionLayout(DefaultLayout):
                     Confirm(
                         _("Do you really want to delete this form?"),
                         _("This cannot be undone."),
-                        _("Delete form")
+                        _("Delete form"),
+                        _("Cancel")
                     ),
                     Intercooler(
                         request_method='DELETE',
@@ -827,7 +825,8 @@ class PersonLayout(DefaultLayout):
                         Confirm(
                             _("Do you really want to delete this person?"),
                             _("This cannot be undone."),
-                            _("Delete person")
+                            _("Delete person"),
+                            _("Cancel")
                         ),
                         Intercooler(
                             request_method='DELETE',
@@ -1068,7 +1067,8 @@ class ResourceLayout(DefaultLayout):
                         Confirm(
                             _("Do you really want to delete this resource?"),
                             _("This cannot be undone."),
-                            _("Delete resource")
+                            _("Delete resource"),
+                            _("Cancel")
                         ),
                         Intercooler(
                             request_method='DELETE',
@@ -1087,7 +1087,8 @@ class ResourceLayout(DefaultLayout):
                             _(
                                 "There are existing reservations associated "
                                 "with this resource"
-                            )
+                            ),
+                            _("Cancel")
                         )
                     )
                 )
@@ -1192,7 +1193,8 @@ class AllocationEditFormLayout(DefaultLayout):
                         Confirm(
                             _("Do you really want to delete this allocation?"),
                             _("This cannot be undone."),
-                            _("Delete allocation")
+                            _("Delete allocation"),
+                            _("Cancel")
                         ),
                         Intercooler(
                             request_method='DELETE',
@@ -1210,7 +1212,8 @@ class AllocationEditFormLayout(DefaultLayout):
                             _(
                                 "There are existing reservations associated "
                                 "with this resource"
-                            )
+                            ),
+                            _("Cancel")
                         )
                     )
                 )
@@ -1297,7 +1300,8 @@ class OccurrenceLayout(EventBaseLayout):
                         traits=(
                             Block(
                                 _("This event can't be editet."),
-                                _("Imported events can not be editet.")
+                                _("Imported events can not be editet."),
+                                _("Cancel")
                             )
                         )
                     ),
@@ -1311,7 +1315,8 @@ class OccurrenceLayout(EventBaseLayout):
                             Confirm(
                                 _("Do you really want to delete this event?"),
                                 _("This cannot be undone."),
-                                _("Delete event")
+                                _("Delete event"),
+                                _("Cancel")
                             ),
                             Intercooler(
                                 request_method='POST',
@@ -1340,7 +1345,8 @@ class OccurrenceLayout(EventBaseLayout):
                         Confirm(
                             _("Do you really want to delete this event?"),
                             _("This cannot be undone."),
-                            _("Delete event")
+                            _("Delete event"),
+                            _("Cancel")
                         ),
                         Intercooler(
                             request_method='DELETE',
@@ -1358,7 +1364,8 @@ class OccurrenceLayout(EventBaseLayout):
                             _(
                                 "To remove this event, go to the ticket "
                                 "and reject it."
-                            )
+                            ),
+                            _("Cancel")
                         )
                     )
                 )
@@ -1387,7 +1394,8 @@ class EventLayout(EventBaseLayout):
                         traits=(
                             Block(
                                 _("This event can't be editet."),
-                                _("Imported events can not be editet.")
+                                _("Imported events can not be editet."),
+                                _("Cancel")
                             )
                         )
                     ),
@@ -1401,7 +1409,8 @@ class EventLayout(EventBaseLayout):
                             Confirm(
                                 _("Do you really want to delete this event?"),
                                 _("This cannot be undone."),
-                                _("Delete event")
+                                _("Delete event"),
+                                _("Cancel")
                             ),
                             Intercooler(
                                 request_method='POST',
@@ -1427,7 +1436,8 @@ class EventLayout(EventBaseLayout):
                         Confirm(
                             _("Do you really want to delete this event?"),
                             _("This cannot be undone."),
-                            _("Delete event")
+                            _("Delete event"),
+                            _("Cancel")
                         ),
                         Intercooler(
                             request_method='DELETE',
@@ -1445,7 +1455,8 @@ class EventLayout(EventBaseLayout):
                             _(
                                 "To remove this event, go to the ticket "
                                 "and reject it."
-                            )
+                            ),
+                            _("Cancel")
                         )
                     )
                 )
@@ -1544,6 +1555,7 @@ class NewsletterLayout(DefaultLayout):
                             )),
                             _("This cannot be undone."),
                             _("Delete newsletter"),
+                            _("Cancel")
                         ),
                         Intercooler(
                             request_method='DELETE',
@@ -1648,7 +1660,8 @@ class ImageSetLayout(DefaultLayout):
                                 self.model.title
                             )),
                             _("This cannot be undone."),
-                            _("Delete photo album")
+                            _("Delete photo album"),
+                            _("Cancel")
                         ),
                         Intercooler(
                             request_method='DELETE',
@@ -1948,7 +1961,8 @@ class DirectoryEntryCollectionLayout(DirectoryEntryBaseLayout):
                                 }
                             ),
                             _("All entries will be deleted as well!"),
-                            _("Delete directory")
+                            _("Delete directory"),
+                            _("Cancel")
                         ),
                         Intercooler(
                             request_method='DELETE',
@@ -2018,7 +2032,8 @@ class DirectoryEntryLayout(DirectoryEntryBaseLayout):
                                 }
                             ),
                             _("This cannot be undone."),
-                            _("Delete entry")
+                            _("Delete entry"),
+                            _("Cancel")
                         ),
                         Intercooler(
                             request_method='DELETE',

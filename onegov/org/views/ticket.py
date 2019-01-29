@@ -6,7 +6,7 @@ from onegov.core.custom import json
 from onegov.core.orm import as_selectable
 from onegov.core.security import Public, Private
 from onegov.org import _, OrgApp
-from onegov.org.new_elements import Link, Intercooler, Confirm
+from onegov.core.elements import Link, Intercooler, Confirm
 from onegov.org.forms import TicketNoteForm
 from onegov.org.layout import DefaultLayout
 from onegov.org.layout import TicketLayout
@@ -118,7 +118,8 @@ def get_stripe_payment_button(payment, layout):
                         "This usually happens automatically, so there is "
                         "no reason not do capture the payment."
                     ),
-                    _("Capture payment")
+                    _("Capture payment"),
+                    _("Cancel")
                 ),
                 Intercooler(
                     request_method='POST',
@@ -144,7 +145,8 @@ def get_stripe_payment_button(payment, layout):
                     _("This cannot be undone."),
                     _("Refund ${amount}", mapping={
                         'amount': amount
-                    })
+                    }),
+                    _("Cancel")
                 ),
                 Intercooler(
                     request_method='POST',

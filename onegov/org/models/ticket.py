@@ -6,7 +6,7 @@ from onegov.form import FormSubmissionCollection
 from onegov.org import _
 from onegov.org.layout import DefaultLayout, EventLayout
 from onegov.org.models.message import TicketNote
-from onegov.org.new_elements import Link, LinkGroup, Confirm, Intercooler
+from onegov.core.elements import Link, LinkGroup, Confirm, Intercooler
 from onegov.reservation import Allocation, Resource, Reservation
 from onegov.ticket import Ticket, Handler, handlers
 from purl import URL
@@ -147,6 +147,9 @@ class FormSubmissionHandler(Handler):
                         ),
                         _(
                             "Confirm registration"
+                        ),
+                        _(
+                            "Cancel"
                         )
                     ))
 
@@ -394,7 +397,8 @@ class ReservationHandler(Handler):
                 Confirm(
                     _("Do you really want to reject all reservations?"),
                     _("Rejecting these reservations can't be undone."),
-                    _("Reject reservations")
+                    _("Reject reservations"),
+                    _("Cancel")
                 ),
                 Intercooler(
                     request_method='GET',
@@ -419,7 +423,8 @@ class ReservationHandler(Handler):
                         _("Rejecting ${title} can't be undone.", mapping={
                             'title': title
                         }),
-                        _("Reject reservation")
+                        _("Reject reservation"),
+                        _("Cancel")
                     ),
                     Intercooler(
                         request_method='GET',
@@ -522,7 +527,8 @@ class EventSubmissionHandler(Handler):
                         Confirm(
                             _("Do you really want to reject this event?"),
                             _("Rejecting this event can't be undone."),
-                            _("Reject event")
+                            _("Reject event"),
+                            _("Cancel")
                         ),
                         Intercooler(
                             request_method='DELETE',
@@ -677,7 +683,8 @@ class DirectoryEntryHandler(Handler):
                     Confirm(
                         _("Do you really want to reject this entry?"),
                         _("This cannot be undone."),
-                        _("Reject entry")
+                        _("Reject entry"),
+                        _("Cancel")
                     ),
                     Intercooler(
                         request_method='POST',

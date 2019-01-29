@@ -5481,7 +5481,7 @@ h2 + div.timeline {
     width: calc(100% + .5rem);
 
     > li {
-        @include label($radius: true, $bg: $gray);
+        @include label($radius: true, $bg: transparent);
 
         border: .25rem solid #f5f5f5;
         flex-basis: 0;
@@ -5491,7 +5491,6 @@ h2 + div.timeline {
         padding: 1.25ex;
 
         * {
-            color: $body-font-color;
             font-size: .8rem !important;
         }
     }
@@ -5504,6 +5503,7 @@ h2 + div.timeline {
         min-width: 2.6ex;
         padding: 0 2px;
         text-align: center;
+        margin-right: .5ex;
     }
 
     > .counts-note .counts-value {

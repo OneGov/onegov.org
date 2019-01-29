@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2019-01-29 10:33+0100\n"
+"POT-Creation-Date: 2019-01-29 13:01+0100\n"
 "PO-Revision-Date: 2018-12-08 11:02+0100\n"
 "Last-Translator: Marc Sommerhalder <marc.sommerhalder@seantis.ch>\n"
 "Language-Team: French\n"
@@ -2778,7 +2778,7 @@ msgid ""
 "Forgot something or have a special request? Add a message to the ticket."
 msgstr ""
 
-msgid "New messages have been disabled because the ticket has been closed"
+msgid "New messages have been disabled because the ticket has been closed."
 msgstr ""
 
 msgid "No photo albums defined yet."

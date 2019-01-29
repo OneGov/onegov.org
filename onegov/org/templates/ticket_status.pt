@@ -43,7 +43,7 @@
                 </tal:b>
 
                 <p class="panel" tal:condition="ticket.state == 'closed'" i18n:translate style="text-align: center;">
-                    New messages have been disabled because the ticket has been closed
+                    New messages have been disabled because the ticket has been closed.
                 </p>
 
             </div>

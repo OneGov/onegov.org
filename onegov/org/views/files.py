@@ -17,7 +17,7 @@ from onegov.file import File, FileCollection
 from onegov.file.utils import extension_for_content_type
 from onegov.file.errors import AlreadySignedError, InvalidTokenError
 from onegov.org import _, OrgApp
-from onegov.org.new_elements import Link
+from onegov.core.elements import Link
 from onegov.org.layout import DefaultLayout
 from onegov.org.models import (
     GeneralFile,
@@ -287,7 +287,7 @@ def handle_file_upload(self, request):
         content=request.params['file'].file
     )
 
-    if self.supported_content_types is not 'all':
+    if self.supported_content_types != 'all':
         if file.reference.content_type not in self.supported_content_types:
             raise exc.HTTPUnsupportedMediaType()
 

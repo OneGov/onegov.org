@@ -1,6 +1,15 @@
 Changelog
 ---------
 
+- Upgrades javascript sentry integration.
+  [href]
+
+1.2.1 (2019-04-08)
+~~~~~~~~~~~~~~~~~~~
+
+- Fixes hashtags not getting marked as such in some cases.
+  [href]
+
 1.2.0 (2019-04-05)
 ~~~~~~~~~~~~~~~~~~~
 

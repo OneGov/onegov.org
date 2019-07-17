@@ -37,7 +37,12 @@
                                 <td>${user.realname}</td>
 
                                 <tal:b define="serial user.yubikey_serial" condition="enable_yubikey">
-                                    <td tal:condition="serial"><span class="yubikey">${serial}</span></td>
+                                    <td tal:condition="serial">
+                                        <span class="yubikey">
+                                            <i class="fa fa-key" aria-hidden="true"></i>
+                                            ${serial}
+                                        </span>
+                                    </td>
                                     <td tal:condition="not:serial" i18n:translate></td>
                                 </tal:b>
 

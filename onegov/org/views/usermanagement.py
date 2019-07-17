@@ -15,7 +15,8 @@ from onegov.ticket import TicketCollection, Ticket
 from onegov.user import Auth, User, UserCollection
 from onegov.user.errors import ExistingUserError
 from onegov.user.forms import SignupLinkForm
-from wtforms.validators import Optional
+from onegov.user.auth.provider import include_provider_form_fields
+from wtforms.validators import Optional, ValidationError
 
 
 @OrgApp.html(model=UserCollection, template='usermanagement.pt',
@@ -167,7 +168,31 @@ def get_manage_user_form(self, request):
 
             return super().submitted(request)
 
-    return merge_forms(ManageUserForm, OptionalUserprofile)
+    return include_provider_form_fields(
+        providers=request.app.providers,
+        form_class=merge_forms(ManageUserForm, OptionalUserprofile))
+
+
+def get_new_user_form(self, request):
+
+    class LimitedNewUserForm(NewUserForm):
+
+        def validate_send_activation_email(self, field):
+            if not request.app.providers:
+                return
+
+            if self.send_activation_email.data:
+                if self.authentication_provider:
+                    raise ValidationError(
+                        _(
+                            "Activation e-mails can only be sent "
+                            "if no third-party provider is selected"
+                        )
+                    )
+
+    return include_provider_form_fields(
+        providers=request.app.providers,
+        form_class=LimitedNewUserForm)
 
 
 @OrgApp.form(model=User, template='form.pt', form=get_manage_user_form,
@@ -201,8 +226,8 @@ def handle_manage_user(self, request, form):
     }
 
 
-@OrgApp.form(model=UserCollection, template='newuser.pt', form=NewUserForm,
-             name='new', permission=Secret)
+@OrgApp.form(model=UserCollection, template='newuser.pt',
+             form=get_new_user_form, name='new', permission=Secret)
 def handle_new_user(self, request, form):
 
     if not request.app.enable_yubikey:

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2019-06-19 16:52+0200\n"
+"POT-Creation-Date: 2019-07-16 13:52+0200\n"
 "PO-Revision-Date: 2019-02-18 06:39+0100\n"
 "Last-Translator: Marc Sommerhalder <marc.sommerhalder@seantis.ch>\n"
 "Language-Team: German\n"
@@ -3587,6 +3587,10 @@ msgstr "Ein Benutzer mit dieser E-Mail Adresse existiert bereits"
 
 msgid "An account was created for you"
 msgstr "Ein Konto wurde für Sie erstellt"
+
+msgid ""
+"Activation e-mails can only be sent if no third-party provider is selected"
+msgstr "Aktivierungs-Emails können nicht versandt werden, wenn ein Drittanbieter für die Authentifizerung ausgewählt wurde"
 
 msgid "New allocation"
 msgstr "Neue Einteilung"

@@ -3836,13 +3836,17 @@ ul.search-results {
 /*
     Usermanagement
 */
-
 .user-inactive td {
-    color: $base;
+    color: lighten($body-font-color, 25%);
 }
 
 .usermanagement {
     width: 100%;
+
+    td:last-child {
+        text-align: right;
+        width: 1%;
+    }
 
     td.text-links {
         white-space: nowrap;

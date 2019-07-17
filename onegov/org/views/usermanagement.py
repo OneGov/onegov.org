@@ -36,7 +36,7 @@ def view_usermanagement(self, request):
     filters['role'] = [
         Link(
             text=request.translate(title),
-            active=value in self.filters.get('role', tuple()),
+            active=value in self.filters.get('role', ()),
             url=request.link(self.for_filter(role=value))
         ) for title, value in (
             (_("Administrator"), 'admin'),
@@ -48,7 +48,7 @@ def view_usermanagement(self, request):
     filters['active'] = [
         Link(
             text=request.translate(title),
-            active=value in self.filters.get('active', tuple()),
+            active=value in self.filters.get('active', ()),
             url=request.link(self.for_filter(active=value))
         ) for title, value in (
             (_("Active"), True),
@@ -59,9 +59,20 @@ def view_usermanagement(self, request):
     filters['tag'] = [
         Link(
             text=tag,
-            active=tag in self.filters.get('tag', tuple()),
+            active=tag in self.filters.get('tag', ()),
             url=request.link(self.for_filter(tag=tag))
         ) for tag in self.tags
+    ]
+
+    filters['provider'] = [
+        Link(
+            text=request.translate(title),
+            active=name in self.filters.get('provider', ()),
+            url=request.link(self.for_filter(provider=name))
+        ) for title, name in (
+            (p.metadata.title, p.metadata.name)
+            for p in request.app.providers
+        )
     ]
 
     return {

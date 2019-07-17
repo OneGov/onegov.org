@@ -327,14 +327,14 @@
      <!--! render the label after the field if it's a boolean field -->
     <tal:b condition="field.type == 'BooleanField'">
         ${field()}
-        <span class="label-text">${field.label.text}</span>
+        <span class="label-text">${request.translate(field.label.text)}</span>
         <span class="label-required" tal:condition="field.flags.required|nothing">*</span>
         <div class="field-help" tal:condition="field.description">
             ${field.description}
         </div>
     </tal:b>
     <tal:b condition="field.type != 'BooleanField'">
-        <span class="label-text">${field.label.text}</span>
+        <span class="label-text">${request.translate(field.label.text)}</span>
         <span class="label-required" tal:condition="field.flags.required|nothing">*</span>
         ${field(placeholder=request.translate(field.description))}
     </tal:b>

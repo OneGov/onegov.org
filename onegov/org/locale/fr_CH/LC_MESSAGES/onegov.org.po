@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2019-08-05 11:22+0200\n"
+"POT-Creation-Date: 2019-08-05 14:14+0200\n"
 "PO-Revision-Date: 2019-02-18 06:40+0100\n"
 "Last-Translator: Marc Sommerhalder <marc.sommerhalder@seantis.ch>\n"
 "Language-Team: French\n"
@@ -3694,6 +3694,9 @@ msgstr "Recherche non disponible"
 
 msgid "Submit a New Directory Entry"
 msgstr "Proposer une nouvelle entrée de répertoire"
+
+msgid "Propose a change"
+msgstr ""
 
 msgid "New Directory"
 msgstr "Nouveau dossier"

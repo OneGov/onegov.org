@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2019-08-05 11:22+0200\n"
+"POT-Creation-Date: 2019-08-05 14:14+0200\n"
 "PO-Revision-Date: 2019-02-18 06:39+0100\n"
 "Last-Translator: Marc Sommerhalder <marc.sommerhalder@seantis.ch>\n"
 "Language-Team: German\n"
@@ -2347,7 +2347,8 @@ msgid "Propose entry"
 msgstr "Eintrag vorschlagen"
 
 msgid "Something missing? Propose a new entry."
-msgstr "Fehlt ein Eintrag im Verzeichnis? Schlagen Sie einen neuen Eintrag vor."
+msgstr ""
+"Fehlt ein Eintrag im Verzeichnis? Schlagen Sie einen neuen Eintrag vor."
 
 msgid "Don't have an account yet?"
 msgstr "Sie haben noch kein Benutzerkonto?"
@@ -3680,6 +3681,9 @@ msgstr "Suche Nicht Verfügbar"
 
 msgid "Submit a New Directory Entry"
 msgstr "Einen neuen Verzeichniseintrag vorschlagen."
+
+msgid "Propose a change"
+msgstr "Änderung vorschlagen"
 
 msgid "New Directory"
 msgstr "Neues Verzeichnis"

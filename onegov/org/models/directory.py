@@ -3,7 +3,7 @@ import sedate
 from cached_property import cached_property
 from datetime import timedelta
 from onegov.core.orm.mixins import meta_property, content_property
-from onegov.core.utils import linkify
+from onegov.core.utils import linkify, safe_format_keys
 from onegov.directory import Directory, DirectoryEntry
 from onegov.directory.errors import DuplicateEntryError, ValidationError
 from onegov.directory.migration import DirectoryMigration
@@ -174,9 +174,64 @@ class ExtendedDirectory(Directory, HiddenFromPublicExtension, Extendable):
     def es_public(self):
         return not self.is_hidden_from_public
 
-    @property
-    def form_class_for_submissions(self):
-        return self.extend_form_class(self.form_class, self.extensions)
+    def is_public(self, field):
+        """ Returns True if the given field is public, defined as follows:
+
+            * When it is part of the title/lead
+            * When it is part of the display
+
+        Though we might also glean other fields if they are simply searchable
+        or if they are part of the link pattern, we do not count those as
+        public, because we are interested in *obviously* public fields
+        clearly visible to the user.
+
+        """
+
+        # the display sets are not really defined at one single point…
+        sets = ('contact', 'content')
+        conf = self.configuration.display or {}
+
+        for s in sets:
+            if s not in conf:
+                continue
+
+            if field.label in conf[s]:
+                return True
+
+        # …neither is this
+        txts = ('title', 'lead')
+
+        for t in txts:
+            for key in safe_format_keys(conf.get(t, '')):
+                if field.label == key:
+                    return True
+
+        return False
+
+    def form_class_for_submissions(self, include_private):
+        """ Generates the form_class used for user submissions and change
+        requests. The resulting form always includes a submitter field and all
+        fields (when submitting) or only public fields (when requesting a
+        change).
+
+        """
+
+        form_class = self.extend_form_class(self.form_class, self.extensions)
+
+        if include_private:
+            return form_class
+
+        private = tuple(f for f in self.fields if not self.is_public(f))
+
+        class PrivateForm(form_class):
+
+            def __init__(self, *args, **kwargs):
+                super().__init__(*args, **kwargs)
+
+                for field in private:
+                    self.delete_field(field.id)
+
+        return PrivateForm
 
     @property
     def extensions(self):

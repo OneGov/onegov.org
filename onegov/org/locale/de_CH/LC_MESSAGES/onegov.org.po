@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2019-07-17 14:52+0200\n"
+"POT-Creation-Date: 2019-08-05 10:54+0200\n"
 "PO-Revision-Date: 2019-02-18 06:39+0100\n"
 "Last-Translator: Marc Sommerhalder <marc.sommerhalder@seantis.ch>\n"
 "Language-Team: German\n"
@@ -1221,11 +1221,17 @@ msgstr "Externer Link"
 msgid "Visible"
 msgstr "Sichtbar"
 
-msgid "Users may propose new entries"
-msgstr "Benutzer können neue Einträge vorschlagen"
+msgid "Users may send change requests"
+msgstr "Benutzer können Änderungen vorschlagen"
+
+msgid "Change requests"
+msgstr "Änderungsvorschläge"
 
 msgid "Guideline"
 msgstr "Wegleitung"
+
+msgid "Users may propose new entries"
+msgstr "Benutzer können neue Einträge vorschlagen"
 
 msgid "Price per submission"
 msgstr "Preis pro Eingabe"

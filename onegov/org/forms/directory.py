@@ -7,6 +7,7 @@ from onegov.form import as_internal_id
 from onegov.form import flatten_fieldsets
 from onegov.form import Form
 from onegov.form import merge_forms
+from onegov.form import move_fields
 from onegov.form import parse_formcode
 from onegov.form.errors import FormError
 from onegov.form.fields import IconField
@@ -117,13 +118,11 @@ class DirectoryBaseForm(Form):
         render_kw={
             'class_': 'formcode-select',
             'data-fields-include': 'fileinput'
-        }
-    )
+        })
 
     marker_icon = IconField(
         label=_("Icon"),
-        fieldset=_("Marker"),
-    )
+        fieldset=_("Marker"))
 
     marker_color_type = RadioField(
         label=_("Marker Color"),
@@ -132,14 +131,12 @@ class DirectoryBaseForm(Form):
             ('default', _("Default")),
             ('custom', _("Custom"))
         ],
-        default='default'
-    )
+        default='default')
 
     marker_color_value = ColorField(
         label=_("Color"),
         fieldset=_("Marker"),
-        depends_on=('marker_color_type', 'custom')
-    )
+        depends_on=('marker_color_type', 'custom'))
 
     order = RadioField(
         label=_("Order"),
@@ -164,32 +161,28 @@ class DirectoryBaseForm(Form):
             ('asc', _("Ascending")),
             ('desc', _("Descending"))
         ],
-        default='asc'
-    )
+        default='asc')
 
     link_pattern = StringField(
         label=_("Pattern"),
         fieldset=_("External Link"),
-        render_kw={'class_': 'formcode-format'},
-    )
+        render_kw={'class_': 'formcode-format'})
 
     link_title = StringField(
         label=_("Title"),
-        fieldset=_("External Link")
-    )
+        fieldset=_("External Link"))
 
     link_visible = BooleanField(
         label=_("Visible"),
         fieldset=_("External Link"),
-        default=True
-    )
+        default=True)
 
     enable_submissions = BooleanField(
         label=_("Users may propose new entries"),
         fieldset=_("New entries"),
         default=True)
 
-    guideline = HtmlField(
+    submissions_guideline = HtmlField(
         label=_("Guideline"),
         fieldset=_("New entries"),
         depends_on=('enable_submissions', 'y'))
@@ -217,6 +210,16 @@ class DirectoryBaseForm(Form):
         default="CHF",
         depends_on=('enable_submissions', 'y', 'price', 'paid'),
         validators=[validators.InputRequired()])
+
+    enable_change_requests = BooleanField(
+        label=_("Users may send change requests"),
+        fieldset=_("Change requests"),
+        default=True)
+
+    change_requests_guideline = HtmlField(
+        label=_("Guideline"),
+        fieldset=_("Change requests"),
+        depends_on=('enable_change_requests', 'y'))
 
     @cached_property
     def known_field_ids(self):
@@ -358,6 +361,10 @@ class DirectoryForm(merge_forms(DirectoryBaseForm, PaymentMethodForm)):
         'enable_submissions', 'y', 'price', 'paid')
 
     payment_method = RadioField(**payment_method_args)
+
+
+DirectoryForm = move_fields(
+    DirectoryForm, ('payment_method', ), after='currency')
 
 
 class DirectoryImportForm(Form):

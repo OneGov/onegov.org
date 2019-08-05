@@ -33,6 +33,18 @@
                 </dl>
             </div>
 
+            <div metal:fill-slot="after-panels" tal:condition="layout.model.directory.enable_change_requests|nothing">
+                <div class="submit-yours">
+                    <dl>
+                        <dt>
+                            <a href="${request.link(layout.model, 'change-request')}">
+                                <h2 i18n:translate>Change Request</h2>
+                            </a>
+                        </dt>
+                        <dd i18n:translate>Found an error? Propose a change to this entry.</dd>
+                    </dl>
+                </div>
+            </div>
         </tal:b>
     </tal:b>
 </div>

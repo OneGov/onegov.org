@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2019-08-05 10:54+0200\n"
+"POT-Creation-Date: 2019-08-05 11:22+0200\n"
 "PO-Revision-Date: 2019-02-18 06:39+0100\n"
 "Last-Translator: Marc Sommerhalder <marc.sommerhalder@seantis.ch>\n"
 "Language-Team: German\n"
@@ -1221,20 +1221,20 @@ msgstr "Externer Link"
 msgid "Visible"
 msgstr "Sichtbar"
 
+msgid "Users may propose new entries"
+msgstr "Benutzer können neue Einträge vorschlagen"
+
+msgid "Guideline"
+msgstr "Wegleitung"
+
+msgid "Price per submission"
+msgstr "Preis pro Eingabe"
+
 msgid "Users may send change requests"
 msgstr "Benutzer können Änderungen vorschlagen"
 
 msgid "Change requests"
 msgstr "Änderungsvorschläge"
-
-msgid "Guideline"
-msgstr "Wegleitung"
-
-msgid "Users may propose new entries"
-msgstr "Benutzer können neue Einträge vorschlagen"
-
-msgid "Price per submission"
-msgstr "Preis pro Eingabe"
 
 msgid "Apply directory configuration"
 msgstr "Verzeichniskonfiguration anwenden"
@@ -2346,8 +2346,8 @@ msgstr "Keine Einträge gefunden."
 msgid "Propose entry"
 msgstr "Eintrag vorschlagen"
 
-msgid "Propose a new entry"
-msgstr "Einen neuen Eintrag vorschlagen"
+msgid "Something missing? Propose a new entry."
+msgstr "Fehlt ein Eintrag im Verzeichnis? Schlagen Sie einen neuen Eintrag vor."
 
 msgid "Don't have an account yet?"
 msgstr "Sie haben noch kein Benutzerkonto?"
@@ -2942,6 +2942,12 @@ msgstr "Externer Link"
 
 msgid "More information"
 msgstr "Weiterführende Informationen"
+
+msgid "Change Request"
+msgstr "Änderung vorschlagen"
+
+msgid "Found an error? Propose a change to this entry."
+msgstr "Haben Sie einen Fehler gefunden? Schlagen Sie eine Änderung vor."
 
 msgid "Your event has unfortunately been rejected:"
 msgstr "Ihre Veranstaltung musste leider abgelehnt werden:"
@@ -3673,7 +3679,7 @@ msgid "Search Unavailable"
 msgstr "Suche Nicht Verfügbar"
 
 msgid "Submit a New Directory Entry"
-msgstr "Einen neuen Verzeichniseintrag vorschlagen"
+msgstr "Einen neuen Verzeichniseintrag vorschlagen."
 
 msgid "New Directory"
 msgstr "Neues Verzeichnis"
@@ -3767,3 +3773,9 @@ msgstr "Die Zahlung wurde eingenommen"
 
 msgid "The payment was refunded"
 msgstr "Die Zahlung wurde rückerstattet"
+
+#~ msgid "Propose a new entry"
+#~ msgstr "Einen neuen Eintrag vorschlagen"
+
+#~ msgid "Request a change for this entry."
+#~ msgstr "Schlagen Sie eine Änderung vor."

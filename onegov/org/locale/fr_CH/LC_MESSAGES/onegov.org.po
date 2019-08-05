@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2019-08-05 10:54+0200\n"
+"POT-Creation-Date: 2019-08-05 11:22+0200\n"
 "PO-Revision-Date: 2019-02-18 06:40+0100\n"
 "Last-Translator: Marc Sommerhalder <marc.sommerhalder@seantis.ch>\n"
 "Language-Team: French\n"
@@ -1221,20 +1221,20 @@ msgstr "Lien Externe"
 msgid "Visible"
 msgstr "Visible"
 
+msgid "Users may propose new entries"
+msgstr "Les utilisateurs peuvent proposer de nouvelles entrées"
+
+msgid "Guideline"
+msgstr "Directives"
+
+msgid "Price per submission"
+msgstr "Prix par proposition"
+
 msgid "Users may send change requests"
 msgstr ""
 
 msgid "Change requests"
 msgstr ""
-
-msgid "Guideline"
-msgstr "Directives"
-
-msgid "Users may propose new entries"
-msgstr "Les utilisateurs peuvent proposer de nouvelles entrées"
-
-msgid "Price per submission"
-msgstr "Prix par proposition"
 
 msgid "Apply directory configuration"
 msgstr "Appliquer la configuration du dossier"
@@ -2351,8 +2351,8 @@ msgstr "Aucune entrée trouvée."
 msgid "Propose entry"
 msgstr "Proposer une entrée"
 
-msgid "Propose a new entry"
-msgstr "Proposer une nouvelle entrée"
+msgid "Something missing? Propose a new entry."
+msgstr ""
 
 msgid "Don't have an account yet?"
 msgstr "Vous n'avez pas encore de compte ?"
@@ -2952,6 +2952,12 @@ msgstr "Lien externe"
 
 msgid "More information"
 msgstr "Plus de renseignements"
+
+msgid "Change Request"
+msgstr ""
+
+msgid "Found an error? Propose a change to this entry."
+msgstr ""
 
 msgid "Your event has unfortunately been rejected:"
 msgstr "Votre événement a malheureusement été rejeté :"
@@ -3781,3 +3787,6 @@ msgstr "Le paiement a été saisi"
 
 msgid "The payment was refunded"
 msgstr "Le paiement a été remboursé"
+
+#~ msgid "Propose a new entry"
+#~ msgstr "Proposer une nouvelle entrée"

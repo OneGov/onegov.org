@@ -1242,7 +1242,7 @@ msgid ""
 "if all fields are visible are user submission possible - otherwise users may "
 "see data that they are not intended to see. "
 msgstr ""
-"Benutzereingaben sind nicht möglich, da «${field}» nicht sichtabr ist. Nur "
+"Benutzereingaben sind nicht möglich, da «${field}» nicht sichtbar ist. Nur "
 "wenn alle Felder sichtbar sind können Benutzereingaben akzeptiert werden - "
 "andernfalls ist es möglich dass der Benutzer versteckte Felder sehen kann."
 

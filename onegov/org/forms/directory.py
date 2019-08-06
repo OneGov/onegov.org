@@ -180,7 +180,7 @@ class DirectoryBaseForm(Form):
     enable_submissions = BooleanField(
         label=_("Users may propose new entries"),
         fieldset=_("New entries"),
-        default=True)
+        default=False)
 
     submissions_guideline = HtmlField(
         label=_("Guideline"),
@@ -214,7 +214,7 @@ class DirectoryBaseForm(Form):
     enable_change_requests = BooleanField(
         label=_("Users may send change requests"),
         fieldset=_("Change requests"),
-        default=True)
+        default=False)
 
     change_requests_guideline = HtmlField(
         label=_("Guideline"),

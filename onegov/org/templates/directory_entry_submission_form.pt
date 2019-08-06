@@ -3,8 +3,8 @@
         ${title}
     </tal:b>
     <tal:b metal:fill-slot="content">
-        <div tal:condition="help|nothing" class="panel limit-line-width">
-            ${help}
+        <div tal:condition="hint|nothing" class="panel limit-line-width">
+            ${hint}
         </div>
         <tal:b condition="directory.submissions_guideline" replace="structure directory.submissions_guideline" />
         <div class="row">

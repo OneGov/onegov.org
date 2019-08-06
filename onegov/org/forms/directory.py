@@ -268,6 +268,94 @@ class DirectoryBaseForm(Form):
                 _("Please select at most one thumbnail field")
             )
 
+    def ensure_public_fields_for_submissions(self):
+        """ Force directories to show all fields (no hidden fields) if the
+        user may send in new entries or update exsting ones.
+
+        Otherwise we would have to filter out private fields which presents
+        all kinds of edge-cases that we should probably not solve - directories
+        are not meant to be private repositories.
+
+        """
+        inputs = (
+            self.enable_change_requests,
+            self.enable_submissions
+        )
+
+        if not any((i.data for i in inputs)):
+            return
+
+        hidden = self.first_hidden_field(self.configuration)
+
+        if hidden:
+            msg = _(
+                "User submissions are not possible, because «${field}» "
+                "is not visible. Only if all fields are visible are user "
+                "submission possible - otherwise users may see data that "
+                "they are not intended to see. ", mapping={
+                    'field': hidden.label
+                }
+            )
+
+            for i in inputs:
+                if i.data:
+                    i.errors.append(msg)
+
+            return False
+
+    def first_hidden_field(self, configuration):
+        """ Returns the first hidden field, or None. """
+
+        for field in flatten_fieldsets(parse_formcode(self.structure.data)):
+            if not self.is_public(field.id, configuration):
+                return field
+
+    def is_public(self, fid, configuration):
+        """ Returns true if the given field id is public.
+
+        A field is public, if none of these are true:
+
+            * It is part of the title/lead
+            * It is part of the display
+            * It is part of the keywords
+            * It is used as the thumbnail
+
+        Though we might also glean other fields if they are simply searchable
+        or if they are part of the link pattern, we do not count those as
+        public, because we are interested in *obviously* public fields
+        clearly visible to the user.
+
+        """
+
+        # the display sets are not really defined at one single point…
+        sets = ('contact', 'content')
+        conf = configuration.display or {}
+
+        for s in sets:
+            if s not in conf:
+                continue
+
+            if fid in (as_internal_id(v) for v in conf[s]):
+                return True
+
+        # …neither is this
+        txts = ('title', 'lead')
+
+        for t in txts:
+            for key in safe_format_keys(getattr(configuration, t, '')):
+                if fid == as_internal_id(key):
+                    return True
+
+        # also include fields which are used as keywords
+        if fid in (as_internal_id(v) for v in configuration.keywords):
+            return True
+
+        # check if the field is the thumbnail
+        if fid == as_internal_id(configuration.thumbnail):
+            return True
+
+        return False
+
     @property
     def default_marker_color(self):
         return self.request.app.org.theme_options.get('primary-color')\

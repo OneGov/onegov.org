@@ -176,45 +176,6 @@ class ExtendedDirectory(Directory, HiddenFromPublicExtension, Extendable):
     def es_public(self):
         return not self.is_hidden_from_public
 
-    def is_public(self, field):
-        """ Returns True if the given field is public, defined as follows:
-
-            * When it is part of the title/lead
-            * When it is part of the display
-
-        Though we might also glean other fields if they are simply searchable
-        or if they are part of the link pattern, we do not count those as
-        public, because we are interested in *obviously* public fields
-        clearly visible to the user.
-
-        """
-        fid = field.id
-
-        # the display sets are not really defined at one single point…
-        sets = ('contact', 'content')
-        conf = self.configuration.display or {}
-
-        for s in sets:
-            if s not in conf:
-                continue
-
-            if fid in (as_internal_id(v) for v in conf[s]):
-                return True
-
-        # …neither is this
-        txts = ('title', 'lead')
-
-        for t in txts:
-            for key in safe_format_keys(conf.get(t, '')):
-                if fid == as_internal_id(key):
-                    return True
-
-        # also include fields which are used as keywords
-        if fid in (as_internal_id(v) for v in self.configuration.keywords):
-            return True
-
-        return False
-
     def form_class_for_submissions(self, include_private):
         """ Generates the form_class used for user submissions and change
         requests. The resulting form always includes a submitter field and all
@@ -240,21 +201,7 @@ class ExtendedDirectory(Directory, HiddenFromPublicExtension, Extendable):
 
             field.kwargs['render_kw']['force_simple'] = True
 
-        if include_private:
-            return form_class
-
-        # remove non-public fields from the form
-        private = tuple(f for f in self.fields if not self.is_public(f))
-
-        class PrivateForm(form_class):
-
-            def __init__(self, *args, **kwargs):
-                super().__init__(*args, **kwargs)
-
-                for field in private:
-                    self.delete_field(field.id)
-
-        return PrivateForm
+        return form_class
 
     @property
     def extensions(self):

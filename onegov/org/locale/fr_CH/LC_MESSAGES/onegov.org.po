@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2019-08-06 09:36+0200\n"
+"POT-Creation-Date: 2019-08-06 14:32+0200\n"
 "PO-Revision-Date: 2019-02-18 06:40+0100\n"
 "Last-Translator: Marc Sommerhalder <marc.sommerhalder@seantis.ch>\n"
 "Language-Team: French\n"
@@ -1234,6 +1234,13 @@ msgid "Users may send change requests"
 msgstr ""
 
 msgid "Change requests"
+msgstr ""
+
+#, python-format
+msgid ""
+"User submissions are not possible, because «${field}» is not visible. Only "
+"if all fields are visible are user submission possible - otherwise users may "
+"see data that they are not intended to see. "
 msgstr ""
 
 msgid "Apply directory configuration"

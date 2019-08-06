@@ -186,6 +186,7 @@ class ExtendedDirectory(Directory, HiddenFromPublicExtension, Extendable):
         clearly visible to the user.
 
         """
+        fid = field.id
 
         # the display sets are not really defined at one single point…
         sets = ('contact', 'content')
@@ -195,7 +196,7 @@ class ExtendedDirectory(Directory, HiddenFromPublicExtension, Extendable):
             if s not in conf:
                 continue
 
-            if field.label in conf[s]:
+            if fid in (as_internal_id(v) for v in conf[s]):
                 return True
 
         # …neither is this
@@ -203,8 +204,12 @@ class ExtendedDirectory(Directory, HiddenFromPublicExtension, Extendable):
 
         for t in txts:
             for key in safe_format_keys(conf.get(t, '')):
-                if field.label == key:
+                if fid == as_internal_id(key):
                     return True
+
+        # also include fields which are used as keywords
+        if fid in (as_internal_id(v) for v in self.configuration.keywords):
+            return True
 
         return False
 

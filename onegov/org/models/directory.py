@@ -4,7 +4,7 @@ import sedate
 from cached_property import cached_property
 from datetime import timedelta
 from onegov.core.orm.mixins import meta_property, content_property
-from onegov.core.utils import linkify, safe_format_keys
+from onegov.core.utils import linkify
 from onegov.directory import Directory, DirectoryEntry
 from onegov.directory.errors import DuplicateEntryError, ValidationError
 from onegov.directory.migration import DirectoryMigration

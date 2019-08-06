@@ -61,7 +61,7 @@
 <metal:display_field define-macro="display_fields" i18n:domain="onegov.org">
     <table class="field-display">
         <tal:b repeat="field fields">
-            <tal:b define="rendered layout.render_field(field)|nothing" condition="rendered">
+            <tal:b define="rendered form.render_display(field)|nothing" condition="rendered">
                 <tr><td><b>${field.label.text}</b></td></tr>
                 <tr><td><tal:b replace="structure rendered" /></td></tr>
                 <tr><td height="5"></td></tr>

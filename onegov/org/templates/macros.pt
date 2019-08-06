@@ -485,7 +485,7 @@
 
 <metal:display_field define-macro="display_fields" i18n:domain="onegov.org">
     <dl class="field-display" tal:repeat="field fields" tal:define="allow_downloads allow_downloads|request.is_manager; allow_views allow_views|False">
-        <tal:b define="rendered layout.render_field(field)|nothing" condition="rendered">
+        <tal:b define="rendered form.render_display(field)" condition="rendered">
             <dt>${field.label.text}</dt>
             <dd>
                 <tal:b condition="(allow_downloads or allow_views) and field.type == 'UploadField'">

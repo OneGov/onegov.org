@@ -18,6 +18,7 @@
                             fields entry.content_fields;
                             allow_downloads True;
                             allow_views True;
+                            form entry.directory.form_obj;
                         "
                     />
                 </div>

@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2019-08-05 14:14+0200\n"
+"POT-Creation-Date: 2019-08-06 09:36+0200\n"
 "PO-Revision-Date: 2019-02-18 06:40+0100\n"
 "Last-Translator: Marc Sommerhalder <marc.sommerhalder@seantis.ch>\n"
 "Language-Team: French\n"
@@ -3706,6 +3706,11 @@ msgstr "Le dossier a été supprimé"
 
 msgid "New Directory Entry"
 msgstr "Nouvelle entrée dans le dossier"
+
+msgid ""
+"To request a change, edit the fields you would like to change, leaving the "
+"other fields intact. Then submit your request."
+msgstr ""
 
 msgid "The entry was deleted"
 msgstr "L'entrée a été supprimée"

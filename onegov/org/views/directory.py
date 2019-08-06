@@ -445,6 +445,10 @@ def handle_change_request(self, request, form):
         'form': form,
         'layout': layout,
         'title': title,
+        'help': _(
+            "To request a change, edit the fields you would like to change, "
+            "leaving the other fields intact. Then submit your request."
+        )
     }
 
 

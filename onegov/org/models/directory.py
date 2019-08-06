@@ -1,3 +1,4 @@
+import inspect
 import sedate
 
 from cached_property import cached_property
@@ -8,6 +9,7 @@ from onegov.directory import Directory, DirectoryEntry
 from onegov.directory.errors import DuplicateEntryError, ValidationError
 from onegov.directory.migration import DirectoryMigration
 from onegov.form import as_internal_id, Extendable, FormSubmission
+from onegov.form.fields import UploadField
 from onegov.org import _
 from onegov.org.models.extensions import CoordinatesExtension
 from onegov.org.models.extensions import HiddenFromPublicExtension
@@ -223,9 +225,25 @@ class ExtendedDirectory(Directory, HiddenFromPublicExtension, Extendable):
 
         form_class = self.extend_form_class(self.form_class, self.extensions)
 
+        # force all upload fields to be simple, we do not support the more
+        # complex add/keep/replace widget, which is hard to properly support
+        # and is not super useful in submissions
+        def is_upload(attribute):
+            if not hasattr(attribute, 'field_class'):
+                return None
+
+            return issubclass(attribute.field_class, UploadField)
+
+        for name, field in inspect.getmembers(form_class, predicate=is_upload):
+            if 'render_kw' not in field.kwargs:
+                field.kwargs['render_kw'] = {}
+
+            field.kwargs['render_kw']['force_simple'] = True
+
         if include_private:
             return form_class
 
+        # remove non-public fields from the form
         private = tuple(f for f in self.fields if not self.is_public(f))
 
         class PrivateForm(form_class):

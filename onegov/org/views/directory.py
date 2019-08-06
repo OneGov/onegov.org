@@ -414,6 +414,9 @@ def handle_change_request(self, request, form):
     if form.submitted(request):
         forms = FormCollection(request.session)
 
+        # required by the form submissions collection
+        form._source = self.directory.structure
+
         submission = forms.submissions.add_external(
             form=form,
             state='pending',
@@ -422,6 +425,10 @@ def handle_change_request(self, request, form):
                 'handler_code': 'DIR',
                 'directory': self.directory.id.hex,
                 'directory_entry': self.id.hex,
+                'extensions': tuple(
+                    ext for ext in self.directory.extensions
+                    if ext != 'submitter'
+                )
             }
         )
 
@@ -432,6 +439,7 @@ def handle_change_request(self, request, form):
         url = url.query_param('title', request.translate(title))
 
         return request.redirect(url.as_string())
+
     elif not request.POST:
         form.process(obj=self)
 

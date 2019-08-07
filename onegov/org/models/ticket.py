@@ -635,6 +635,19 @@ class DirectoryEntryHandler(Handler):
         if not self.directory:
             return True
 
+        if self.kind == 'change-request':
+            if self.submission:
+                data = self.submission.meta
+            else:
+                data = self.ticket.handler_data
+
+            entry = self.session.query(DirectoryEntry)\
+                .filter_by(id=data['directory_entry'])\
+                .first()
+
+            if not entry:
+                return True
+
         if self.state == 'adopted':
             name = self.ticket.handler_data.get('entry_name')
             return not self.directory.entry_with_name_exists(name)
@@ -679,6 +692,18 @@ class DirectoryEntryHandler(Handler):
 
         return self.state is None
 
+    @property
+    def kind(self):
+        if self.submission:
+            data = self.submission.meta
+        else:
+            data = self.ticket.handler_data
+
+        if 'change-request' in data.get('extensions', ()):
+            return 'change-request'
+        else:
+            return 'new-entry'
+
     def get_summary(self, request):
         layout = DefaultLayout(self.submission, request)
 
@@ -686,9 +711,12 @@ class DirectoryEntryHandler(Handler):
         self.form.request = request
         self.form.model = self.submission
 
-        return render_macro(layout.macros['display_form'], request, {
+        macro = layout.macros['directory_entry_submission']
+
+        return render_macro(macro, request, {
             'form': self.form,
-            'layout': layout
+            'layout': layout,
+            'handler': self,
         })
 
     def get_links(self, request):

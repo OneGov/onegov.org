@@ -60,6 +60,14 @@ class ChangeRequestFormExtension(FormExtension, name='change-request'):
                     .first()
 
             def is_different(self, field):
+                # if the target has been removed, stop
+                if not self.target:
+                    return True
+
+                # after the changes have been applied, use the list of changes
+                if self.model.meta.get('changed'):
+                    return field.id in self.model.meta['changed']
+
                 # ignore CSRF token
                 if field.id == 'csrf_token':
                     return False

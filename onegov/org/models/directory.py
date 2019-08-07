@@ -2,6 +2,7 @@ import inspect
 import sedate
 
 from cached_property import cached_property
+from copy import copy
 from datetime import timedelta
 from onegov.core.orm.mixins import meta_property, content_property
 from onegov.core.utils import linkify
@@ -95,7 +96,7 @@ class DirectorySubmissionAction(object):
         # fails
         self.submission.definition = self.directory.structure
 
-        # if the migration failes, update the form on the submission
+        # if the migration fails, update the form on the submission
         # and redirect to it so it can be fixed
         if not migration.possible:
             request.alert(_("The entry is not valid, please adjust it"))
@@ -105,7 +106,11 @@ class DirectorySubmissionAction(object):
         migration.migrate_values(data)
 
         try:
-            entry = self.directory.add(data)
+            if 'change-request' in self.submission.meta['extensions']:
+                entry = self.apply_change_request(request, data)
+            else:
+                entry = self.create_new_entry(request, data)
+
         except DuplicateEntryError:
             request.alert(_("An entry with this name already exists"))
             return
@@ -116,7 +121,9 @@ class DirectorySubmissionAction(object):
         self.ticket.handler_data['entry_name'] = entry.name
         self.ticket.handler_data['state'] = 'adopted'
 
-        entry.coordinates = self.submission.data.get('coordinates')
+    def create_new_entry(self, request, data):
+        entry = self.directory.add(data)
+        entry.coordinates = data.get('coordinates')
 
         self.send_mail_if_enabled(
             request=request,
@@ -125,8 +132,51 @@ class DirectorySubmissionAction(object):
         )
 
         request.success(_("The submission was adopted"))
+
         DirectoryMessage.create(
             self.directory, self.ticket, request, 'adopted')
+
+        return entry
+
+    def apply_change_request(self, request, data):
+        entry = request.session.query(ExtendedDirectoryEntry)\
+            .filter_by(id=self.submission.meta['directory_entry'])\
+            .one()
+
+        changed = []
+        values = copy(entry.values)
+        form = self.submission.form_class(data=data)
+        form.request = request
+        form.model = self.submission
+
+        for name, field in form._fields.items():
+            if form.is_different(field):
+                values[name] = form.data[name]
+                changed.append(name)
+
+        self.directory.update(entry, values)
+
+        if entry.coordinates != data.get('coordinates'):
+            entry.coordinates = data.get('coordinates')
+            changed.append('coordinates')
+
+        # keep a list of changes so the change request extension can
+        # still show the changes (the change detection no longer works once
+        # the changes have been applied)
+        self.submission.meta['changed'] = changed
+
+        self.send_mail_if_enabled(
+            request=request,
+            template='mail_directory_entry_applied.pt',
+            subject=_("Your change request has been applied"),
+        )
+
+        request.success(_("The change request was applied"))
+
+        DirectoryMessage.create(
+            self.directory, self.ticket, request, 'applied')
+
+        return entry
 
     def reject(self, request):
 

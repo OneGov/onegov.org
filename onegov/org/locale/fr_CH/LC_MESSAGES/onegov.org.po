@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2019-08-07 11:56+0200\n"
+"POT-Creation-Date: 2019-08-07 14:32+0200\n"
 "PO-Revision-Date: 2019-02-18 06:40+0100\n"
 "Last-Translator: Marc Sommerhalder <marc.sommerhalder@seantis.ch>\n"
 "Language-Team: French\n"
@@ -1767,6 +1767,9 @@ msgstr ""
 msgid "The submission was adopted"
 msgstr "La proposition a été adoptée"
 
+msgid "The change request was applied"
+msgstr ""
+
 msgid "The submission was rejected"
 msgstr "La proposition a été rejetée"
 
@@ -1775,6 +1778,9 @@ msgstr "L'entrée n'est pas valide, veuillez la rectifier"
 
 msgid "Your directory submission has been adopted"
 msgstr "Votre proposition de répertoire a été adoptée"
+
+msgid "Your change request has been applied"
+msgstr ""
 
 msgid "Your directory submission has been rejected"
 msgstr "Votre proposition de répertoire a été rejetée"
@@ -2016,6 +2022,12 @@ msgstr ""
 
 msgid "Total Amount"
 msgstr "Montant total"
+
+msgid "Change request"
+msgstr ""
+
+msgid "New Entry"
+msgstr ""
 
 msgid "Open"
 msgstr "Ouvert"
@@ -2703,6 +2715,9 @@ msgstr "Sélectionnez un élément pour le visualiser"
 msgid "Directory entry adopted."
 msgstr "L'entrée de répertoire a été adoptée."
 
+msgid "Change request applied."
+msgstr ""
+
 msgid "Directory entry rejected."
 msgstr "L'entrée de répertoire a été rejetée."
 
@@ -2803,6 +2818,9 @@ msgid "The form contains errors. Please check the fields marked in red."
 msgstr ""
 "Le formulaire contient des erreurs. Veuillez vérifier les champs marqués en "
 "rouge."
+
+msgid "Your change request has been applied:"
+msgstr ""
 
 msgid "No directories defined yet."
 msgstr "Aucun dossier défini pour l'instant."

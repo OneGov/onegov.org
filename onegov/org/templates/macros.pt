@@ -511,6 +511,18 @@
     </dl>
 </metal:display_field>
 
+<metal:directory_entry_submission define-macro="directory_entry_submission" i18n:domain="onegov.org">
+    <tal:b condition="handler.kind == 'change-request'">
+        <h2><strong i18n:translate>Change request</strong></h2>
+    </tal:b>
+
+    <tal:b condition="handler.kind == 'new-entry'">
+        <h2><strong i18n:translate>New Entry</strong></h2>
+    </tal:b>
+
+    <metal:b use-macro="layout.macros['display_form']" />
+</metal:directory_entry_submission>
+
 <metal:price define-macro="price">
     ${layout.format_number(price.net_amount)} ${price.currency}
     <tal:b condition="price.fee and show_fee|nothing">

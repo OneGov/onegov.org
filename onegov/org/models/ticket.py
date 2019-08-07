@@ -630,6 +630,15 @@ class DirectoryEntryHandler(Handler):
 
         return self.session.query(Directory).filter_by(id=directory_id).first()
 
+    @cached_property
+    def entry(self):
+        if self.submission:
+            id = self.submission.meta.get('directory_entry')
+        else:
+            id = self.ticket.handler_data.get('directory_entry')
+
+        return self.session.query(DirectoryEntry).filter_by(id=id).first()
+
     @property
     def deleted(self):
         if not self.directory:

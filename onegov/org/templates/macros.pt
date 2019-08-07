@@ -477,7 +477,7 @@
 <metal:display_form define-macro="display_form" i18n:domain="onegov.org">
     <div tal:condition="form" tal:repeat="fieldset form.fieldsets">
         <tal:b define="fields fieldset.non_empty_fields" condition="fields">
-            <h2 tal:condition="fieldset.is_visible" class="hide-if-next-is-empty">${fieldset.label}</h2>
+            <h2 tal:condition="fieldset.is_visible" class="hide-if-next-are-empty">${fieldset.label}</h2>
             <metal:b use-macro="layout.macros['display_fields']" tal:define="fields fields.values()">
         </tal:b>
     </div>
@@ -512,13 +512,27 @@
 </metal:display_field>
 
 <metal:directory_entry_submission define-macro="directory_entry_submission" i18n:domain="onegov.org">
-    <tal:b condition="handler.kind == 'change-request'">
-        <h2><strong i18n:translate>Change request</strong></h2>
-    </tal:b>
+    <h2 tal:condition="handler.kind == 'change-request'" i18n:translate>
+        Change request
+    </h2>
 
-    <tal:b condition="handler.kind == 'new-entry'">
-        <h2><strong i18n:translate>New Entry</strong></h2>
-    </tal:b>
+    <h2 tal:condition="handler.kind == 'new-entry'" i18n:translate>
+        New Entry
+    </h2>
+
+    <div class="directory-entry-submission-summary" tal:condition="not: handler.deleted">
+        <dl>
+            <div>
+                <dt i18n:translate>Directory</dt>
+                <dd><a href="${request.link(handler.directory)}">${handler.directory.title}</a></dd>
+            </div>
+
+            <div tal:condition="handler.entry">
+                <dt i18n:translate>Entry</dt>
+                <dd><a href="${request.link(handler.entry)}">${handler.entry.title}</a></dd>
+            </div>
+        </dl>
+    </div>
 
     <metal:b use-macro="layout.macros['display_form']" />
 </metal:directory_entry_submission>

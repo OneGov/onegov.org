@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2019-08-06 14:32+0200\n"
+"POT-Creation-Date: 2019-08-07 11:56+0200\n"
 "PO-Revision-Date: 2019-02-18 06:39+0100\n"
 "Last-Translator: Marc Sommerhalder <marc.sommerhalder@seantis.ch>\n"
 "Language-Team: German\n"
@@ -883,6 +883,9 @@ msgstr "Beschreibt kurz um was es bei diesem Thema geht"
 
 msgid "Map"
 msgstr "Karte"
+
+msgid "Please provide at least one change"
+msgstr "Bitte geben Sie mindestens eine Änderung ein"
 
 msgid "Time"
 msgstr "Zeit"

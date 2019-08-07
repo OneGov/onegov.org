@@ -247,6 +247,12 @@
 </metal:panel>
 
 <metal:form define-macro="form">
+    <div class="panel global-errors" tal:condition="form.errors.get('global-errors')">
+        <p tal:repeat="error form.errors['global-errors']">
+            ${error}
+        </p>
+    </div>
+
     <form tal:attributes="action form.action|'.';data-image-upload-url layout.image_upload_json_url; data-image-list-url layout.image_list_url;data-file-upload-url layout.file_upload_json_url; data-file-list-url layout.file_list_url; data-sitecollection-url layout.sitecollection_url;" class="${form.css_class|''}" method="${form.method|'POST'}" enctype="multipart/form-data">
         <tal:b repeat="fieldset form.fieldsets">
             <fieldset tal:condition="fieldset.is_visible" id="fieldset-${fieldset.label.lower().replace(' ', '-')}">
@@ -471,7 +477,7 @@
 <metal:display_form define-macro="display_form" i18n:domain="onegov.org">
     <div tal:condition="form" tal:repeat="fieldset form.fieldsets">
         <tal:b define="fields fieldset.non_empty_fields" condition="fields">
-            <h2 tal:condition="fieldset.is_visible">${fieldset.label}</h2>
+            <h2 tal:condition="fieldset.is_visible" class="hide-if-next-is-empty">${fieldset.label}</h2>
             <metal:b use-macro="layout.macros['display_fields']" tal:define="fields fields.values()">
         </tal:b>
     </div>
@@ -500,8 +506,8 @@
                     <tal:b replace="structure rendered" />
                 </tal:b>
             </dd>
+            <div class="clearfix"></div>
         </tal:b>
-        <div class="clearfix"></div>
     </dl>
 </metal:display_field>
 

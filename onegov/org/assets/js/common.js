@@ -207,6 +207,15 @@ $(document).ready(function() {
             }
         }
     });
+
+    $('.hide-if-next-is-empty').each(function() {
+        var el = $(this);
+        var next = el.next();
+
+        if (next.length > 0 && next.children().length === 0) {
+            el.hide();
+        }
+    });
 });
 
 // automatically setup redirect after / confirmation dialogs for

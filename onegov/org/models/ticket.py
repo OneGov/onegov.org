@@ -154,6 +154,7 @@ class FormSubmissionHandler(Handler):
 
     def get_summary(self, request):
         layout = DefaultLayout(self.submission, request)
+
         return render_macro(layout.macros['display_form'], request, {
             'form': self.form,
             'layout': layout
@@ -680,6 +681,11 @@ class DirectoryEntryHandler(Handler):
 
     def get_summary(self, request):
         layout = DefaultLayout(self.submission, request)
+
+        # XXX this is a poor man's request.get_form
+        self.form.request = request
+        self.form.model = self.submission
+
         return render_macro(layout.macros['display_form'], request, {
             'form': self.form,
             'layout': layout

@@ -417,6 +417,10 @@ def handle_change_request(self, request, form):
         # required by the form submissions collection
         form._source = self.directory.structure
 
+        extensions = [
+            ext for ext in self.directory.extensions if ext != 'submitter']
+        extensions.append('change-request')
+
         submission = forms.submissions.add_external(
             form=form,
             state='pending',
@@ -425,10 +429,7 @@ def handle_change_request(self, request, form):
                 'handler_code': 'DIR',
                 'directory': self.directory.id.hex,
                 'directory_entry': self.id.hex,
-                'extensions': tuple(
-                    ext for ext in self.directory.extensions
-                    if ext != 'submitter'
-                )
+                'extensions': extensions
             }
         )
 

@@ -1770,7 +1770,7 @@ msgid "The submission was adopted"
 msgstr "Der Eintrag wurde übernommen"
 
 msgid "The change request was applied"
-msgstr "Der Änderungswunsch wurde angenommen"
+msgstr "Der Änderungswunsch wurde übernommen"
 
 msgid "The submission was rejected"
 msgstr "Die Eingabe wurde abgelehnt"
@@ -1782,7 +1782,7 @@ msgid "Your directory submission has been adopted"
 msgstr "Ihr Verzeichniseintrag wurde übernommen"
 
 msgid "Your change request has been applied"
-msgstr "Ihr Änderungswunsch wurde angenommen"
+msgstr "Ihr Änderungswunsch wurde übernommen"
 
 msgid "Your directory submission has been rejected"
 msgstr "Ihre Eingabe wurde abgelehnt"
@@ -2717,7 +2717,7 @@ msgid "Directory entry adopted."
 msgstr "Verzeichniseintrag übernommen."
 
 msgid "Change request applied."
-msgstr "Änderungswunsch angenommen."
+msgstr "Änderungswunsch übernommen."
 
 msgid "Directory entry rejected."
 msgstr "Verzeichniseintrag abgelehnt."
@@ -2819,7 +2819,7 @@ msgstr ""
 "Das Formular enthält Fehler. Bitte die rot markierten Felder überprüfen."
 
 msgid "Your change request has been applied:"
-msgstr "Ihr Änderungswunsch wurde angenommen:"
+msgstr "Ihr Änderungswunsch wurde übernommen:"
 
 msgid "No directories defined yet."
 msgstr "Noch keine Verzeichnisse definiert."

@@ -43,6 +43,7 @@ class CommentFormExtension(FormExtension, name='comment'):
         class CommentForm(self.form_class):
             comment = TextAreaField(
                 label=_("Comment"),
+                fieldset=_("Submitter"),
                 render_kw={'rows': 7}
             )
 

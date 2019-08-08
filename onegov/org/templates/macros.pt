@@ -477,7 +477,6 @@
 <metal:display_form define-macro="display_form" i18n:domain="onegov.org">
     <div tal:condition="form" tal:repeat="fieldset form.fieldsets">
         <tal:b define="fields fieldset.non_empty_fields" condition="fields">
-            <h2 tal:condition="fieldset.is_visible" class="hide-if-next-are-empty">${fieldset.label}</h2>
             <metal:b use-macro="layout.macros['display_fields']" tal:define="fields fields.values()">
         </tal:b>
     </div>
@@ -490,24 +489,30 @@
 </metal:display_form>
 
 <metal:display_field define-macro="display_fields" i18n:domain="onegov.org">
-    <dl class="field-display" tal:repeat="field fields" tal:define="allow_downloads allow_downloads|request.is_manager; allow_views allow_views|False">
-        <tal:b define="rendered form.render_display(field)" condition="rendered">
-            <dt>${field.label.text}</dt>
-            <dd>
-                <tal:b condition="(allow_downloads or allow_views) and field.type == 'UploadField'">
-                    <tal:b define="url layout.field_download_link(field)">
-                        <a href="${url}" tal:condition="not allow_views or not field.is_image">
-                            <tal:b replace="structure rendered" />
-                        </a>
-                        <img src="${url}" tal:condition="allow_views and field.is_image" alt="" />
-                    </tal:b>
+    <?python
+        rendered_fields = ((f, form.render_display(f)) for f in fields)
+        rendered_fields = ((f, rendered) for f, rendered in rendered_fields if rendered)
+
+        rendered_fields = tuple(rendered_fields)
+    ?>
+    <h2 tal:condition="fieldset.is_visible and rendered_fields|nothing">${fieldset.label}</h2>
+
+    <dl class="field-display" tal:repeat="(field, rendered) rendered_fields" tal:define="allow_downloads allow_downloads|request.is_manager; allow_views allow_views|False">
+        <dt>${field.label.text}</dt>
+        <dd>
+            <tal:b condition="(allow_downloads or allow_views) and field.type == 'UploadField'">
+                <tal:b define="url layout.field_download_link(field)">
+                    <a href="${url}" tal:condition="not allow_views or not field.is_image">
+                        <tal:b replace="structure rendered" />
+                    </a>
+                    <img src="${url}" tal:condition="allow_views and field.is_image" alt="" />
                 </tal:b>
-                <tal:b condition="not (allow_downloads or allow_views) or field.type != 'UploadField'">
-                    <tal:b replace="structure rendered" />
-                </tal:b>
-            </dd>
-            <div class="clearfix"></div>
-        </tal:b>
+            </tal:b>
+            <tal:b condition="not (allow_downloads or allow_views) or field.type != 'UploadField'">
+                <tal:b replace="structure rendered" />
+            </tal:b>
+        </dd>
+        <div class="clearfix"></div>
     </dl>
 </metal:display_field>
 

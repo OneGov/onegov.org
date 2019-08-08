@@ -400,6 +400,18 @@ $globals-height: 2.5rem;
 }
 
 /*
+    Diffs
+*/
+ins {
+    background: $green-pastel;
+    text-decoration: none;
+}
+
+del {
+    background: $red-pastel;
+}
+
+/*
     Login page
 */
 #page-auth-login #content {

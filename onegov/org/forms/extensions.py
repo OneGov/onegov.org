@@ -1,4 +1,5 @@
 from cached_property import cached_property
+from onegov.core.html_diff import render_html_diff
 from onegov.form.extensions import FormExtension
 from onegov.form.fields import UploadField
 from onegov.gis import CoordinatesField
@@ -96,9 +97,33 @@ class ChangeRequestFormExtension(FormExtension, name='change-request'):
 
                 return self.target.values.get(field.id) != field.data
 
+            def render_original(self, field):
+                prev = field.data
+
+                try:
+                    field.data = self.target.values.get(field.id)
+                    return super().render_display(field)
+                finally:
+                    field.data = prev
+
             def render_display(self, field):
                 if self.is_different(field):
-                    return super().render_display(field)
+                    proposed = super().render_display(field)
+
+                    if not self.target:
+                        return proposed
+
+                    if field.id in ('csrf_token', 'coordinates'):
+                        return proposed
+
+                    if field.id not in self.target.values:
+                        return proposed
+
+                    if isinstance(field, UploadField):
+                        return proposed
+
+                    original = self.render_original(field)
+                    return render_html_diff(original, proposed)
 
             def ensure_changes(self):
                 if not self.target:

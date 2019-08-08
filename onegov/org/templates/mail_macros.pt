@@ -59,10 +59,13 @@
 
 <metal:display_field define-macro="display_fields" i18n:domain="onegov.org">
     <?python
-        rendered_fields = ((f, form.render_display(f)) for f in fields)
-        rendered_fields = ((f, rendered) for f, rendered in rendered_fields if rendered)
+        if fields:
+            rendered_fields = ((f, form.render_display(f)) for f in fields)
+            rendered_fields = ((f, rendered) for f, rendered in rendered_fields if rendered)
 
-        rendered_fields = tuple(rendered_fields)
+            rendered_fields = tuple(rendered_fields)
+        else:
+            rendered_fields = None
     ?>
     <div class="fieldset" tal:condition="fieldset.is_visible and rendered_fields|nothing">${fieldset.label}</div>
 

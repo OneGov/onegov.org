@@ -396,6 +396,7 @@ def handle_submit_directory_entry(self, request, form):
         'form': form,
         'layout': layout,
         'title': title,
+        'guideline': self.directory.submissions_guideline,
     }
 
 
@@ -429,7 +430,7 @@ def handle_change_request(self, request, form):
                 'handler_code': 'DIR',
                 'directory': self.directory.id.hex,
                 'directory_entry': self.id.hex,
-                'extensions': extensions
+                'extensions': extensions,
             }
         )
 
@@ -457,7 +458,8 @@ def handle_change_request(self, request, form):
         'hint': _(
             "To request a change, edit the fields you would like to change, "
             "leaving the other fields intact. Then submit your request."
-        )
+        ),
+        'guideline': self.directory.change_requests_guideline,
     }
 
 

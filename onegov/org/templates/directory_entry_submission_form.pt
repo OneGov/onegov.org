@@ -6,7 +6,9 @@
         <div tal:condition="hint|nothing" class="panel limit-line-width">
             ${hint}
         </div>
-        <tal:b condition="directory.submissions_guideline" replace="structure directory.submissions_guideline" />
+        <div tal:condition="guideline|nothing" class="limit-line-width">
+            <tal:b replace="structure guideline" />
+        </div>
         <div class="row">
             <div class="small-12 medium-8 large-6 columns">
                 <div metal:use-macro="layout.macros['form']" />

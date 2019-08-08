@@ -156,8 +156,11 @@ class DirectorySubmissionAction(object):
 
         self.directory.update(entry, values)
 
+        # coordinates can only be set, not deleted at this point
         if entry.coordinates != data.get('coordinates'):
-            entry.coordinates = data.get('coordinates')
+            if data.get('coordinates'):
+                entry.coordinates = data.get('coordinates')
+
             changed.append('coordinates')
 
         # keep a list of changes so the change request extension can

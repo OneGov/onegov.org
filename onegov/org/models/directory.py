@@ -259,9 +259,9 @@ class ExtendedDirectory(Directory, HiddenFromPublicExtension, Extendable):
     @property
     def extensions(self):
         if self.enable_map == 'no':
-            return ('submitter', )
+            return ('submitter', 'comment')
         else:
-            return ('coordinates', 'submitter')
+            return ('coordinates', 'submitter', 'comment')
 
     @property
     def actual_price(self):

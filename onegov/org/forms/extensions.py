@@ -3,6 +3,7 @@ from onegov.form.extensions import FormExtension
 from onegov.form.fields import UploadField
 from onegov.gis import CoordinatesField
 from onegov.org import _
+from wtforms.fields import TextAreaField
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import DataRequired
 
@@ -34,6 +35,18 @@ class SubmitterFormExtension(FormExtension, name='submitter'):
             )
 
         return SubmitterForm
+
+
+class CommentFormExtension(FormExtension, name='comment'):
+
+    def create(self):
+        class CommentForm(self.form_class):
+            comment = TextAreaField(
+                label=_("Comment"),
+                render_kw={'rows': 7}
+            )
+
+        return CommentForm
 
 
 class ChangeRequestFormExtension(FormExtension, name='change-request'):

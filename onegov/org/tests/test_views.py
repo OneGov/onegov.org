@@ -4187,6 +4187,53 @@ def test_directory_submissions(client, postgres):
     transaction.abort()
 
 
+def test_directory_change_requests(client):
+
+    client.login_admin()
+
+    # create a directory that accepts change requests
+    page = client.get('/directories').click('Verzeichnis')
+    page.form['title'] = "Playgrounds"
+    page.form['structure'] = """
+        Name *= ___
+    """
+    page.form['enable_change_requests'] = True
+    page.form['title_format'] = '[Name]'
+    page = page.form.submit().follow()
+
+    # create an entry
+    page = page.click('Eintrag')
+    page.form['name'] = 'Central Park'
+    page = page.form.submit().follow()
+
+    # ask for a change
+    page = page.click("Änderung vorschlagen")
+    page.form['name'] = 'Diana Ross Playground'
+    page.form['submitter'] = 'user@example.org'
+    page.form['comment'] = 'This is better'
+    page.form.submit().follow().form.submit().follow()
+
+    # check the ticket
+    page = client.get('/tickets/ALL/open').click("Annehmen").follow()
+    assert '<del>Central Park</del><ins>Diana Ross Playground</ins>' in page
+    assert 'This is better' in page
+
+    # make sure it hasn't been applied yet
+    assert 'Central Park' in \
+        client.get('/directories/playgrounds/central-park')
+
+    # apply the changes
+    page.click("Übernehmen")
+    page = client.get(page.request.url)
+    assert 'Central Park' not in page
+    assert 'Diana Ross Playground' in page
+    assert 'This is better' in page
+
+    # check if they were applied (the id won't have changed)
+    assert 'Diana Ross Playground' in \
+        client.get('/directories/playgrounds/central-park')
+
+
 def test_dependent_number_form(client):
     collection = FormCollection(client.app.session())
     collection.definitions.add('Profile', definition=textwrap.dedent("""
